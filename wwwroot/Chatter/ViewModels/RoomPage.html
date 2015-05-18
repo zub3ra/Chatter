@@ -1,4 +1,6 @@
-﻿<template>
+﻿<link href="/Chatter/css/chatter.css" rel="stylesheet" />
+        
+<template>
     <h1>{{name}}</h1>
     
     <hr />
@@ -12,4 +14,8 @@
   Nick: <input value="{{Nick$}}">
   Msg: <input value="{{Statement$}}">
   <button onclick="this.templateInstance.model.Send$++">Send</button>
+
+  <template if="{{Warning}}">
+      <div class="chatter warning">{{Warning}}</div>
+  </template>
 </template>
