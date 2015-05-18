@@ -5,14 +5,16 @@
     
     <hr />
 
+    <div>
     <template repeat="{{Statements}}">
         <div><strong>{{user}}:</strong> {{msg}}</div>
     </template>
+    </div>
 
     <hr />
     
-  Nick: <input value="{{Nick$}}">
-  Msg: <input value="{{Statement$}}">
+  <div>Nick: <input value="{{Nick$}}"></div>
+  <div>Msg: <input value="{{Statement$}}"></div>
   <button onclick="this.templateInstance.model.Send$++">Send</button>
 
   <template if="{{Warning}}">
