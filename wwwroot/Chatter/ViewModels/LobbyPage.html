@@ -1,0 +1,8 @@
+﻿<link rel="import" href="/sys/puppet-redirect/src/puppet-redirect.html" />
+
+<template>
+  <input value="{{Room$}}">
+  <button onclick="this.templateInstance.model.GoToRoom$++">Go to room</button>
+
+  <link is="puppet-redirect" history url="{{RedirectUrl$}}" />
+</template>

@@ -1,0 +1,15 @@
+﻿<template>
+    <h1>{{name}}</h1>
+    
+    <hr />
+
+    <template repeat="{{Statements}}">
+        <div><strong>{{user}}:</strong> {{msg}}</div>
+    </template>
+
+    <hr />
+    
+  Nick: <input value="{{Nick$}}">
+  Msg: <input value="{{Statement$}}">
+  <button onclick="this.templateInstance.model.Send$++">Send</button>
+</template>
