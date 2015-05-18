@@ -25,7 +25,6 @@ namespace Chatter {
                 Warning = "Message cannot be empty";
                 return;
             }
-            Warning = "";
 
             Db.Transact(() => {
                 var m = new Statement() {
@@ -36,6 +35,9 @@ namespace Chatter {
                 };
             });
             RefreshStatements();
+
+            Warning = "";
+            Statement = "";
         }
     }
 }

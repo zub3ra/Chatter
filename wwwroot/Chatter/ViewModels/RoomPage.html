@@ -17,10 +17,24 @@
     <hr />
     
   <div>Nick: <input value="{{Nick$}}"></div>
-  <div>Msg: <input value="{{Statement$}}"></div>
+  <div>Msg: <input update-on="input" value="{{Statement$}}">
+
+  <script>
+      var input = document.currentScript.previousElementSibling;
+      input.focus();
+      input.addEventListener("keyup", function (event) {
+          if (event.keyCode == 13) {
+              this.templateInstance.model.Send$++;
+          }
+      });
+  </script>
+
+  </div>
   <button onclick="this.templateInstance.model.Send$++">Send</button>
 
   <template if="{{Warning}}">
       <div class="chatter warning">{{Warning}}</div>
   </template>
+
+  
 </template>

@@ -72,6 +72,7 @@ namespace Chatter {
                 }
 
                 var page = (RoomPage)master.CurrentPage;
+                page.Nick = "Anonymous";
                 page.Data = room;
                 page.RefreshStatements();
 
