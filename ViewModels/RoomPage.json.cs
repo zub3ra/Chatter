@@ -44,19 +44,16 @@ namespace Chatter {
             Statement = "";
 
             Session.ForEach((Session s) => {
-                StarcounterEnvironment.AppName = "Chatter";
-                if (s.Data is MasterPage) {
-                    MasterPage data = (MasterPage)s.Data;
-                    if (data.CurrentPage is RoomPage) {
-                        RoomPage page = (RoomPage)data.CurrentPage;
-                        if (page.Data.Equals(this.Data)) { //is current room?
-                            if (page.Statements.Count >= maxMsgs) {
-                                page.Statements.RemoveAt(0);
-                            }
-                            var item = page.Statements.Add();
-                            item.Data = m;
-                            s.CalculatePatchAndPushOnWebSocket();
+                MasterPage data = (MasterPage)s.Data;
+                if (data.CurrentPage is RoomPage) {
+                    RoomPage page = (RoomPage)data.CurrentPage;
+                    if (page.Data.Equals(this.Data)) { //is current room?
+                        if (page.Statements.Count >= maxMsgs) {
+                            page.Statements.RemoveAt(0);
                         }
+                        var item = page.Statements.Add();
+                        item.Data = m;
+                        s.CalculatePatchAndPushOnWebSocket();
                     }
                 }
             });
