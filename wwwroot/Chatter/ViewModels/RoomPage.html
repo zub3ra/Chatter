@@ -1,40 +1,31 @@
 ﻿<link href="/Chatter/css/chatter.css" rel="stylesheet" />
         
 <template>
-    <h1>{{name}}</h1>
+    <h1>{{Name}}</h1>
     
     <hr />
 
     <div>
-    <template repeat="{{Statements}}">
-        <div class="chatter statement">
-            <div class="chatter user">{{user}}</div> 
-            <div class="chatter msg">{{msg}}</div> 
-        </div>
-    </template>
+        <template repeat="{{ChatMessages}}">
+            <div class="chatter statement">
+                <div class="chatter user">{{UserName}}</div> 
+                <div class="chatter msg">{{Text}}</div> 
+            </div>
+        </template>
     </div>
 
     <hr />
     
-  <div>Nick: <input value="{{Nick$}}"></div>
-  <div>Msg: <input update-on="input" value="{{Statement$}}">
+    <div>
+        Nick: <input value="{{UserName$}}" />
+    </div>
+    <div>
+        Msg: <input update-on="input" value="{{Text$}}" onkeyup="if (event.keyCode == 13) this.templateInstance.model.Send$++;" />
+    </div>
+    <button onclick="this.templateInstance.model.Send$++">Send</button>
+    <a href="/chatter">Go back</a>
 
-  <script>
-      var input = document.currentScript.previousElementSibling;
-      input.focus();
-      input.addEventListener("keyup", function (event) {
-          if (event.keyCode == 13) {
-              this.templateInstance.model.Send$++;
-          }
-      });
-  </script>
-
-  </div>
-  <button onclick="this.templateInstance.model.Send$++">Send</button>
-
-  <template if="{{Warning}}">
-      <div class="chatter warning">{{Warning}}</div>
-  </template>
-
-  
+    <template if="{{Warning}}">
+        <div class="chatter warning">{{Warning}}</div>
+    </template>
 </template>

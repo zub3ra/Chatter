@@ -1,6 +1,7 @@
 using System;
 using Starcounter;
 using PolyjuiceNamespace;
+using Simplified.Ring6;
 
 namespace Chatter {
     class Program {
@@ -57,10 +58,10 @@ namespace Chatter {
             });
 
             Handle.GET("/chatter/rooms/{?}", (string roomName) => {
-                var room = Db.SQL<Room>("SELECT r FROM Room r WHERE r.name = ?", roomName).First;
+                var room = Db.SQL<ChatGroup>("SELECT r FROM Simplified.Ring6.ChatGroup r WHERE r.name = ?", roomName).First;
                 if (room == null) {
                     Db.Transact(() => {
-                        room = new Room() { name = roomName };
+                        room = new ChatGroup() { Name = roomName };
                     });
                 };
 
@@ -72,7 +73,7 @@ namespace Chatter {
                 }
 
                 var page = (RoomPage)master.CurrentPage;
-                page.Nick = "Anonymous";
+                page.UserName = "Anonymous";
                 page.Data = room;
                 page.RefreshStatements();
 

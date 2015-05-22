@@ -1,57 +1,58 @@
+using System;
 using Starcounter;
 using Starcounter.Internal;
-using System;
+using Simplified.Ring6;
 
 namespace Chatter {
 
-    partial class RoomPage : Page, IBound<Room> {
+    partial class RoomPage : Page, IBound<ChatGroup> {
 
-        private Int64 maxMsgs = 10;
+        private long maxMsgs = 10;
 
         public void RefreshStatements() {
-            var count = Db.SlowSQL<Int64>(@"
-					SELECT COUNT(*) FROM Statement m 
-                    WHERE m.room = ?", this.Data).First;
+            long count = Db.SlowSQL<long>(@"
+					SELECT COUNT(*) FROM Simplified.Ring6.ChatMessage m 
+                    WHERE m.""Group"" = ?", this.Data).First;
 
-            var offset = count > maxMsgs ? count - maxMsgs : 0;
+            long offset = count > maxMsgs ? count - maxMsgs : 0;
 
-            Statements = Db.SQL<Statement>(@"
-					SELECT m FROM Statement m WHERE m.room = ? 
-					ORDER BY tick ASC FETCH ? OFFSET ?", this.Data, 10, offset);
+            ChatMessages = Db.SQL<ChatMessage>(@"
+					SELECT m FROM Simplified.Ring6.ChatMessage m WHERE m.""Group"" = ? 
+					ORDER BY m.""Date"" ASC FETCH ? OFFSET ?", this.Data, 10, offset);
         }
 
         void Handle(Input.Send action) {
-            if (Nick == "") {
+            if (string.IsNullOrEmpty(UserName)) {
                 Warning = "Nick cannot be empty";
                 return;
             }
-            if (Statement == "") {
+            if (string.IsNullOrEmpty(Text)) {
                 Warning = "Message cannot be empty";
                 return;
             }
 
-            Statement m = null;
+            ChatMessage m = null;
             Db.Transact(() => {
-                m = new Statement() {
-                    user = Nick,
-                    room = this.Data,
-                    msg = Statement,
-                    tick = DateTime.Now.Ticks
+                m = new ChatMessage() {
+                    UserName = UserName,
+                    Group = this.Data,
+                    Text = Text,
+                    Date = DateTime.Now
                 };
             });
 
-            Warning = "";
-            Statement = "";
+            Warning = string.Empty;
+            Text = string.Empty;
 
             Session.ForEach((Session s) => {
                 MasterPage data = (MasterPage)s.Data;
                 if (data.CurrentPage is RoomPage) {
                     RoomPage page = (RoomPage)data.CurrentPage;
                     if (page.Data.Equals(this.Data)) { //is current room?
-                        if (page.Statements.Count >= maxMsgs) {
-                            page.Statements.RemoveAt(0);
+                        if (page.ChatMessages.Count >= maxMsgs) {
+                            page.ChatMessages.RemoveAt(0);
                         }
-                        var item = page.Statements.Add();
+                        var item = page.ChatMessages.Add();
                         item.Data = m;
                         s.CalculatePatchAndPushOnWebSocket();
                     }

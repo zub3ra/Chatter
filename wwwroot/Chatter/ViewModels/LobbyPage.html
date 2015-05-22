@@ -2,21 +2,10 @@
 <link href="/Chatter/css/chatter.css" rel="stylesheet" />
 
 <template>
-  <h1>Select room</h1>
+  <h1>Select group</h1>
 
-  <input update-on="input" value="{{Room$}}">
-
-  <script>
-      var input = document.currentScript.previousElementSibling;
-      input.focus();
-      input.currentScript.previousElementSibling.addEventListener("keyup", function (event) {
-          if (event.keyCode == 13) {
-              this.templateInstance.model.GoToRoom$++;
-          }
-      });
-  </script>
-
-  <button onclick="this.templateInstance.model.GoToRoom$++">Go to room</button>
+  <input update-on="input" value="{{Group$}}" onkeyup="if (event.keyCode == 13) this.templateInstance.model.GoToGroup$++;">
+  <button onclick="this.templateInstance.model.GoToGroup$++">Go to room</button>
 
   <link is="puppet-redirect" history url="{{RedirectUrl$}}" />
 </template>

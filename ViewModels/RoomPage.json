@@ -1,12 +1,12 @@
 {
   "Html": "",
-  "name": "",
-  "Statements": [{
-    "msg": "",
-    "user": ""
+  "Name": "",
+  "ChatMessages": [{
+    "Text": "",
+    "UserName": ""
   }],
-  "Statement$": "",
-  "Nick$": "",
+  "Text$": "",
+  "UserName$": "",
   "Send$": 0,
   "Warning": ""
 }
