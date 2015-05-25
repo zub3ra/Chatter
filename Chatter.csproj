@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Api\CommitHooks.cs" />
     <Compile Include="Api\MainHandlers.cs" />
+    <Compile Include="Helpers\DefaultStyles.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ChatAttachmentPage.json.cs">
@@ -91,6 +92,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Content\default-layout.sql" />
     <Content Include="wwwroot\Chatter\css\chatter.css" />
     <Content Include="wwwroot\Chatter\css\master.css" />
     <Content Include="wwwroot\Chatter\images\chatter.png" />
