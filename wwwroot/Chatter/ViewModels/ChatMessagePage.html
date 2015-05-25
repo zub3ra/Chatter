@@ -1,7 +1,7 @@
 ﻿<template>
     <div>
         <template if="{{User.Key}}">
-            <a href="/chatter/user/{{User.Key}}">{{UserName}}</a>
+            <a href="/chatter/systemuser/{{User.Key}}">{{UserName}}</a>
         </template>
         <template if="{{!User.Key}}">
             {{UserName}}

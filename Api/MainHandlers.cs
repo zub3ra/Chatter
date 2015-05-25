@@ -46,6 +46,16 @@ namespace Chatter {
                 });
             });
 
+            Handle.GET("/chatter/systemuser/{?}", (string SystemUserId) => {
+                return Db.Scope<StandalonePage>(() => {
+                    var master = (StandalonePage)Self.GET("/chatter/standalone");
+
+                    master.CurrentPage = Self.GET("/chatter/partials/systemuser/" + SystemUserId);
+
+                    return master;
+                });
+            });
+
             this.RegisterLauncher();
             this.RegisterPartials();
             this.RegisterMap();
@@ -91,9 +101,29 @@ namespace Chatter {
             });
 
             Handle.GET("/chatter/partials/chatgroups", () => {
-                return new LobbyPage() {
+                var page = new LobbyPage() {
                     Html = "/Chatter/ViewModels/LobbyPage.html"
                 };
+
+                page.RefreshData();
+
+                return page;
+            });
+
+            Handle.GET("/chatter/partials/person/{?}", (string PersonId) => {
+                PersonPage page = new PersonPage();
+
+                page.RefreshData(PersonId);
+
+                return page;
+            });
+
+            Handle.GET("/chatter/partials/systemuser/{?}", (string SystemUserId) => {
+                SystemUserPage page = new SystemUserPage();
+
+                page.RefreshData(SystemUserId);
+
+                return page;
             });
         }
 
@@ -101,6 +131,8 @@ namespace Chatter {
             Polyjuice.Map("/chatter/app-name", "/polyjuice/app-name");
             Polyjuice.Map("/chatter/app-icon", "/polyjuice/app-icon");
             Polyjuice.Map("/chatter/menu", "/polyjuice/menu");
+
+            Polyjuice.OntologyMap("/chatter/partials/person/@w", "/so/person/@w", null, null);
         }
     }
 }

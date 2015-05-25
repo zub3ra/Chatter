@@ -9,5 +9,25 @@
     <div>
         <button class="btn btn-primary" onclick="this.templateInstance.model.GoToGroup$++">Enter chat group</button>
     </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <template repeat="{{ChatGroups}}">
+                <tr>
+                    <td>
+                        <span>{{Name}}</span>
+                    </td>
+                    <td>
+                        <a href="/chatter/chatgroup/{{Name}}" class="btn btn-primary btn-sm">Enter</a>
+                    </td>
+                </tr>
+            </template>
+        </tbody>
+    </table>
     <link is="puppet-redirect" history url="{{RedirectUrl$}}" />
 </template>

@@ -1,6 +1,12 @@
 {
-  "Html": "",
-  "Group$": "",
-  "GoToGroup$": 0,
-  "RedirectUrl$": ""
+    "Html": "",
+    "Group$": "",
+    "GoToGroup$": 0,
+    "RedirectUrl$": "",
+    "ChatGroups": [
+        {
+            "Name": "",
+            "Key": ""
+        }
+    ]
 }

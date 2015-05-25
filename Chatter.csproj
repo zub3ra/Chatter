@@ -77,8 +77,14 @@
     <Compile Include="ViewModels\ChatGroupPage.json.cs">
       <DependentUpon>ChatGroupPage.json</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\PersonPage.json.cs">
+      <DependentUpon>PersonPage.json</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\StandalonePage.json.cs">
       <DependentUpon>StandalonePage.json</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\SystemUserPage.json.cs">
+      <DependentUpon>SystemUserPage.json</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -91,7 +97,9 @@
     <Content Include="wwwroot\Chatter\ViewModels\LobbyPage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\MenuPage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\ChatGroupPage.html" />
+    <Content Include="wwwroot\Chatter\ViewModels\PersonPage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\StandalonePage.html" />
+    <Content Include="wwwroot\Chatter\ViewModels\SystemUserPage.html" />
   </ItemGroup>
   <ItemGroup>
     <TypedJSON Include="ViewModels\LobbyPage.json">
@@ -122,6 +130,16 @@
   </ItemGroup>
   <ItemGroup>
     <TypedJSON Include="ViewModels\StandalonePage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+  </ItemGroup>
+  <ItemGroup>
+    <TypedJSON Include="ViewModels\SystemUserPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+  </ItemGroup>
+  <ItemGroup>
+    <TypedJSON Include="ViewModels\PersonPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
   </ItemGroup>
