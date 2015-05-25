@@ -6,7 +6,21 @@
     "UserName$": "",
     "Send$": 0,
     "Warning": "",
-    "SystemUser": { 
+    "AttachmentName$": "",
+    "ClearFoundAttachments$": 0,
+    "FoundAttachment": [
+        {
+            "Name": "",
+            "Choose$": 0
+        }
+    ],
+    "ChatAttachments": [
+        {
+            "Name": "",
+            "Delete$": 0
+        }
+    ],
+    "SystemUser": {
         "Username": ""
     }
 }

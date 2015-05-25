@@ -125,6 +125,14 @@ namespace Chatter {
 
                 return page;
             });
+
+            Handle.GET("/chatter/partials/chatattachment/{?}", (string ChatAttachmentId) => {
+                ChatAttachmentPage page = new ChatAttachmentPage();
+
+                page.RefreshData(ChatAttachmentId);
+
+                return page;
+            });
         }
 
         protected void RegisterMap() {

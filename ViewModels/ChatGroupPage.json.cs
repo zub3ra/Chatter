@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Starcounter;
 using Starcounter.Internal;
+using Simplified.Ring1;
 using Simplified.Ring3;
 using Simplified.Ring5;
 using Simplified.Ring6;
@@ -71,10 +72,18 @@ namespace Chatter {
                     Date = DateTime.Now,
                     User = this.SystemUser.Data
                 };
+
+                foreach (var item in this.ChatAttachments) {
+                    ChatAttachment attachment = new ChatAttachment() {
+                        Attachment = item.Data,
+                        Message = m
+                    };
+                }
             });
 
             Warning = string.Empty;
             Text = string.Empty;
+            this.ChatAttachments.Clear();
 
             Session.ForEach((Session s) => {
                 StandalonePage master = s.Data as StandalonePage;
@@ -94,12 +103,59 @@ namespace Chatter {
             });
         }
 
+        void Handle(Input.AttachmentName Action) {
+            this.FoundAttachment.Clear();
+            this.FoundAttachment.Data = Db.SQL<Something>("SELECT s FROM Simplified.Ring1.Something s WHERE s.Name LIKE ? ORDER BY s.Name", "%" + Action.Value + "%").Take(10);
+        }
+
+        void Handle(Input.ClearFoundAttachments Action) {
+            this.FoundAttachment.Clear();
+            this.AttachmentName = string.Empty;
+        }
+
         protected SystemUserSession GetCurrentSystemUserSession() {
             return Db.SQL<SystemUserSession>("SELECT o FROM Simplified.Ring5.SystemUserSession o WHERE o.SessionIdString = ?", Session.Current.SessionIdString).First;
         }
 
         [ChatGroupPage_json.SystemUser]
         public partial class ChatGroupPageSystemUser : Json, IBound<SystemUser> { 
+        }
+
+        [ChatGroupPage_json.FoundAttachment]
+        public partial class ChatGroupPageFoundAttachment : Json, IBound<Something> {
+            void Handle(Input.Choose Action) {
+                this.ParentPage.ChatAttachments.Add().Data = this.Data;
+            }
+
+            ChatGroupPage ParentPage {
+                get {
+                    return this.Parent.Parent as ChatGroupPage;
+                }
+            }
+        }
+
+        [ChatGroupPage_json.ChatAttachments]
+        public partial class ChatGroupPageChatAttachment : Json, IBound<Something> {
+            void Handle(Input.Delete Action) {
+                int index = -1;
+
+                for (int i = 0; i < this.ParentPage.ChatAttachments.Count; i++) {
+                    if (this.ParentPage.ChatAttachments[i].Data == this.Data) {
+                        index = i;
+                        break;
+                    }
+                }
+
+                if (index >= 0) {
+                    this.ParentPage.ChatAttachments.RemoveAt(index);
+                }
+            }
+
+            ChatGroupPage ParentPage {
+                get {
+                    return this.Parent.Parent as ChatGroupPage;
+                }
+            }
         }
     }
 }

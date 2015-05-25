@@ -1,11 +1,6 @@
 ﻿<template>
-    <div>
-        <template if="{{User.Key}}">
-            <a href="/chatter/systemuser/{{User.Key}}">{{UserName}}</a>
-        </template>
-        <template if="{{!User.Key}}">
-            {{UserName}}
-        </template>
-    </div>
     <div>{{Text}}</div>
+    <template repeat="{{ChatAttachments}}">
+        <launcher-root-partial></launcher-root-partial>
+    </template>
 </template>

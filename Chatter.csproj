@@ -68,6 +68,9 @@
     <Compile Include="Api\MainHandlers.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\ChatAttachmentPage.json.cs">
+      <DependentUpon>ChatAttachmentPage.json</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ChatMessagePage.json.cs">
       <DependentUpon>ChatMessagePage.json</DependentUpon>
     </Compile>
@@ -92,6 +95,7 @@
     <Content Include="wwwroot\Chatter\css\master.css" />
     <Content Include="wwwroot\Chatter\images\chatter.png" />
     <Content Include="wwwroot\Chatter\ViewModels\AppIconPage.html" />
+    <Content Include="wwwroot\Chatter\ViewModels\ChatAttachmentPage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\ChatMessagePage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\LauncherWrapperPage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\LobbyPage.html" />
@@ -140,6 +144,11 @@
   </ItemGroup>
   <ItemGroup>
     <TypedJSON Include="ViewModels\PersonPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+  </ItemGroup>
+  <ItemGroup>
+    <TypedJSON Include="ViewModels\ChatAttachmentPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
   </ItemGroup>

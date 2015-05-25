@@ -19,6 +19,35 @@
         <textarea update-on="input" value="{{Text$}}" onkeyup="if (event.keyCode == 13) this.templateInstance.model.Send$++;" class="form-control" placeholder="Input your message"></textarea>
     </div>
     <div>
+        Attachments
+    </div>
+    <div>
+        <input type="text" update-on="input" class="form-control" value="{{AttachmentName$}}" onblur="getModel(this).ClearFoundAttachments$++" placeholder="Type to find an attachent" />
+        <template if="{{FoundAttachment.length}}">
+            <ul class="autocomplete">
+                <template repeat="{{FoundAttachment}}">
+                    <li>
+                        <a href="javascript:" onmousedown="this.templateInstance.model.Choose$++">{{Name}}</a>
+                    </li>
+                </template>
+            </ul>
+        </template>
+    </div>
+    <div>
+        <table class="table">
+            <template repeat="{{ChatAttachments}}">
+                <tr>
+                    <td>
+                        <span>{{Name}}</span>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-xs" onclick="this.templateInstance.model.Delete$++">Delete</button>
+                    </td>
+                </tr>
+            </template>
+        </table>
+    </div>
+    <div>
         <button class="btn btn-primary" onclick="this.templateInstance.model.Send$++">Send</button>
     </div>
     <div>
