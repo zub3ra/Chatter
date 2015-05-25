@@ -1,23 +1,29 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Chatter</title>
-    <meta charset="UTF-8">
+    <title>People</title>
     <script src="/sys/webcomponentsjs/webcomponents.js"></script>
     <link rel="import" href="/sys/starcounter.html" />
     <link rel="import" href="/sys/imported-template/imported-template.html" />
-    <link rel="import" href="/sys/starcounter-debug-aid/src/starcounter-debug-aid.html" />
     <link rel="import" href="/sys/bootstrap.html" />
-    <link href="/Chatter/css/master.css" rel="stylesheet" />
 </head>
 <body>
     <template id="root" bind>
-        <template bind="{{CurrentPage}}">
-            <template is="imported-template" content="{{Html}}">
+        <nav id="top-menu">
+            <ul>
+                <li>
+                    <a href="/chutter">Home</a>
+                </li>
+            </ul>
+        </nav>
+        <div id="body">
+            <template bind="{{CurrentPage}}">
+                <template is="imported-template" content="{{Html}}">
+                </template>
             </template>
-        </template>
+        </div>
     </template>
-    <puppet-client ref="root" usewebsocket></puppet-client>
+    <puppet-client ref="root"></puppet-client>
     <starcounter-debug-aid></starcounter-debug-aid>
 </body>
 </html>

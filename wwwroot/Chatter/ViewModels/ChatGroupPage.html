@@ -1,0 +1,28 @@
+﻿<link href="/Chatter/css/chatter.css" rel="stylesheet" />
+        
+<template>
+    <h2>{{Name}}</h2>
+    <div>
+        <template if="{{SystemUser.Username}}">
+            Signed in as <b>{{SystemUser.Username}}</b>
+        </template>
+        <template if="{{!SystemUser.Username}}">
+            You are not signed in, you messages will be send anonymously
+        </template>
+    </div>
+    <div>
+        <template repeat="{{ChatMessages}}">
+            <launcher-root-partial></launcher-root-partial>
+        </template>
+    </div>
+    <div>
+        <textarea update-on="input" value="{{Text$}}" onkeyup="if (event.keyCode == 13) this.templateInstance.model.Send$++;" class="form-control" placeholder="Input your message"></textarea>
+    </div>
+    <div>
+        <button class="btn btn-primary" onclick="this.templateInstance.model.Send$++">Send</button>
+    </div>
+    <div>
+        <a href="/chatter" class="btn btn-default">Go back</a>
+    </div>
+    <div hidden?="{{!Warning}}">{{Warning}}</div>
+</template>

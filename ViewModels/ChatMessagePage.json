@@ -1,0 +1,14 @@
+{
+    "Html": "/Chatter/ViewModels/ChatMessagePage.html",
+    "UserName": "",
+    "Text": "",
+    "User": {
+        "Key": "",
+        "Username": ""
+    },
+    "ChatAttachments": [
+        {
+            "Name": ""
+        }
+    ]
+}

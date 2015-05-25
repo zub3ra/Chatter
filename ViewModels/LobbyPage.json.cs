@@ -2,6 +2,6 @@ using Starcounter;
 
 partial class LobbyPage : Page {
     void Handle(Input.GoToGroup Action) {
-        RedirectUrl = "/chatter/rooms/" + Group;
+        RedirectUrl = "/chatter/chatgroup/" + Group;
     }
 }
