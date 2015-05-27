@@ -8,7 +8,45 @@ namespace Chatter {
         }
 
         void Handle(Input.GoToGroup Action) {
-            RedirectUrl = "/chatter/chatgroup/" + Group;
+            string name = string.IsNullOrEmpty(this.Group) ? "Anonymous group" : this.Group;
+            ChatGroup group = null;
+
+            Db.Transact(() => {
+                group = new ChatGroup() {
+                    Name = name
+                };
+            });
+
+            RedirectUrl = "/chatter/chatgroup/" + group.Key;
+        }
+
+        [LobbyPage_json.ChatGroups]
+        partial class LobbyPageChatGroupRow : Json, IBound<ChatGroup> {
+            void Handle(Input.Delete Action) {
+                Db.Transact(() => {
+                    var messages = Db.SQL<ChatMessage>("SELECT m FROM Simplified.Ring6.ChatMessage m WHERE m.\"Group\" = ?", this.Data);
+
+                    foreach (ChatMessage message in messages) {
+                        var attachments = Db.SQL<ChatAttachment>("SELECT a FROM Simplified.Ring6.ChatAttachment a WHERE a.Message = ?", message);
+
+                        foreach (ChatAttachment attachment in attachments) {
+                            attachment.Delete();
+                        }
+
+                        message.Delete();
+                    }
+
+                    this.Data.Delete();
+                });
+
+                this.ParentPage.RefreshData();
+            }
+
+            public LobbyPage ParentPage {
+                get {
+                    return this.Parent.Parent as LobbyPage;
+                }
+            }
         }
     }
 }

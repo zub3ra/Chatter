@@ -6,7 +6,8 @@
     "ChatGroups": [
         {
             "Name": "",
-            "Key": ""
+            "Key": "",
+            "Delete$": 0
         }
     ]
 }

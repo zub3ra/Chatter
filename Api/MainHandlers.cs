@@ -1,5 +1,7 @@
 ﻿using Starcounter;
 using PolyjuiceNamespace;
+using Simplified.Ring1;
+using Simplified.Ring6;
 
 namespace Chatter {
     internal class MainHandlers {
@@ -82,12 +84,12 @@ namespace Chatter {
         }
 
         protected void RegisterPartials() {
-            Handle.GET("/chatter/partials/chatgroups/{?}", (string Name) => {
+            Handle.GET("/chatter/partials/chatgroups/{?}", (string ChatGroupId) => {
                 var page = new ChatGroupPage() {
                     Html = "/Chatter/ViewModels/ChatGroupPage.html"
                 };
 
-                page.RefreshData(Name);
+                page.RefreshData(ChatGroupId);
 
                 return page;
             });
@@ -128,8 +130,14 @@ namespace Chatter {
 
             Handle.GET("/chatter/partials/chatattachment/{?}", (string ChatAttachmentId) => {
                 ChatAttachmentPage page = new ChatAttachmentPage();
+                ChatAttachment rel = DbHelper.FromID(DbHelper.Base64DecodeObjectID(ChatAttachmentId)) as ChatAttachment;
+                Something obj = rel.Attachment;
 
                 page.RefreshData(ChatAttachmentId);
+
+                if (obj != null) {
+                    page.Html += "?" + obj.GetType().FullName;
+                }
 
                 return page;
             });
@@ -141,6 +149,8 @@ namespace Chatter {
             Polyjuice.Map("/chatter/menu", "/polyjuice/menu");
 
             Polyjuice.OntologyMap("/chatter/partials/person/@w", "/so/person/@w", null, null);
+            Polyjuice.OntologyMap("/chatter/partials/chatattachment/@w", "/so/abstractcrossreference/@w", null, null);
+            Polyjuice.OntologyMap("/chatter/partials/chatgroups/@w", "/so/group/@w", null, null);
         }
     }
 }

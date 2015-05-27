@@ -13,15 +13,9 @@ namespace Chatter {
 
         private long maxMsgs = 10;
 
-        public void RefreshData(string GroupName) {
-            var group = Db.SQL<ChatGroup>("SELECT r FROM Simplified.Ring6.ChatGroup r WHERE r.name = ?", GroupName).First;
+        public void RefreshData(string ChatGroupId) {
+            var group = DbHelper.FromID(DbHelper.Base64DecodeObjectID(ChatGroupId)) as ChatGroup;
             
-            if (group == null) {
-                Db.Transact(() => {
-                    group = new ChatGroup() { Name = GroupName };
-                });
-            };
-
             this.RefreshUser();
             this.Data = group;
             this.RefreshChatMessages();
@@ -64,7 +58,9 @@ namespace Chatter {
             }
 
             ChatMessage m = null;
-            Db.Transact(() => {
+            var images = Db.SQL<Illustration>("SELECT i FROM Simplified.Ring1.Illustration i WHERE i.Concept = ?", this.Data);
+
+            //Db.Transact(() => {
                 m = new ChatMessage() {
                     UserName = UserName,
                     Group = this.Data,
@@ -73,13 +69,20 @@ namespace Chatter {
                     User = this.SystemUser.Data
                 };
 
+                foreach (Illustration image in images) {
+                    this.ChatAttachments.Add().Data = image;
+                    image.Concept = m;
+                }
+
                 foreach (var item in this.ChatAttachments) {
                     ChatAttachment attachment = new ChatAttachment() {
                         Attachment = item.Data,
                         Message = m
                     };
                 }
-            });
+            //});
+
+            this.Transaction.Commit();
 
             Warning = string.Empty;
             Text = string.Empty;

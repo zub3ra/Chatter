@@ -16,7 +16,7 @@
         </template>
     </div>
     <div>
-        <textarea update-on="input" value="{{Text$}}" onkeyup="if (event.keyCode == 13) this.templateInstance.model.Send$++;" class="form-control" placeholder="Input your message"></textarea>
+        <input type="text" update-on="input" value="{{Text$}}" onkeyup="if (event.keyCode == 13) this.templateInstance.model.Send$++;" class="form-control" placeholder="Input your message" />
     </div>
     <div>
         Attachments
