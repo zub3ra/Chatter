@@ -11,12 +11,12 @@
         </template>
     </div>
     <div>
-        <template repeat="{{ChatMessages}}">
+        <template repeat="{{ChatMessagePages}}">
             <launcher-root-partial></launcher-root-partial>
         </template>
     </div>
     <div>
-        <input type="text" update-on="input" value="{{Text$}}" onkeyup="if (event.keyCode == 13) this.templateInstance.model.Send$++;" class="form-control" placeholder="Input your message" />
+        <input type="text" update-on="input" value="{{ChatMessage.Text$}}" onkeyup="if (event.keyCode == 13) this.templateInstance.model.Send$++;" class="form-control" placeholder="Input your message" />
     </div>
     <div>
         Attachments
@@ -35,20 +35,20 @@
     </div>
     <div>
         <table class="table">
-            <template repeat="{{ChatAttachments}}">
+            <template repeat="{{ChatMessage.ChatAttachments}}">
                 <tr>
                     <td>
-                        <span>{{Name}}</span>
+                        <span>{{Attachment.Name}}</span>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-xs" onclick="this.templateInstance.model.Delete$++">Delete</button>
+                        <button type="button" class="btn btn-xs" onclick="getModel(this).Delete$++">Delete</button>
                     </td>
                 </tr>
             </template>
         </table>
     </div>
     <div>
-        <button class="btn btn-primary" onclick="this.templateInstance.model.Send$++">Send</button>
+        <button class="btn btn-primary" onclick="getModel(this).Send$++">Send</button>
     </div>
     <div>
         <a href="/chatter" class="btn btn-default">Go back</a>

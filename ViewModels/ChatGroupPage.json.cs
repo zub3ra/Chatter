@@ -19,6 +19,7 @@ namespace Chatter {
             this.RefreshUser();
             this.Data = group;
             this.RefreshChatMessages();
+            this.SetNewChatMessage();
         }
 
         public void RefreshUser() {
@@ -43,67 +44,69 @@ namespace Chatter {
 					SELECT m FROM Simplified.Ring6.ChatMessage m WHERE m.""Group"" = ? 
 					ORDER BY m.""Date"" ASC FETCH ? OFFSET ?", this.Data, 10, offset);
 
-            this.ChatMessages.Clear();
+            this.ChatMessagePages.Clear();
 
             foreach (ChatMessage item in messages) {
                 var page = Self.GET<Json>("/chatter/partials/chatmessages/" + item.Key);
-                this.ChatMessages.Add(page);
+                this.ChatMessagePages.Add(page);
             }
         }
 
-        void Handle(Input.Send Action) {
-            if (string.IsNullOrEmpty(Text)) {
-                Warning = "Message cannot be empty";
-                return;
-            }
+        public void SetNewChatMessage() {
+            this.ChatMessage.Data = new ChatMessage() {
+                Group = this.Data
+            };
 
-            ChatMessage m = null;
-            var images = Db.SQL<Illustration>("SELECT i FROM Simplified.Ring1.Illustration i WHERE i.Concept = ?", this.Data);
+            this.Warning = string.Empty;
+        }
 
-            //Db.Transact(() => {
-                m = new ChatMessage() {
-                    UserName = UserName,
-                    Group = this.Data,
-                    Text = Text,
-                    Date = DateTime.Now,
-                    User = this.SystemUser.Data
-                };
+        public void AddAttachment(Something Something) {
+            ChatAttachment attachment = new ChatAttachment() {
+                Message = this.ChatMessage.Data,
+                Attachment = Something
+            };
 
-                foreach (Illustration image in images) {
-                    this.ChatAttachments.Add().Data = image;
-                    image.Concept = m;
-                }
+            //this.ChatMessage.ChatAttachments.Add().Data = attachment;
+        }
 
-                foreach (var item in this.ChatAttachments) {
-                    ChatAttachment attachment = new ChatAttachment() {
-                        Attachment = item.Data,
-                        Message = m
-                    };
-                }
-            //});
-
-            this.Transaction.Commit();
-
-            Warning = string.Empty;
-            Text = string.Empty;
-            this.ChatAttachments.Clear();
-
-            Session.ForEach((Session s) => {
+        protected void PushChanges(string ChatMessageKey) {
+            Session.ForAll((Session s) => {
                 StandalonePage master = s.Data as StandalonePage;
 
                 if (master != null && master.CurrentPage is ChatGroupPage) {
                     ChatGroupPage page = (ChatGroupPage)master.CurrentPage;
-                    
+
                     if (page.Data.Equals(this.Data)) {
-                        if (page.ChatMessages.Count >= maxMsgs) {
-                            page.ChatMessages.RemoveAt(0);
+                        if (page.ChatMessagePages.Count >= maxMsgs) {
+                            page.ChatMessagePages.RemoveAt(0);
                         }
 
-                        page.ChatMessages.Add(Self.GET<Json>("/chatter/partials/chatmessages/" + m.Key));
+                        page.ChatMessagePages.Add(Self.GET<Json>("/chatter/partials/chatmessages/" + ChatMessageKey));
                         s.CalculatePatchAndPushOnWebSocket();
                     }
                 }
             });
+        }
+
+        void Handle(Input.Send Action) {
+            if (string.IsNullOrEmpty(this.ChatMessage.Text)) {
+                Warning = "Message cannot be empty";
+                return;
+            }
+
+            var images = Db.SQL<Illustration>("SELECT i FROM Simplified.Ring1.Illustration i WHERE i.Concept = ?", this.Data);
+
+            foreach (Illustration image in images) {
+                this.AddAttachment(image);
+                image.Concept = this.ChatMessage.Data;
+            }
+
+            this.ChatMessage.Data.Date = DateTime.Now;
+            this.ChatMessage.Data.UserName = this.UserName;
+            this.ChatMessage.Data.User = this.SystemUser.Data;
+            this.Transaction.Commit();
+            this.PushChanges(this.ChatMessage.Data.Key);
+            this.SetNewChatMessage();
         }
 
         void Handle(Input.AttachmentName Action) {
@@ -127,7 +130,7 @@ namespace Chatter {
         [ChatGroupPage_json.FoundAttachment]
         public partial class ChatGroupPageFoundAttachment : Json, IBound<Something> {
             void Handle(Input.Choose Action) {
-                this.ParentPage.ChatAttachments.Add().Data = this.Data;
+                this.ParentPage.AddAttachment(this.Data);
             }
 
             ChatGroupPage ParentPage {
@@ -137,26 +140,20 @@ namespace Chatter {
             }
         }
 
-        [ChatGroupPage_json.ChatAttachments]
-        public partial class ChatGroupPageChatAttachment : Json, IBound<Something> {
+        [ChatGroupPage_json.ChatMessage]
+        public partial class ChatGroupPageChatMessage : Json, IBound<ChatMessage> { 
+        
+        }
+
+        [ChatGroupPage_json.ChatMessage.ChatAttachments]
+        public partial class ChatGroupPageChatMessageChatAttachment : Json, IBound<ChatAttachment> {
             void Handle(Input.Delete Action) {
-                int index = -1;
-
-                for (int i = 0; i < this.ParentPage.ChatAttachments.Count; i++) {
-                    if (this.ParentPage.ChatAttachments[i].Data == this.Data) {
-                        index = i;
-                        break;
-                    }
-                }
-
-                if (index >= 0) {
-                    this.ParentPage.ChatAttachments.RemoveAt(index);
-                }
+                this.Data.Delete();
             }
 
             ChatGroupPage ParentPage {
                 get {
-                    return this.Parent.Parent as ChatGroupPage;
+                    return this.Parent.Parent.Parent as ChatGroupPage;
                 }
             }
         }

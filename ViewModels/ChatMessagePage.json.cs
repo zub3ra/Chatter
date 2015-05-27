@@ -7,12 +7,12 @@ namespace Chatter {
             ChatMessage message = DbHelper.FromID(DbHelper.Base64DecodeObjectID(ChatMessageId)) as ChatMessage;
 
             this.Data = message;
-            this.ChatAttachments.Clear();
+            this.ChatAttachmentPages.Clear();
 
             var attachments = Db.SQL<ChatAttachment>("SELECT a FROM Simplified.Ring6.ChatAttachment a WHERE a.Message = ?", message);
 
             foreach (var item in attachments) {
-                this.ChatAttachments.Add(Self.GET("/chatter/partials/chatattachment/" + item.Key));
+                this.ChatAttachmentPages.Add(Self.GET("/chatter/partials/chatattachment/" + item.Key));
             }
         }
     }

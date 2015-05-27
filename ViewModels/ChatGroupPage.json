@@ -1,9 +1,17 @@
 {
     "Html": "",
     "Name": "",
-    "ChatMessages": [ { } ],
-    "Text$": "",
     "UserName$": "",
+    "ChatMessagePages": [ { } ],
+    "ChatMessage": {
+        "Text$": "",
+        "ChatAttachments": [
+            {
+                "Attachment": { "Name": "" },
+                "Delete$": ""
+            }
+        ]
+    },
     "Send$": 0,
     "Warning": "",
     "AttachmentName$": "",
@@ -12,12 +20,6 @@
         {
             "Name": "",
             "Choose$": 0
-        }
-    ],
-    "ChatAttachments": [
-        {
-            "Name": "",
-            "Delete$": 0
         }
     ],
     "SystemUser": {
