@@ -4,7 +4,12 @@
     "Text": "",
     "User": {
         "Key": "",
-        "Username": ""
+        "Username": "",
+        "WhoIs": {
+            "Name": "",
+            "FirstName": "",
+            "LastName": ""
+        }
     },
     "ChatAttachmentPages": [ { } ]
 }

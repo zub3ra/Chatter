@@ -10,7 +10,7 @@ using Simplified.Ring6;
 namespace Chatter {
 
     partial class ChatGroupPage : Page, IBound<ChatGroup> {
-
+        private static object sessionLock = new object();
         private long maxMsgs = 10;
 
         public void RefreshData(string ChatGroupId) {
@@ -71,18 +71,20 @@ namespace Chatter {
 
         protected void PushChanges(string ChatMessageKey) {
             Session.ForAll((Session s) => {
-                StandalonePage master = s.Data as StandalonePage;
+                lock (sessionLock) {
+                    StandalonePage master = s.Data as StandalonePage;
 
-                if (master != null && master.CurrentPage is ChatGroupPage) {
-                    ChatGroupPage page = (ChatGroupPage)master.CurrentPage;
+                    if (master != null && master.CurrentPage is ChatGroupPage) {
+                        ChatGroupPage page = (ChatGroupPage)master.CurrentPage;
 
-                    if (page.Data.Equals(this.Data)) {
-                        if (page.ChatMessagePages.Count >= maxMsgs) {
-                            page.ChatMessagePages.RemoveAt(0);
+                        if (page.Data.Equals(this.Data)) {
+                            if (page.ChatMessagePages.Count >= maxMsgs) {
+                                page.ChatMessagePages.RemoveAt(0);
+                            }
+
+                            page.ChatMessagePages.Add(Self.GET<Json>("/chatter/partials/chatmessages/" + ChatMessageKey));
+                            s.CalculatePatchAndPushOnWebSocket();
                         }
-
-                        page.ChatMessagePages.Add(Self.GET<Json>("/chatter/partials/chatmessages/" + ChatMessageKey));
-                        s.CalculatePatchAndPushOnWebSocket();
                     }
                 }
             });

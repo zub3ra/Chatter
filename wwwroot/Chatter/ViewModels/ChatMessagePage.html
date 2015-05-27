@@ -1,5 +1,12 @@
 ﻿<template>
-    <div>{{UserName}}</div>
+    <div>
+        <template if="{{User.WhoIs.Name}}">
+            <a href="/chatter/systemuser/{{User.Key}}">{{User.WhoIs.Name}}</a>
+        </template>
+        <template if="{{!User.WhoIs.Name}}">
+            <span>{{UserName}}</span>
+        </template>
+    </div>
     <div>{{Text}}</div>
     <div>
         <template repeat="{{ChatAttachmentPages}}">
