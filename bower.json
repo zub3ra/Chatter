@@ -1,0 +1,15 @@
+{
+  "name": "Chatter",
+  "version": "0.0.0-pre1",
+  "homepage": "https://github.com/Polyjuice/Chatter",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "wwwroot/sys",
+    "test",
+    "tests"
+  ],
+  "dependencies": {}
+}
