@@ -94,7 +94,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Content\default-layout.sql" />
     <Content Include="wwwroot\Chatter\css\chatter.css" />
-    <Content Include="wwwroot\Chatter\css\master.css" />
+    <Content Include="wwwroot\Chatter\css\standalone.css" />
     <Content Include="wwwroot\Chatter\images\chatter.png" />
     <Content Include="wwwroot\Chatter\ViewModels\AppIconPage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\ChatAttachmentPage.html" />

@@ -1,0 +1,41 @@
+﻿body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    padding:0px;
+    margin:0px;
+}
+
+nav#top-menu {
+    background-color:#F0F0F0;
+    border-bottom:1px solid #C0C0C0;
+}
+
+nav#top-menu ul {
+    display:block;
+    list-style-type:none;
+    padding:0px;
+    margin:0px;
+    overflow:auto;
+}
+
+nav#top-menu ul li {
+    float:left;
+}
+
+nav#top-menu ul li a {
+    display:block;
+    padding:5px 20px;
+    text-decoration:none;
+    color:#333333;
+}
+
+nav#top-menu ul li a:hover {
+    background-color:#333333;
+    color:white;
+}
+
+#body {
+    padding:10px 15px;
+}

@@ -17,7 +17,7 @@ namespace Chatter {
 
                 if (session == null) {
                     session = new Session(SessionOptions.PatchVersioning);
-                    standalone.Html = "/People/viewmodels/StandalonePage.html";
+                    standalone.Html = "/Chatter/viewmodels/StandalonePage.html";
                 }
 
                 standalone.Session = session;
