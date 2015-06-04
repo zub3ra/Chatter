@@ -19,10 +19,7 @@
             </ul>
         </nav>
         <div id="body">
-            <template bind="{{CurrentPage}}">
-                <template is="imported-template" content="{{Html}}">
-                </template>
-            </template>
+            <polyjuice-include partial="{{CurrentPage}}"></polyjuice-include>
         </div>
     </template>
     <puppet-client ref="root"></puppet-client>
