@@ -27,7 +27,7 @@
             <ul class="autocomplete">
                 <template repeat="{{FoundAttachment}}">
                     <li>
-                        <a href="javascript:" onmousedown="this.templateInstance.model.Choose$++">{{Name}}</a>
+                        <a href="javascript:" onmousedown="this.templateInstance.model.Choose$++">{{Name}} - {{Type}}</a>
                     </li>
                 </template>
             </ul>
@@ -38,7 +38,7 @@
             <template repeat="{{ChatMessage.ChatAttachments}}">
                 <tr>
                     <td>
-                        <span>{{Attachment.Name}}</span>
+                        <span>{{Attachment.Name}}</span> - <span>{{Attachment.Type}}</span>
                     </td>
                     <td>
                         <button type="button" class="btn btn-default btn-xs" onclick="getModel(this).Delete$++">Delete</button>

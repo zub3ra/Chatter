@@ -129,6 +129,16 @@ namespace Chatter {
 
         [ChatGroupPage_json.FoundAttachment]
         public partial class ChatGroupPageFoundAttachment : Json, IBound<Something> {
+            protected override void OnData() {
+                base.OnData();
+
+                if (this.Data != null) {
+                    this.Type = this.Data.GetType().Name;
+                } else {
+                    this.Type = string.Empty;
+                }
+            }
+
             void Handle(Input.Choose Action) {
                 this.ParentPage.AddAttachment(this.Data);
             }
@@ -154,6 +164,19 @@ namespace Chatter {
             ChatGroupPage ParentPage {
                 get {
                     return this.Parent.Parent.Parent as ChatGroupPage;
+                }
+            }
+        }
+
+        [ChatGroupPage_json.ChatMessage.ChatAttachments.Attachment]
+        public partial class ChatGroupPageChatMessageChatAttachmentsAttachment : Json, IBound<Something> {
+            protected override void OnData() {
+                base.OnData();
+
+                if (this.Data != null) {
+                    this.Type = this.Data.GetType().Name;
+                } else {
+                    this.Type = string.Empty;
                 }
             }
         }
