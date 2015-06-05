@@ -149,8 +149,8 @@ namespace Chatter {
             Polyjuice.Map("/chatter/menu", "/polyjuice/menu");
 
             Polyjuice.OntologyMap("/chatter/partials/person/@w", "/so/person/@w", null, null);
-            Polyjuice.OntologyMap("/chatter/partials/chatattachment/@w", "/so/abstractcrossreference/@w", null, null);
             Polyjuice.OntologyMap("/chatter/partials/chatgroups/@w", "/so/group/@w", null, null);
+            Polyjuice.OntologyMap("/chatter/partials/chatattachment/@w", "/db/simplified.ring6.chatattachment/@w", null, null);
         }
     }
 }
