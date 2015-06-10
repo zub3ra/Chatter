@@ -26,10 +26,12 @@ namespace Chatter {
             SystemUserSession session = this.GetCurrentSystemUserSession();
 
             if (session != null) {
-                this.SystemUser.Data = session.Token.User;
-                this.UserName = session.Token.User.Username;
+                SystemUser user = session.Token.User;
+
+                this.UserKey = user.Key;
+                this.UserName = user.Username;
             } else {
-                this.SystemUser.Data = null;
+                this.UserKey = null;
                 this.UserName = "Anonymous";
             }
         }
@@ -65,8 +67,6 @@ namespace Chatter {
                 Message = this.ChatMessage.Data,
                 Attachment = Something
             };
-
-            //this.ChatMessage.ChatAttachments.Add().Data = attachment;
         }
 
         protected void PushChanges(string ChatMessageKey) {
@@ -101,9 +101,15 @@ namespace Chatter {
                 image.Concept = this.ChatMessage.Data;
             }
 
+            SystemUser user = null;
+
+            if (!string.IsNullOrEmpty(this.UserKey)) {
+                user = DbHelper.FromID(DbHelper.Base64DecodeObjectID(this.UserKey)) as SystemUser;
+            }
+
             this.ChatMessage.Data.Date = DateTime.Now;
             this.ChatMessage.Data.UserName = this.UserName;
-            this.ChatMessage.Data.User = this.SystemUser.Data;
+            this.ChatMessage.Data.User = user;
             this.Transaction.Commit();
             this.PushChanges(this.ChatMessage.Data.Key);
             this.SetNewChatMessage();
@@ -121,10 +127,6 @@ namespace Chatter {
 
         protected SystemUserSession GetCurrentSystemUserSession() {
             return Db.SQL<SystemUserSession>("SELECT o FROM Simplified.Ring5.SystemUserSession o WHERE o.SessionIdString = ?", Session.Current.SessionIdString).First;
-        }
-
-        [ChatGroupPage_json.SystemUser]
-        public partial class ChatGroupPageSystemUser : Json, IBound<SystemUser> { 
         }
 
         [ChatGroupPage_json.FoundAttachment]

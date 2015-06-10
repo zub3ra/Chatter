@@ -3,10 +3,10 @@
 <template>
     <h2>{{Name}}</h2>
     <div>
-        <template if="{{SystemUser.Username}}">
-            Signed in as <b>{{SystemUser.Username}}</b>
+        <template if="{{UserKey}}">
+            Signed in as <b>{{UserName$}}</b>
         </template>
-        <template if="{{!SystemUser.Username}}">
+        <template if="{{!UserKey}}">
             You are not signed in, you messages will be send anonymously
         </template>
     </div>

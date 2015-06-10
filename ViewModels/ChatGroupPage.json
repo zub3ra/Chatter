@@ -2,6 +2,7 @@
     "Html": "",
     "Name": "",
     "UserName$": "",
+    "UserKey": "",
     "ChatMessagePages": [ { } ],
     "ChatMessage": {
         "Text$": "",
@@ -22,8 +23,5 @@
             "Type": "",
             "Choose$": 0
         }
-    ],
-    "SystemUser": {
-        "Username": ""
-    }
+    ]
 }

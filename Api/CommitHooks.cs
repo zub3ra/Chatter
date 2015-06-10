@@ -1,60 +1,57 @@
 ﻿using Starcounter;
 using Starcounter.Internal;
 using PolyjuiceNamespace;
+using Simplified.Ring5;
 
 namespace Chatter {
     internal class CommitHooks {
-        public static string LocalAppUrl = "/Chatter/__db/__" + StarcounterEnvironment.DatabaseNameLower + "/societyobjects/systemusersession";
-        public static string MappedTo = "/polyjuice/signin";
+        protected string appNameOnStart = "Chatter";
 
         public void Register() {
-            Handle.POST(LocalAppUrl, () => {
-                StandalonePage master = GetStandalonePage();
+            this.appNameOnStart = StarcounterEnvironment.AppName;
 
-                if (master == null) {
-                    return (ushort)System.Net.HttpStatusCode.OK;
-                }
-
-                ChatGroupPage page = master.CurrentPage as ChatGroupPage;
-
-                if (page == null) {
-                    return (ushort)System.Net.HttpStatusCode.OK;
-                }
-
-                page.RefreshUser();
-
-                return (ushort)System.Net.HttpStatusCode.OK;
+            Hook<SystemUserSession>.OnInsert(s => {
+                this.RefreshSignInState();
             });
 
-            // User signed out event
-            Handle.DELETE(LocalAppUrl, () => {
-                StandalonePage master = GetStandalonePage();
-
-                if (master == null) {
-                    return (ushort)System.Net.HttpStatusCode.OK;
-                }
-
-                ChatGroupPage page = master.CurrentPage as ChatGroupPage;
-
-                if (page == null) {
-                    return (ushort)System.Net.HttpStatusCode.OK;
-                }
-
-                page.RefreshUser();
-
-                return (ushort)System.Net.HttpStatusCode.OK;
+            Hook<SystemUserSession>.OnDelete(s => {
+                this.RefreshSignInState();
             });
 
-            Polyjuice.Map(LocalAppUrl, MappedTo, "POST");
-            Polyjuice.Map(LocalAppUrl, MappedTo, "DELETE");
+            Hook<SystemUserSession>.OnUpdate(s => {
+                this.RefreshSignInState();
+            });
+        }
+
+        protected void RefreshSignInState() {
+            StandalonePage master = GetStandalonePage();
+
+            if (master == null) {
+                return;
+            }
+
+            ChatGroupPage page = master.CurrentPage as ChatGroupPage;
+
+            if (page == null) {
+                return;
+            }
+
+            page.RefreshUser();
         }
 
         protected StandalonePage GetStandalonePage() {
+            string appName = StarcounterEnvironment.AppName;
+            StandalonePage page = null;
+
+            StarcounterEnvironment.AppName = this.appNameOnStart;
+
             if (Session.Current != null && Session.Current.Data is StandalonePage) {
-                return Session.Current.Data as StandalonePage;
+                page = Session.Current.Data as StandalonePage;
             }
 
-            return null;
+            StarcounterEnvironment.AppName = appName;
+
+            return page;
         }
     }
 }
