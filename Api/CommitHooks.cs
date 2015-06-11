@@ -5,11 +5,7 @@ using Simplified.Ring5;
 
 namespace Chatter {
     internal class CommitHooks {
-        protected string appNameOnStart = "Chatter";
-
         public void Register() {
-            this.appNameOnStart = StarcounterEnvironment.AppName;
-
             Hook<SystemUserSession>.OnInsert(s => {
                 this.RefreshSignInState();
             });
@@ -40,16 +36,11 @@ namespace Chatter {
         }
 
         protected StandalonePage GetStandalonePage() {
-            string appName = StarcounterEnvironment.AppName;
             StandalonePage page = null;
-
-            StarcounterEnvironment.AppName = this.appNameOnStart;
 
             if (Session.Current != null && Session.Current.Data is StandalonePage) {
                 page = Session.Current.Data as StandalonePage;
             }
-
-            StarcounterEnvironment.AppName = appName;
 
             return page;
         }
