@@ -1,5 +1,7 @@
 # Chatter
-Instant messaging app with multiple chat groups and push capabilities.
+Sample app to chat about anything. Create chat rooms. Mention things to create attachments in chat messages. Messages are pushed over WebSocket.
+
+---
 
 Uses `Session.ForAll` / `CalculatePatchAndPushOnWebSocket` to push messages to all clients connected to a chat group.
 
