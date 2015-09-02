@@ -86,7 +86,8 @@ div.group-user {
 }
 
 div.group-messages {
-    margin-bottom: 30px;
+    padding-bottom: 30px;
+    overflow: auto;
 }
 
 div.group-message-title,
