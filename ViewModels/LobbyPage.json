@@ -1,7 +1,7 @@
 {
     "Html": "",
-    "Group$": "",
-    "GoToGroup$": 0,
+    "NewGroupName$": "",
+    "GoToNewGroup$": 0,
     "RedirectUrl$": "",
     "ChatGroups": [
         {

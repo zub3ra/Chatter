@@ -25,15 +25,15 @@
         Attachments
     </div>
     <div class="group-message">
-        <input type="text" update-on="input" value="{{ChatMessage.Text$}}" onkeyup="if (event.keyCode == 13) this.templateInstance.model.Send$++;" class="form-control" placeholder="Input your message" />
+        <input type="text" update-on="input" value="{{ChatMessage.Text$}}" onkeyup="if (event.keyCode == 13) getModel(this).Send$++;" class="form-control" placeholder="Input your message" />
     </div>
     <div class="group-attachment">
-        <input type="text" update-on="input" class="form-control" value="{{AttachmentName$}}" onblur="getModel(this).ClearFoundAttachments$++" placeholder="Type to find an attachent" />
+        <input type="text" update-on="input" class="form-control" value="{{AttachmentSearch$}}" onblur="getModel(this).ClearFoundAttachments$++" placeholder="Type to find an attachent" />
         <template if="{{FoundAttachment.length}}">
             <ul class="autocomplete">
                 <template repeat="{{FoundAttachment}}">
                     <li>
-                        <a href="javascript:" onmousedown="this.templateInstance.model.Choose$++">{{Name}} - {{Type}}</a>
+                        <a href="javascript:" onmousedown="getModel(this).Choose$++">{{Name}} - {{Type}}</a>
                     </li>
                 </template>
             </ul>

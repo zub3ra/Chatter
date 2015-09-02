@@ -7,8 +7,8 @@ namespace Chatter {
             this.ChatGroups = Db.SQL<ChatGroup>("SELECT g FROM Simplified.Ring6.ChatGroup g ORDER BY g.Name");
         }
 
-        void Handle(Input.GoToGroup Action) {
-            string name = string.IsNullOrEmpty(this.Group) ? "Anonymous group" : this.Group;
+        void Handle(Input.GoToNewGroup Action) {
+            string name = string.IsNullOrEmpty(this.NewGroupName) ? "Anonymous group" : this.NewGroupName;
             ChatGroup group = null;
 
             Db.Transact(() => {

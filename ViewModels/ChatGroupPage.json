@@ -1,9 +1,12 @@
 {
     "Html": "",
     "Name": "",
-    "UserName$": "",
+    
+	"UserName$": "",
     "UserKey": "",
+
     "ChatMessagePages": [ { } ],
+
     "ChatMessage": {
         "Text$": "",
         "ChatAttachments": [
@@ -13,15 +16,15 @@
             }
         ]
     },
-    "Send$": 0,
-    "Warning": "",
-    "AttachmentName$": "",
-    "ClearFoundAttachments$": 0,
+
+    "AttachmentSearch$": "",
     "FoundAttachment": [
         {
-            "Name": "",
-            "Type": "",
-            "Choose$": 0
+            "Name": "", "Type": "", "Choose$": 0
         }
-    ]
+    ],
+    "ClearFoundAttachments$": 0,
+
+	"Send$": 0,
+    "Warning": ""
 }

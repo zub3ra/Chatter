@@ -10,7 +10,6 @@ using Simplified.Ring6;
 namespace Chatter {
 
     partial class ChatGroupPage : Page, IBound<ChatGroup> {
-        private static object sessionLock = new object();
         private long maxMsgs = 10;
 
         public void RefreshData(string ChatGroupId) {
@@ -115,14 +114,14 @@ namespace Chatter {
             this.SetNewChatMessage();
         }
 
-        void Handle(Input.AttachmentName Action) {
+        void Handle(Input.AttachmentSearch Action) {
             this.FoundAttachment.Clear();
             this.FoundAttachment.Data = Db.SQL<Something>("SELECT s FROM Simplified.Ring1.Something s WHERE s.Name LIKE ? ORDER BY s.Name", "%" + Action.Value + "%").Take(10);
         }
 
         void Handle(Input.ClearFoundAttachments Action) {
             this.FoundAttachment.Clear();
-            this.AttachmentName = string.Empty;
+            this.AttachmentSearch = string.Empty;
         }
 
         protected SystemUserSession GetCurrentSystemUserSession() {
