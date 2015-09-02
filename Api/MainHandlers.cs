@@ -133,10 +133,16 @@ namespace Chatter {
                 ChatAttachment rel = DbHelper.FromID(DbHelper.Base64DecodeObjectID(ChatAttachmentId)) as ChatAttachment;
                 Something obj = rel.Attachment;
 
-                page.RefreshData(ChatAttachmentId);
+                page.Data = rel;
 
                 if (obj != null) {
-                    page.Html += "?" + obj.GetType().FullName;
+                    System.Type type = obj.GetType();
+
+                    if (type == typeof(ChatGroup)) {
+                        page.Html = "/Chatter/ViewModels/ChatAttachmentGroupPage.html";
+                    } else {
+                        page.Html += "?" + obj.GetType().FullName;
+                    }
                 }
 
                 return page;

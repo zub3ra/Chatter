@@ -97,6 +97,7 @@
     <Content Include="wwwroot\Chatter\css\standalone.css" />
     <Content Include="wwwroot\Chatter\images\chatter.png" />
     <Content Include="wwwroot\Chatter\ViewModels\AppIconPage.html" />
+    <Content Include="wwwroot\Chatter\ViewModels\ChatAttachmentGroupPage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\ChatAttachmentPage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\ChatMessagePage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\LauncherWrapperPage.html" />
