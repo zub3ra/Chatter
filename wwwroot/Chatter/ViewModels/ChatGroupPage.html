@@ -1,8 +1,11 @@
 ﻿<link href="/Chatter/css/chatter.css" rel="stylesheet" />
         
 <template>
-    <h2>{{Name}}</h2>
-    <div>
+    <h2 class="group-name">{{Name}}</h2>
+    <div class="group-back-button">
+        <a href="/chatter" class="btn btn-default btn-sm">Go back</a>
+    </div>
+    <div class="group-user">
         <template if="{{UserKey}}">
             Signed in as <b>{{UserName$}}</b>
         </template>
@@ -10,18 +13,21 @@
             You are not signed in, you messages will be send anonymously
         </template>
     </div>
-    <div>
+    <div class="group-messages">
         <template repeat="{{ChatMessagePages}}">
             <starcounter-include partial="{{}}"></starcounter-include>
         </template>
     </div>
-    <div>
-        <input type="text" update-on="input" value="{{ChatMessage.Text$}}" onkeyup="if (event.keyCode == 13) this.templateInstance.model.Send$++;" class="form-control" placeholder="Input your message" />
+    <div class="group-message-title">
+        Message
     </div>
-    <div>
+    <div class="group-attachment-title">
         Attachments
     </div>
-    <div>
+    <div class="group-message">
+        <input type="text" update-on="input" value="{{ChatMessage.Text$}}" onkeyup="if (event.keyCode == 13) this.templateInstance.model.Send$++;" class="form-control" placeholder="Input your message" />
+    </div>
+    <div class="group-attachment">
         <input type="text" update-on="input" class="form-control" value="{{AttachmentName$}}" onblur="getModel(this).ClearFoundAttachments$++" placeholder="Type to find an attachent" />
         <template if="{{FoundAttachment.length}}">
             <ul class="autocomplete">
@@ -33,7 +39,7 @@
             </ul>
         </template>
     </div>
-    <div>
+    <div class="group-attachments">
         <table class="table">
             <template repeat="{{ChatMessage.ChatAttachments}}">
                 <tr>
@@ -41,17 +47,15 @@
                         <span>{{Attachment.Name}}</span> - <span>{{Attachment.Type}}</span>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-default btn-xs" onclick="getModel(this).Delete$++">Delete</button>
+                        <button type="button" class="btn btn-default btn-xs" onclick="getModel(this).Delete$++">Remove</button>
                     </td>
                 </tr>
             </template>
         </table>
     </div>
-    <div>
+    <div class="group-warning" hidden?="{{!Warning}}">{{Warning}}</div>
+    <div class="group-send">
         <button class="btn btn-primary" onclick="getModel(this).Send$++">Send</button>
     </div>
-    <div>
-        <a href="/chatter" class="btn btn-default">Go back</a>
-    </div>
-    <div hidden?="{{!Warning}}">{{Warning}}</div>
+    <div class="group-send-title">Press enter to send message</div>
 </template>

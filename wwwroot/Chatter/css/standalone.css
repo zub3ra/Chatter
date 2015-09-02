@@ -3,39 +3,176 @@
     font-size: 14px;
     line-height: 1.42857143;
     color: #333;
-    padding:0px;
-    margin:0px;
+    padding: 0px;
+    margin: 0px;
+}
+
+h1 {
+    font-size: 36px;
+}
+
+h2 {
+    font-size: 30px;
 }
 
 nav#top-menu {
-    background-color:#F0F0F0;
-    border-bottom:1px solid #C0C0C0;
+    background-color: #F0F0F0;
+    border-bottom: 1px solid #C0C0C0;
 }
 
 nav#top-menu ul {
-    display:block;
-    list-style-type:none;
-    padding:0px;
-    margin:0px;
-    overflow:auto;
+    display: block;
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    overflow: auto;
 }
 
 nav#top-menu ul li {
-    float:left;
+    float: left;
 }
 
 nav#top-menu ul li a {
-    display:block;
-    padding:5px 20px;
-    text-decoration:none;
-    color:#333333;
+    display: block;
+    padding: 5px 20px;
+    text-decoration: none;
+    color: #333333;
 }
 
 nav#top-menu ul li a:hover {
-    background-color:#333333;
-    color:white;
+    background-color: #333333;
+    color: white;
 }
 
 #body {
-    padding:10px 15px;
+    padding: 10px 15px;
+}
+
+div.lobby-input {
+    width: 550px;
+    float: left;
+    margin-bottom: 15px;
+}
+
+div.lobby-button {
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    margin-left: 565px;
+}
+
+table.lobby-table {
+    width: 735px;
+    clear: both;
+}
+
+table.lobby-table tr td:first-child {
+    width: 560px;
+}
+
+h2.group-name {
+    float: left;
+    margin-right: 15px;
+}
+
+div.group-back-button {
+    padding-top: 23px;
+    padding-bottom: 11.5px;
+}
+
+div.group-user {
+    clear: both;
+    padding: 5px 0px 30px 0px;
+    color: #A0A0A0;
+}
+
+div.group-messages {
+    margin-bottom: 30px;
+}
+
+div.group-message-title,
+div.group-message,
+div.group-attachment-title,
+div.group-attachment {
+    float: left;
+    width: 50%;
+    box-sizing: border-box;
+}
+
+div.group-message-title,
+div.group-message {
+    padding-right: 10px;
+}
+
+div.group-attachment-title,
+div.group-attachment {
+    padding-left: 10px;
+}
+
+div.group-attachments {
+    margin-left: 50%;
+    padding-left: 10px;
+}
+
+div.group-attachments table td {
+    padding: 5px 0px;
+}
+
+div.group-attachments table tr:first-child td {
+    padding-top: 10px;
+}
+
+div.group-attachments table tr td:last-child {
+    width: 10px;
+}
+
+div.group-warning {
+    color: crimson;
+    margin-bottom: 20px;
+    font-size: 105%;
+}
+
+div.group-send {
+    float: left;
+    margin-right: 15px;
+}
+
+div.group-send-title {
+    line-height: 36px;
+}
+
+div.message-user {
+    font-size: 95%;
+    font-weight: bold;
+    font-style: italic;
+    clear: both;
+}
+
+div.message-text {
+    margin-bottom: 15px;
+    float: left;
+    width: 300px;
+    margin-right: 15px;
+}
+
+div.message-attachments starcounter-include {
+    display: inline-block;
+    background-color: #F0F0F0;
+    padding: 5px;
+}
+
+template[bind="{{Images}}"] + div.form-horizontal {
+    display: none;
+}
+
+so-juicy-filedrop {
+    /*display: block;
+    margin-left: 50%;
+    padding-left: 15px;
+    height: 100px;
+    width: 200px;
+    margin-top: -50px;*/
+    display: block;
+    margin-top: 15px;
+    width: 200px;
+    height: 200px;
 }

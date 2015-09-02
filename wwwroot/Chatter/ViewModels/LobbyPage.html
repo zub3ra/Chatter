@@ -2,14 +2,14 @@
 <link href="/Chatter/css/chatter.css" rel="stylesheet" />
 
 <template>
-    <h1>Select group</h1>
-    <div>
+    <h1>Select or create chat group</h1>
+    <div class="lobby-input">
         <input class="form-control" update-on="input" value="{{Group$}}" onkeyup="if (event.keyCode == 13) this.templateInstance.model.GoToGroup$++;" placeholder="Input chat group name" />
     </div>
-    <div>
+    <div class="lobby-button">
         <button class="btn btn-primary" onclick="this.templateInstance.model.GoToGroup$++">Enter chat group</button>
     </div>
-    <table class="table table-bordered">
+    <table class="table table-bordered lobby-table">
         <thead>
             <tr>
                 <th>Name</th>

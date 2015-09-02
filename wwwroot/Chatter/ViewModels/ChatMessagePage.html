@@ -1,5 +1,5 @@
 ﻿<template>
-    <div>
+    <div class="message-user">
         <template if="{{User.WhoIs.Name}}">
             <a href="/chatter/systemuser/{{User.Key}}">{{User.WhoIs.Name}}</a>
         </template>
@@ -7,8 +7,8 @@
             <span>{{UserName}}</span>
         </template>
     </div>
-    <div>{{Text}}</div>
-    <div>
+    <div class="message-text">{{Text}}</div>
+    <div class="message-attachments">
         <template repeat="{{ChatAttachmentPages}}">
             <starcounter-include partial="{{}}"></starcounter-include>
         </template>
