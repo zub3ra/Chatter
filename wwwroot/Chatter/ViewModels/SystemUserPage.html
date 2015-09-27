@@ -1,3 +1,6 @@
 ﻿<template>
-    <starcounter-include partial="{{Person}}"></starcounter-include>
+    <template is="dom-bind">
+        <starcounter-include partial="{{model.Person}}"></starcounter-include>
+        <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
+    </template>
 </template>

@@ -1,14 +1,17 @@
 ﻿<template>
-    <div>
-        <label class="control-label">First name:</label>
-    </div>
-    <div>
-        <input type="text" class="form-control" value="{{FirstName}}" />
-    </div>
-    <div>
-        <label class="control-label">Last name:</label>
-    </div>
-    <div>
-        <input type="text" class="form-control" value="{{LastName}}" />
-    </div>
+    <template is="dom-bind">
+        <div>
+            <label class="control-label">First name:</label>
+        </div>
+        <div>
+            <input type="text" class="form-control" value="{{model.FirstName::change}}" />
+        </div>
+        <div>
+            <label class="control-label">Last name:</label>
+        </div>
+        <div>
+            <input type="text" class="form-control" value="{{model.LastName::change}}" />
+        </div>
+        <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
+    </template>
 </template>

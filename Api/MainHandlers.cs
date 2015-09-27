@@ -1,5 +1,4 @@
 ﻿using Starcounter;
-using PolyjuiceNamespace;
 using Simplified.Ring1;
 using Simplified.Ring6;
 
@@ -150,13 +149,13 @@ namespace Chatter {
         }
 
         protected void RegisterMap() {
-            Polyjuice.Map("/chatter/app-name", "/polyjuice/app-name");
-            Polyjuice.Map("/chatter/app-icon", "/polyjuice/app-icon");
-            Polyjuice.Map("/chatter/menu", "/polyjuice/menu");
+            UriMapping.Map("/chatter/app-name", "/sc/mapping/app-name");
+            UriMapping.Map("/chatter/app-icon", "/sc/mapping/app-icon");
+            UriMapping.Map("/chatter/menu", "/sc/mapping/menu");
 
-            Polyjuice.OntologyMap("/chatter/partials/person/@w", "/so/person/@w", null, null);
-            Polyjuice.OntologyMap("/chatter/partials/chatgroups/@w", "/so/group/@w", null, null);
-            Polyjuice.OntologyMap("/chatter/partials/chatattachment/@w", "/db/simplified.ring6.chatattachment/@w", null, null);
+            UriMapping.OntologyMap("/chatter/partials/person/@w", "/so/person/@w", null, null);
+            UriMapping.OntologyMap("/chatter/partials/chatgroups/@w", "/so/group/@w", null, null);
+            UriMapping.OntologyMap("/chatter/partials/chatattachment/@w", "/db/simplified.ring6.chatattachment/@w", null, null);
         }
     }
 }

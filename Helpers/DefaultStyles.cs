@@ -5,7 +5,7 @@ using Starcounter;
 namespace Chatter {
     internal class DefaultStyles {
         public void ApplyIfEmpty() {
-            if (Db.SQL("SELECT * FROM JuicyTiles.JuicyTilesSetup WHERE Key LIKE ?", "/Chatter/%").First != null) {
+            if (Db.SQL("SELECT * FROM Starcounter.Layout WHERE Key LIKE ?", "/Chatter/%").First != null) {
                 return;
             }
 
@@ -25,7 +25,7 @@ namespace Chatter {
 
         public void Clear() {
             Db.Transact(() => {
-                Db.SlowSQL("DELETE FROM JuicyTiles.JuicyTilesSetup WHERE Key LIKE '/Chatter/%'");
+                Db.SlowSQL("DELETE FROM Starcounter.Layout WHERE Key LIKE '/Chatter/%'");
             });
         }
     }

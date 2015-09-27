@@ -1,3 +1,6 @@
 ﻿<template>
-    <a href="/chatter/chatgroup/{{Attachment.Key}}">{{Attachment.Name}}</a>
+    <template is="dom-bind">
+        <a href="{{model.Attachment.Url}}">{{model.Attachment.Name}}</a>
+        <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
+    </template>
 </template>

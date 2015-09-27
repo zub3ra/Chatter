@@ -47,6 +47,11 @@ namespace Chatter {
                     return this.Parent.Parent as LobbyPage;
                 }
             }
+
+            protected override void OnData() {
+                base.OnData();
+                this.Url = string.Format("/chatter/chatgroup/{0}", this.Key);
+            }
         }
     }
 }

@@ -5,6 +5,7 @@
     "User": {
         "Key": "",
         "Username": "",
+        "Url": "",
         "WhoIs": {
             "Name": "",
             "FirstName": "",

@@ -2,33 +2,45 @@
 <link href="/Chatter/css/chatter.css" rel="stylesheet" />
 
 <template>
-    <h1>Select or create chat room</h1>
-    <div class="lobby-input">
-        <input class="form-control" update-on="input" value="{{NewGroupName$}}" onkeyup="if (event.keyCode == 13) getModel(this).GoToNewGroup$++;" placeholder="Chat room name" />
-    </div>
-    <div class="lobby-button">
-        <button class="btn btn-primary" onclick="getModel(this).GoToNewGroup$++">Create</button>
-    </div>
-    <table class="table table-bordered lobby-table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <template repeat="{{ChatGroups}}">
+    <template is="dom-bind">
+        <h1>Select or create chat room</h1>
+        <div class="lobby-input">
+            <input class="form-control" value="{{model.NewGroupName$::input}}" on-keyup="onInputKeyup" placeholder="Chat room name" />
+        </div>
+        <div class="lobby-button">
+            <button class="btn btn-primary" onclick="++this.value;" value="{{model.GoToNewGroup$::click}}">Create</button>
+        </div>
+        <table class="table table-bordered lobby-table">
+            <thead>
                 <tr>
-                    <td>
-                        <span>{{Name}}</span>
-                    </td>
-                    <td>
-                        <a href="/chatter/chatgroup/{{Key}}" class="btn btn-primary btn-sm">Enter</a>
-                        <button class="btn btn-sm btn-default" type="button" onclick="getModel(this).Delete$++">Delete</button>
-                    </td>
+                    <th>Name</th>
+                    <th></th>
                 </tr>
-            </template>
-        </tbody>
-    </table>
-    <link is="puppet-redirect" history url="{{RedirectUrl$}}" />
+            </thead>
+            <tbody>
+                <template is="dom-repeat" items="{{model.ChatGroups}}">
+                    <tr>
+                        <td>
+                            <span>{{item.Name}}</span>
+                        </td>
+                        <td>
+                            <a href="{{item.Url}}" class="btn btn-primary btn-sm">Enter</a>
+                            <button class="btn btn-sm btn-default" type="button" onclick="++this.value;" value="{{item.Delete$::click}}">Delete</button>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+        <link is="puppet-redirect" history url$="{{model.RedirectUrl$}}" />
+        <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
+    </template>
+    <script>
+        (function init(template) {
+            template.onInputKeyup = function (e) {
+                if (e.keyCode == 13) {
+                    template.set("model.GoToNewGroup$", template.model.GoToNewGroup$ + 1);
+                }
+            };
+        })(document.currentScript.previousElementSibling);
+    </script>
 </template>

@@ -3,15 +3,21 @@
 <head>
     <title>Chatter</title>
     <script src="/sys/webcomponentsjs/webcomponents.js"></script>
+    <script>
+        window.Polymer = window.Polymer || {};
+        window.Polymer.dom = "shadow";
+    </script>
+    <link rel="import" href="/sys/polymer/polymer.html" />
     <link rel="import" href="/sys/starcounter.html" />
     <link rel="import" href="/sys/starcounter-debug-aid/src/starcounter-debug-aid.html" />
     <link rel="import" href="/sys/imported-template/imported-template.html" />
+    <link rel="import" href="/sys/dom-bind-notifier/dom-bind-notifier.html" />
     <link rel="import" href="/sys/starcounter-include/starcounter-include.html" />
     <link rel="import" href="/sys/bootstrap.html" />
     <link href="/Chatter/css/standalone.css" rel="stylesheet" />
 </head>
 <body>
-    <template id="root" bind>
+    <template id="root" is="dom-bind">
         <nav id="top-menu">
             <ul>
                 <li>
@@ -20,8 +26,9 @@
             </ul>
         </nav>
         <div id="body">
-            <starcounter-include partial="{{CurrentPage}}"></starcounter-include>
+            <starcounter-include partial="{{model.CurrentPage}}"></starcounter-include>
         </div>
+        <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
     </template>
     <puppet-client ref="root"></puppet-client>
     <starcounter-debug-aid></starcounter-debug-aid>

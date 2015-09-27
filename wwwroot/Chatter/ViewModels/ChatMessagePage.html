@@ -1,16 +1,19 @@
 ﻿<template>
-    <div class="message-user">
-        <template if="{{User.WhoIs.Name}}">
-            <a href="/chatter/systemuser/{{User.Key}}">{{User.WhoIs.Name}}</a>
-        </template>
-        <template if="{{!User.WhoIs.Name}}">
-            <span>{{UserName}}</span>
-        </template>
-    </div>
-    <div class="message-text">{{Text}}</div>
-    <div class="message-attachments">
-        <template repeat="{{ChatAttachmentPages}}">
-            <starcounter-include partial="{{}}"></starcounter-include>
-        </template>
-    </div>
+    <template is="dom-bind">
+        <div class="message-user">
+            <template is="dom-if" if="{{model.User.WhoIs.Name}}">
+                <a href="{{model.User.Url}}">{{model.User.WhoIs.Name}}</a>
+            </template>
+            <template is="dom-if" if="{{!model.User.WhoIs.Name}}">
+                <span>{{model.UserName}}</span>
+            </template>
+        </div>
+        <div class="message-text">{{model.Text}}</div>
+        <div class="message-attachments">
+            <template is="dom-repeat" items="{{model.ChatAttachmentPages}}">
+                <starcounter-include partial="{{item}}"></starcounter-include>
+            </template>
+        </div>
+        <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
+    </template>
 </template>

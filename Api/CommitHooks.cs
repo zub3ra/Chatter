@@ -1,6 +1,5 @@
 ﻿using Starcounter;
 using Starcounter.Internal;
-using PolyjuiceNamespace;
 using Simplified.Ring5;
 
 namespace Chatter {

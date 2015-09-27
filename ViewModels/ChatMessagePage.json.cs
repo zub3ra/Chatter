@@ -15,5 +15,13 @@ namespace Chatter {
                 this.ChatAttachmentPages.Add(Self.GET("/chatter/partials/chatattachment/" + item.Key));
             }
         }
+
+        [ChatMessagePage_json.User]
+        public partial class ChatMessageUserPage : Json {
+            protected override void OnData() {
+                base.OnData();
+                this.Url = string.Format("/chatter/systemuser/{0}", this.Key);
+            }
+        }
     }
 }
