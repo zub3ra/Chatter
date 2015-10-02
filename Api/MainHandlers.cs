@@ -153,9 +153,9 @@ namespace Chatter {
             UriMapping.Map("/chatter/app-icon", "/sc/mapping/app-icon");
             UriMapping.Map("/chatter/menu", "/sc/mapping/menu");
 
-            UriMapping.OntologyMap("/chatter/partials/person/@w", "/so/person/@w", null, null);
-            UriMapping.OntologyMap("/chatter/partials/chatgroups/@w", "/so/group/@w", null, null);
-            UriMapping.OntologyMap("/chatter/partials/chatattachment/@w", "/db/simplified.ring6.chatattachment/@w", null, null);
+            UriMapping.OntologyMap("/chatter/partials/person/@w", "simplified.ring2.person", null, null);
+            UriMapping.OntologyMap("/chatter/partials/chatgroups/@w", "simplified.ring6.chatgroup", null, null);
+            UriMapping.OntologyMap("/chatter/partials/chatattachment/@w", "simplified.ring6.chatattachment", null, null);
         }
     }
 }
