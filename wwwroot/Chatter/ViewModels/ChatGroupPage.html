@@ -35,11 +35,7 @@
                 <ul class="autocomplete">
                     <template is="dom-repeat" items="{{model.FoundAttachment}}">
                         <li>
-                            <button type="button" class="btn btn-sm btn-link" on-mousedown="chooseAttachment">
-                                <span>{{item.Name}}</span>
-                                -
-                                <span>{{item.Type}}</span>
-                            </button>
+                            <button type="button" class="btn btn-sm btn-link" onmousedown="++this.value;" value="{{item.Choose$::click}}">{{item.NameAndType}}</button>
                         </li>
                     </template>
                 </ul>
@@ -71,7 +67,9 @@
         <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
     </template>
     <script>
-        (function init(template) {
+        (function init() {
+            var template = (document._currentScript || document.currentScript).previousElementSibling;
+
             template.onInputKeyup = function (e) {
                 if (e.keyCode == 13) {
                     template.set("model.Send$", template.model.Send$ + 1);
@@ -79,12 +77,10 @@
             };
 
             template.clearFoundAttachments = function () {
-                template.set("model.ClearFoundAttachments$", template.model.ClearFoundAttachments$ + 1);
+                setTimeout(function () {
+                    template.set("model.ClearFoundAttachments$", template.model.ClearFoundAttachments$ + 1);
+                }, 100);
             };
-
-            template.chooseAttachment = function (e, i) {
-                template.set("model.FoundAttachment." + i + ".Choose$", template.model.FoundAttachment[i].Choose$ + 1);
-            };
-        })(document.currentScript.previousElementSibling);
+        })();
     </script>
 </template>
