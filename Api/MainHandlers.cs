@@ -67,13 +67,6 @@ namespace Chatter {
                 return new AppName();
             });
 
-            Handle.GET("/chatter/app-icon", () => {
-                Page p = new Page() {
-                    Html = "/Chatter/ViewModels/AppIconPage.html"
-                };
-                return p;
-            });
-
             Handle.GET("/chatter/menu", () => {
                 Page p = new Page() {
                     Html = "/Chatter/ViewModels/MenuPage.html"
@@ -150,7 +143,6 @@ namespace Chatter {
 
         protected void RegisterMap() {
             UriMapping.Map("/chatter/app-name", "/sc/mapping/app-name");
-            UriMapping.Map("/chatter/app-icon", "/sc/mapping/app-icon");
             UriMapping.Map("/chatter/menu", "/sc/mapping/menu");
 
             UriMapping.OntologyMap("/chatter/partials/person/@w", "simplified.ring2.person", null, null);
