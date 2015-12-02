@@ -20,7 +20,10 @@
     "AttachmentSearch$": "",
     "FoundAttachment": [
         {
-            "Name": "", "Type": "", "Choose$": 0
+            "Name": "",
+            "Type": "", 
+            "NameAndType": "",
+            "Choose$": 0
         }
     ],
     "ClearFoundAttachments$": 0,

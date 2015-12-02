@@ -138,6 +138,8 @@ namespace Chatter {
                 } else {
                     this.Type = string.Empty;
                 }
+
+                this.NameAndType = string.Format("{0} - {1}", this.Name, this.Type);
             }
 
             void Handle(Input.Choose Action) {
