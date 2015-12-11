@@ -1,6 +1,6 @@
 {
   "name": "Chatter",
-  "homepage": "https://github.com/Polyjuice/Chatter",
+  "homepage": "https://github.com/StarcounterSamples/Chatter",
   "private": true,
   "ignore": [
     "**/.*",
