@@ -1,4 +1,4 @@
-﻿<link rel="import" href="/sys/puppet-redirect/src/puppet-redirect.html" />
+﻿<link rel="import" href="/sys/puppet-redirect/puppet-redirect.html" />
 <link href="/Chatter/css/chatter.css" rel="stylesheet" />
 
 <template>
@@ -8,7 +8,7 @@
             <input class="form-control" value="{{model.NewGroupName$::input}}" on-keyup="onInputKeyup" placeholder="Chat room name" />
         </div>
         <div class="lobby-button">
-            <button class="btn btn-primary" onclick="++this.value;" value="{{model.GoToNewGroup$::click}}">Create</button>
+            <button class="btn btn-primary" onmousedown="++this.value;" value="{{model.GoToNewGroup$::click}}">Create</button>
         </div>
         <table class="table table-bordered lobby-table">
             <thead>
@@ -35,12 +35,15 @@
         <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
     </template>
     <script>
-        (function init(template) {
+        (function () {
+            var script = document._currentScript || document.currentScript;
+            var template = script.previousElementSibling;
+
             template.onInputKeyup = function (e) {
                 if (e.keyCode == 13) {
                     template.set("model.GoToNewGroup$", template.model.GoToNewGroup$ + 1);
                 }
             };
-        })(document.currentScript.previousElementSibling);
+        })();
     </script>
 </template>
