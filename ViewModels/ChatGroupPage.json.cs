@@ -69,7 +69,7 @@ namespace Chatter {
         }
 
         protected void PushChanges(string ChatMessageKey) {
-            Session.ForAll((Session s) => {
+            Session.ForAll((Session s, string id) => {
                 StandalonePage master = s.Data as StandalonePage;
 
                 if (master != null && master.CurrentPage is ChatGroupPage) {
