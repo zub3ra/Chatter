@@ -1,10 +1,21 @@
 ﻿using Starcounter;
 using Simplified.Ring1;
 using Simplified.Ring6;
+using System;
 
 namespace Chatter {
+
+    [Database]
+    public class SavedSession {
+        public string SessionId;
+    }
+
     internal class MainHandlers {
         public void Register() {
+            Db.Transact(() => {
+                Db.SlowSQL("DELETE FROM SavedSession");
+            });
+
             Handle.GET("/chatter/standalone", () => {
                 Session session = Session.Current;
 
@@ -16,7 +27,21 @@ namespace Chatter {
 
                 if (session == null) {
                     session = new Session(SessionOptions.PatchVersioning);
+                    session.AddDestroyDelegate((Session s) => {
+                        Db.Transact(() => {
+                            String ss = s.ToAsciiString();
+                            SavedSession saved = Db.SQL<SavedSession>("SELECT s FROM SavedSession s WHERE s.SessionId = ?", ss).First;
+                            saved.Delete();
+                        });
+                    });
+
                     standalone.Html = "/Chatter/viewmodels/StandalonePage.html";
+
+                    Db.Transact(() => {
+                        new SavedSession() {
+                            SessionId = session.ToAsciiString()
+                        };
+                    });
                 }
 
                 standalone.Session = session;

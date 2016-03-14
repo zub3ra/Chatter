@@ -6,6 +6,8 @@ using Simplified.Ring1;
 using Simplified.Ring3;
 using Simplified.Ring5;
 using Simplified.Ring6;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Chatter {
 
@@ -69,7 +71,7 @@ namespace Chatter {
         }
 
         protected void PushChanges(string ChatMessageKey) {
-            Session.ForAll((Session s, string id) => {
+            Session.ScheduleTask(Db.SQL<SavedSession>("SELECT s FROM SavedSession s").Select(x => x.SessionId).ToList(), (Session s, String sessionId) => {
                 StandalonePage master = s.Data as StandalonePage;
 
                 if (master != null && master.CurrentPage is ChatGroupPage) {
