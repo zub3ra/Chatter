@@ -20,50 +20,82 @@
                 <starcounter-include partial="{{item}}"></starcounter-include>
             </template>
         </div>
-        <div class="group-message-title">
-            Message
-        </div>
-        <div class="group-attachment-title">
-            Attachments
-        </div>
-        <div class="group-message">
-            <input type="text" value="{{model.ChatMessage.Text$::input}}" on-keyup="onInputKeyup" class="form-control" placeholder="Input your message" />
-        </div>
-        <div class="group-attachment">
-            <input type="text" class="form-control" value="{{model.AttachmentSearch$::input}}" on-blur="clearFoundAttachments" placeholder="Type to find an attachent" />
-            <template is="dom-if" if="{{model.FoundAttachment.length}}">
-                <ul class="autocomplete">
-                    <template is="dom-repeat" items="{{model.FoundAttachment}}">
-                        <li>
-                            <button type="button" class="btn btn-sm btn-link" onmousedown="++this.value;" value="{{item.Choose$::click}}">{{item.NameAndType}}</button>
-                        </li>
-                    </template>
-                </ul>
-            </template>
-        </div>
-        <div class="group-attachments">
-            <table class="table">
-                <template is="dom-repeat" items="{{model.ChatMessage.ChatAttachments}}">
-                    <tr>
-                        <td>
-                            <span>{{item.Attachment.Name}}</span> - <span>{{item.Attachment.Type}}</span>
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-default btn-xs" onclick="++this.value;" value="{{item.Delete$::click}}">Remove</button>
-                        </td>
-                    </tr>
-                </template>
-            </table>
+
+        <style>
+            .expandable {
+                -moz-transition: height .5s;
+                -ms-transition: height .5s;
+                -o-transition: height .5s;
+                -webkit-transition: height .5s;
+                transition: height .5s;
+                height: 0;
+                overflow: hidden;
+                margin-top: 1px;
+            }
+
+            #more-button {
+                box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.4);
+            }
+            .application {
+                margin-top: 15px;
+                margin-bottom: 15px;
+                display: flex;
+                align-items: center;
+                width: 100%;
+            }
+
+            .aplication-container {
+                float: left;
+                width: 95%;
+                margin-bottom: 0px;
+            }
+
+            .aplication-add {
+                float: left;
+                width: 5%;
+                text-align: center;
+            }
+
+            .aplication-add-button {
+            }
+        </style>
+        <div>
+            <button class="btn btn-default" id="more-button" onclick="growDiv()">Add attachment <span class="caret" /></button>
+            <div id='expandablePanel' class="expandable panel panel-default">
+                <div class='panel-body'>
+                    <div class="text" style="margin-bottom:10px">Images</div>
+                    <div class="application">
+                        <div class="aplication-container panel panel-default">
+                            <div class="panel-body">
+                                People
+                            </div>
+                        </div>
+                        <div class="aplication-add">
+                            <button type="button" class="btn btn-small btn-success aplication-add-button" onclick="++this.value;" value="{{model.Send$::click}}">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="application">
+                        <div class="aplication-container panel panel-default">
+                            <div class="panel-body">
+                                <input type="text" value="{{model.ChatMessage.Text$::input}}" on-keyup="onInputKeyup" class="form-control" placeholder="Input your message" />
+                            </div>
+                        </div>
+                        <div class="aplication-add">
+                            <button type="button" class="btn btn-small btn-success aplication-add-button" onclick="++this.value;" value="{{model.Send$::click}}">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="group-warning">
             <template is="dom-if" if="{{model.Warning}}">
                 <span>{{model.Warning}}</span>
             </template>
         </div>
-        <div class="group-send">
-            <button class="btn btn-primary" onclick="++this.value;" value="{{model.Send$::click}}">Send</button>
-        </div>
-        <div class="group-send-title">Press enter to send message</div>
         <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
     </template>
     <script>
@@ -82,5 +114,16 @@
                 }, 100);
             };
         })();
+
+        function growDiv() {
+            var growDiv = document.getElementById('expandablePanel');
+            if (growDiv.clientHeight) {
+                growDiv.style.height = 0;
+            } else {
+                var wrapper = growDiv.querySelector('.panel-body');
+                growDiv.style.height = wrapper.clientHeight + "px";
+            }
+            document.activeElement.blur()
+        }
     </script>
 </template>
