@@ -103,12 +103,13 @@ namespace Chatter {
         protected void RegisterPartials() {
             Handle.GET("/chatter/partials/chatgroups/{?}", (string ChatGroupId) => {
                 var page = new ChatGroupPage() {
-                    Html = "/Chatter/ViewModels/ChatGroupPage.html"
-                };
+                    Html = "/Chatter/ViewModels/ChatGroupPage.html",
+                    ChooseAttachment = Self.GET("/chatter/partials/chooseattachment/I")
+            };
 
-                page.RefreshData(ChatGroupId);
+            page.RefreshData(ChatGroupId);
 
-                return page;
+            return page;
             });
 
             Handle.GET("/chatter/partials/chatmessages/{?}", (string ObjectId) => {
@@ -145,6 +146,18 @@ namespace Chatter {
                 return page;
             });
 
+            Handle.GET("/chatter/partials/chooseattachment", () =>
+            {
+                var page = new ChooseAttachmentPage();
+                return page;
+            });
+
+            Handle.GET("/chatter/partials/chooseattachment/{?}", (string id) =>
+            {
+                var page = new ChooseAttachmentPage();
+                return page;
+            });
+
             Handle.GET("/chatter/partials/chatattachment/{?}", (string ChatAttachmentId) => {
                 ChatAttachmentPage page = new ChatAttachmentPage();
                 ChatAttachment rel = DbHelper.FromID(DbHelper.Base64DecodeObjectID(ChatAttachmentId)) as ChatAttachment;
@@ -171,8 +184,11 @@ namespace Chatter {
             UriMapping.Map("/chatter/menu", "/sc/mapping/menu");
 
             UriMapping.OntologyMap("/chatter/partials/person/@w", "simplified.ring2.person", null, null);
-            UriMapping.OntologyMap("/chatter/partials/chatgroups/@w", "simplified.ring6.chatgroup", null, null);
+            UriMapping.OntologyMap("/chatter/partials/chooseattachment/@w", "simplified.ring6.chatgroup", null, null);
             UriMapping.OntologyMap("/chatter/partials/chatattachment/@w", "simplified.ring6.chatattachment", null, null);
+
+
+            UriMapping.OntologyMap("/chatter/partials/chooseattachment/@w", "dupa", null, null);
         }
     }
 }

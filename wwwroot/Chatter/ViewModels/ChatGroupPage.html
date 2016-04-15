@@ -55,9 +55,6 @@
                 width: 5%;
                 text-align: center;
             }
-
-            .aplication-add-button {
-            }
         </style>
         <div>
             <button class="btn btn-default" id="more-button" onclick="growDiv()">Add attachment <span class="caret" /></button>
@@ -66,7 +63,7 @@
                     <div class="application">
                         <div class="aplication-container panel panel-default">
                             <div class="panel-body">
-                                Images
+                                <starcounter-include partial="{{model.ChooseAttachment}}"></starcounter-include>
                             </div>
                         </div>
                         <div class="aplication-add">
