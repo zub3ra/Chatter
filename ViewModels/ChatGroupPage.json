@@ -8,13 +8,10 @@
     "ChatMessagePages": [ { } ],
 
     "ChatMessage": {
-        "Text$": "",
-        "ChatAttachments": [
-            {
-                "Attachment": { "Name": "", "Type": "" },
-                "Delete$": ""
-            }
-        ]
+      "Text$": "",
+      "Name": "",
+      "Type": "",
+      "Delete$": ""
     },
 
     "AttachmentSearch$": "",

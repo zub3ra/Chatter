@@ -1,16 +1,16 @@
 {
     "Html": "/Chatter/ViewModels/ChatMessagePage.html",
     "UserName": "",
-    "Text": "",
     "User": {
-        "Key": "",
-        "Username": "",
-        "Url": "",
-        "WhoIs": {
-            "Name": "",
-            "FirstName": "",
-            "LastName": ""
-        }
-    },
-    "ChatAttachmentPages": [ { } ]
+      "Key": "",
+      "Username": "",
+      "Url": "",
+      "WhoIs": {
+        "Name": "",
+        "FirstName": "",
+        "LastName": ""
+      }
+    },    
+    "Name": "",
+    "Attachment": {}
 }

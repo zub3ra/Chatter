@@ -1,9 +1,4 @@
 {
     "Html": "/Chatter/ViewModels/ChatAttachmentPage.html",
-    "Name": "",
-    "Attachment": {
-        "Key": "",
-        "Name": "",
-        "Url": ""
-    }
+    "CurrentPage": { }
 }

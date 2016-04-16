@@ -114,6 +114,24 @@ namespace Chatter {
             Handle.GET("/chatter/partials/chatmessages/{?}", (string ObjectId) => {
                 var page = new ChatMessagePage();
 
+                var message = DbHelper.FromID(DbHelper.Base64DecodeObjectID(ObjectId)) as ChatMessage;
+                var obj = message.Attachment;
+                page.Data = message;
+
+                if (obj != null)
+                {
+                    System.Type type = obj.GetType();
+
+                    if (type == typeof(ChatGroup))
+                    {
+                        page.Html = "/Chatter/ViewModels/ChatAttachmentGroupPage.html";
+                    }
+                    else
+                    {
+                        page.Html += "?" + obj.GetType().FullName;
+                    }
+                }
+
                 page.RefreshData(ObjectId);
 
                 return page;
@@ -145,22 +163,8 @@ namespace Chatter {
                 return page;
             });
 
-            Handle.GET("/chatter/partials/chatattachment/{?}", (string ChatAttachmentId) => {
-                ChatAttachmentPage page = new ChatAttachmentPage();
-                ChatAttachment rel = DbHelper.FromID(DbHelper.Base64DecodeObjectID(ChatAttachmentId)) as ChatAttachment;
-                Something obj = rel.Attachment;
-
-                page.Data = rel;
-
-                if (obj != null) {
-                    System.Type type = obj.GetType();
-
-                    if (type == typeof(ChatGroup)) {
-                        page.Html = "/Chatter/ViewModels/ChatAttachmentGroupPage.html";
-                    } else {
-                        page.Html += "?" + obj.GetType().FullName;
-                    }
-                }
+            Handle.GET("/chatter/partials/chatimageattachments/{?}", (string chatImageAttachmentId) => {
+                var page = new ChatAttachmentPage();
 
                 return page;
             });
@@ -171,8 +175,8 @@ namespace Chatter {
             UriMapping.Map("/chatter/menu", "/sc/mapping/menu");
 
             UriMapping.OntologyMap("/chatter/partials/person/@w", "simplified.ring2.person", null, null);
-            UriMapping.OntologyMap("/chatter/partials/chatgroups/@w", "simplified.ring6.chatgroup", null, null);
-            UriMapping.OntologyMap("/chatter/partials/chatattachment/@w", "simplified.ring6.chatattachment", null, null);
+            UriMapping.OntologyMap("/chatter/partials/chatmessages/@w", "simplified.ring6.chatmessage", null, null);
+            UriMapping.OntologyMap("/chatter/partials/chatimageattachments/@w", "chatimageattachments", null, null);
         }
     }
 }

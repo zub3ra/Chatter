@@ -63,11 +63,9 @@ namespace Chatter {
             this.Warning = string.Empty;
         }
 
-        public void AddAttachment(Something Something) {
-            ChatAttachment attachment = new ChatAttachment() {
-                Message = this.ChatMessage.Data,
-                Attachment = Something
-            };
+        public void AddAttachment(Something Something)
+        {
+            this.ChatMessage.Data.Attachment = Something;
         }
 
         protected void PushChanges(string ChatMessageKey) {
@@ -95,9 +93,10 @@ namespace Chatter {
                 return;
             }
 
-            var images = Db.SQL<Illustration>("SELECT i FROM Simplified.Ring1.Illustration i WHERE i.Concept = ?", this.Data);
+            var image = Db.SQL<Illustration>("SELECT i FROM Simplified.Ring1.Illustration i WHERE i.Concept = ?", this.Data).FirstOrDefault();
 
-            foreach (Illustration image in images) {
+            if (image != null)
+            {
                 this.AddAttachment(image);
                 image.Concept = this.ChatMessage.Data;
             }
@@ -107,7 +106,7 @@ namespace Chatter {
             if (!string.IsNullOrEmpty(this.UserKey)) {
                 user = DbHelper.FromID(DbHelper.Base64DecodeObjectID(this.UserKey)) as SystemUser;
             }
-
+            this.ChatMessage.Data.Date = DateTime.Now;
             this.ChatMessage.Data.Date = DateTime.Now;
             this.ChatMessage.Data.UserName = this.UserName;
             this.ChatMessage.Data.User = user;
@@ -156,32 +155,25 @@ namespace Chatter {
         }
 
         [ChatGroupPage_json.ChatMessage]
-        public partial class ChatGroupPageChatMessage : Json, IBound<ChatMessage> { 
-        
-        }
-
-        [ChatGroupPage_json.ChatMessage.ChatAttachments]
-        public partial class ChatGroupPageChatMessageChatAttachment : Json, IBound<ChatAttachment> {
-            void Handle(Input.Delete Action) {
-                this.Data.Delete();
-            }
-
-            ChatGroupPage ParentPage {
-                get {
-                    return this.Parent.Parent.Parent as ChatGroupPage;
+        public partial class ChatGroupPageChatMessage : Json, IBound<ChatMessage> {
+            protected override void OnData()
+            {
+                base.OnData();
+                if (this.Data != null)
+                {
+                    this.Type = this.Data.GetType().Name;
+                }
+                else
+                {
+                    this.Type = string.Empty;
                 }
             }
-        }
 
-        [ChatGroupPage_json.ChatMessage.ChatAttachments.Attachment]
-        public partial class ChatGroupPageChatMessageChatAttachmentsAttachment : Json, IBound<Something> {
-            protected override void OnData() {
-                base.OnData();
-
-                if (this.Data != null) {
-                    this.Type = this.Data.GetType().Name;
-                } else {
-                    this.Type = string.Empty;
+            ChatGroupPage ParentPage
+            {
+                get
+                {
+                    return this.Parent.Parent.Parent as ChatGroupPage;
                 }
             }
         }
