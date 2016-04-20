@@ -8,9 +8,6 @@
                 <span>{{model.UserName}}</span>
             </template>
         </div>
-        <div class="message-attachments">
-            <starcounter-include partial="{{model.Attachment}}"></starcounter-include>
-        </div>
         <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
     </template>
 </template>

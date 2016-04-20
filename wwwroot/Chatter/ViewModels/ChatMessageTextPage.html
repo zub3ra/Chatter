@@ -1,6 +1,6 @@
 ﻿<template>
     <template is="dom-bind">
-        <div>{{model.Attachment.Name}}</div>
+        <input type="text" value="{{model.Text$::input}}" class="form-control" placeholder="Input your message"/>
         <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
     </template>
 </template>

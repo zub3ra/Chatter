@@ -1,0 +1,9 @@
+﻿<template>
+    <template is="dom-bind">
+        <div class="group-send">
+            <starcounter-include partial="{{model.Draft}}"></starcounter-include>
+            <button class="btn btn-primary" onclick="++this.value;" value="{{model.Send$::click}}">Send</button>
+        </div>
+        <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
+    </template>
+</template>

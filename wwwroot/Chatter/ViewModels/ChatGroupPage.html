@@ -24,15 +24,12 @@
             Add Attachments
         </div>
         <div class="group-attachments">
-            <starcounter-include partial="{{model.ChatAttachmentGroupPage}}"></starcounter-include>
+            <starcounter-include partial="{{model.ChatMessageDraft}}"></starcounter-include>
         </div>
         <div class="group-warning">
             <template is="dom-if" if="{{model.Warning}}">
                 <span>{{model.Warning}}</span>
             </template>
-        </div>
-        <div class="group-send">
-            <button class="btn btn-primary" onclick="++this.value;" value="{{model.Send$::click}}">Send</button>
         </div>
         <div class="group-send-title">Press enter to send message</div>
         <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>

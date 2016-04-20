@@ -56,16 +56,17 @@ namespace Chatter {
         }
 
         public void SetNewChatMessage() {
-            this.ChatMessage.Data = new ChatMessage() {
-                Group = this.Data
+            var draft = new ChatMessage
+            {
+                IsDraft = true
             };
-
+            this.ChatMessageDraft = Self.GET<Json>("/chatter/partials/chatmessages/" + draft.Key);
             this.Warning = string.Empty;
         }
 
         public void AddAttachment(Something Something)
         {
-            this.ChatMessage.Data.Attachment = Something;
+            this.ChatMessageDraft.Data = Something;
         }
 
         protected void PushChanges(string ChatMessageKey) {
@@ -87,32 +88,19 @@ namespace Chatter {
             });
         }
 
-        void Handle(Input.Send Action) {
-            if (string.IsNullOrEmpty(this.ChatMessage.Text)) {
-                Warning = "Message cannot be empty";
-                return;
-            }
-
-            var image = Db.SQL<Illustration>("SELECT i FROM Simplified.Ring1.Illustration i WHERE i.Concept = ?", this.Data).FirstOrDefault();
-
-            if (image != null)
-            {
-                this.AddAttachment(image);
-                image.Concept = this.ChatMessage.Data;
-            }
-
+        public void AddNewMessage(ChatMessage chatMessage) {
             SystemUser user = null;
 
             if (!string.IsNullOrEmpty(this.UserKey)) {
                 user = DbHelper.FromID(DbHelper.Base64DecodeObjectID(this.UserKey)) as SystemUser;
             }
-            this.ChatMessage.Data.Date = DateTime.Now;
-            this.ChatMessage.Data.Date = DateTime.Now;
-            this.ChatMessage.Data.UserName = this.UserName;
-            this.ChatMessage.Data.User = user;
-            this.Transaction.Commit();
-            this.PushChanges(this.ChatMessage.Data.Key);
-            this.SetNewChatMessage();
+
+            chatMessage.Group = Data;
+            chatMessage.UserName = this.UserName;
+            chatMessage.User = user;
+            Transaction.Commit();
+            PushChanges(ChatMessage.Data.Key);
+            SetNewChatMessage();
         }
 
         void Handle(Input.AttachmentSearch Action) {

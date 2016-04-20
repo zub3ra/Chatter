@@ -76,8 +76,8 @@
     <Compile Include="ViewModels\PersonPage.json.cs">
       <DependentUpon>PersonPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ChatAttachmentPage.json.cs">
-      <DependentUpon>ChatAttachmentPage.json</DependentUpon>
+    <Compile Include="ViewModels\ChatMessageTextPage.json.cs">
+      <DependentUpon>ChatMessageTextPage.json</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\StandalonePage.json.cs">
       <DependentUpon>StandalonePage.json</DependentUpon>
@@ -92,8 +92,8 @@
     <Content Include="wwwroot\Chatter\css\standalone.css" />
     <Content Include="wwwroot\Chatter\images\chatter.png" />
     <Content Include="wwwroot\Chatter\ViewModels\AppIconPage.html" />
-    <Content Include="wwwroot\Chatter\ViewModels\ChatAttachmentPage.html" />
-    <Content Include="wwwroot\Chatter\ViewModels\ChatAttachmentText.html" />
+    <Content Include="wwwroot\Chatter\ViewModels\ChatMessageDraft.html" />
+    <Content Include="wwwroot\Chatter\ViewModels\ChatMessageTextPage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\ChatMessagePage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\LauncherWrapperPage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\LobbyPage.html" />
@@ -146,7 +146,7 @@
     </TypedJSON>
   </ItemGroup>
   <ItemGroup>
-    <TypedJSON Include="ViewModels\ChatAttachmentPage.json">
+    <TypedJSON Include="ViewModels\ChatMessageTextPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
   </ItemGroup>

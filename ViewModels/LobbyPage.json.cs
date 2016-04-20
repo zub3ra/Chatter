@@ -27,12 +27,6 @@ namespace Chatter {
                     var messages = Db.SQL<ChatMessage>("SELECT m FROM Simplified.Ring6.ChatMessage m WHERE m.\"Group\" = ?", this.Data);
 
                     foreach (ChatMessage message in messages) {
-                        var attachments = Db.SQL<ChatAttachment>("SELECT a FROM Simplified.Ring6.ChatAttachment a WHERE a.Message = ?", message);
-
-                        foreach (ChatAttachment attachment in attachments) {
-                            attachment.Delete();
-                        }
-
                         message.Delete();
                     }
 

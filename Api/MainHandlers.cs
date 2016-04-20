@@ -112,28 +112,12 @@ namespace Chatter {
             });
 
             Handle.GET("/chatter/partials/chatmessages/{?}", (string ObjectId) => {
-                var page = new ChatMessagePage();
-
                 var message = DbHelper.FromID(DbHelper.Base64DecodeObjectID(ObjectId)) as ChatMessage;
-                var obj = message.Attachment;
-                page.Data = message;
-
-                if (obj != null)
+                var page = new ChatMessagePage
                 {
-                    System.Type type = obj.GetType();
-
-                    if (type == typeof(ChatGroup))
-                    {
-                        page.Html = "/Chatter/ViewModels/ChatAttachmentGroupPage.html";
-                    }
-                    else
-                    {
-                        page.Html += "?" + obj.GetType().FullName;
-                    }
-                }
-
+                    Data = message
+                };
                 page.RefreshData(ObjectId);
-
                 return page;
             });
 
@@ -163,11 +147,35 @@ namespace Chatter {
                 return page;
             });
 
-            Handle.GET("/chatter/partials/chatimageattachments/{?}", (string chatImageAttachmentId) => {
-                var page = new ChatAttachmentPage();
-
+            //For draft
+            Handle.GET("/chatter/partials/chatmessagedraft/{?}", (string objectPath) => {
+                //Do that because ontology mapping support just 1 parameter
+                var data = Base64Decode(objectPath).Split(' ');
+                var page = new ChatMessagePage
+                {
+                    Html = "/Chatter/ViewModels/ChatMessageDraft.html"
+                };
+                page.RefreshData(data[0]);
+                page.SetDraft(objectPath);
                 return page;
             });
+            Handle.GET("/chatter/partials/chatattachment/{?}", (string objectPath) => null);
+
+            //For TextPage similar in Images, People etc.
+            Handle.GET("/chatter/partials/chatattachmenttext/{?}", (string chatMessageDraftId) =>
+            {
+                //Do that because ontology mapping support just 1 parameter
+                var path = chatMessageDraftId + " text";
+                var draft = Self.GET("/chatter/partials/chatdraftannouncement/" + Base64Encode(path));
+                return draft;
+            });
+            Handle.GET("/chatter/partials/chatmessagetext/{?}", (string chatmessageId) =>
+            {
+                var page = new ChatMessageTextPage();
+                page.RefreshData(chatmessageId);
+                return page;
+            });
+            Handle.GET("/chatter/partials/chatdraftannouncement/{?}", (string objectPath) => null);
         }
 
         protected void RegisterMap() {
@@ -175,8 +183,44 @@ namespace Chatter {
             UriMapping.Map("/chatter/menu", "/sc/mapping/menu");
 
             UriMapping.OntologyMap("/chatter/partials/person/@w", "simplified.ring2.person", null, null);
-            UriMapping.OntologyMap("/chatter/partials/chatmessages/@w", "simplified.ring6.chatmessage", null, null);
-            UriMapping.OntologyMap("/chatter/partials/chatimageattachments/@w", "chatimageattachments", null, null);
+            UriMapping.OntologyMap("/chatter/partials/chatmessages/@w", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
+            {
+                var message = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId));
+                return message.IsDraft ? null : objectId;
+            });
+
+            //For draft
+            UriMapping.OntologyMap("/chatter/partials/chatmessagedraft/@w", "simplified.ring6.chatdraftannouncement", null, null);
+            UriMapping.OntologyMap("/chatter/partials/chatattachment/@w", "simplified.ring6.chatattachment", objectId => objectId, objectId => null);
+
+            //For TextPage similar in Images, People etc.
+            UriMapping.OntologyMap("/chatter/partials/chatattachmenttext/@w", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
+            {
+                var message = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId));
+                return message.IsDraft ? objectId : null;
+            });
+            UriMapping.OntologyMap("/chatter/partials/chatmessagetext/@w", "simplified.ring6.chatattachment", (string objectId) => objectId, (string objectId) =>
+            {
+                var data = Base64Decode(objectId).Split(' ');
+                if (data[1] == "text")
+                {
+                    return data[1];
+                }
+                return null;
+            });
+            UriMapping.OntologyMap("/chatter/partials/chatdraftannouncement/@w", "simplified.ring6.chatdraftannouncement", objectId => objectId, objectId => null);
+        }
+
+        private string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return Convert.ToBase64String(plainTextBytes);
+        }
+
+        private string Base64Decode(string base64EncodedData)
+        {
+            var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
+            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
     }
 }

@@ -7,12 +7,14 @@
 
     "ChatMessagePages": [ { } ],
 
-    "ChatMessage": {
-      "Text$": "",
-      "Name": "",
-      "Type": "",
-      "Delete$": ""
-    },
+  "ChatMessage": {
+    "Text$": "",
+    "Name": "",
+    "Type": "",
+    "Delete$": ""
+  },
+
+  "ChatMessageDraft": { },
 
     "AttachmentSearch$": "",
     "FoundAttachment": [
