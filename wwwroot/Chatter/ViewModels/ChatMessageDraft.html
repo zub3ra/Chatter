@@ -1,8 +1,16 @@
 ﻿<template>
     <template is="dom-bind">
-        <div class="group-send">
-            <starcounter-include partial="{{model.Draft}}"></starcounter-include>
-            <button class="btn btn-primary" onclick="++this.value;" value="{{model.Send$::click}}">Send</button>
+        <div class="application">
+            <div class="aplication-container panel panel-default">
+                <div class="panel-body">
+                    <starcounter-include partial="{{model.Draft}}"></starcounter-include>
+                </div>
+            </div>
+            <div class="aplication-add">
+                <button type="button" class="btn btn-small btn-success aplication-add-button" onclick="++this.value;" value="{{model.Send$::click}}">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </div>
         </div>
         <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
     </template>

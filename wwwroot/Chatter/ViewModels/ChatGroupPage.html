@@ -20,11 +20,13 @@
                 <starcounter-include partial="{{item}}"></starcounter-include>
             </template>
         </div>
-        <div class="group-attachment-title">
-            Add Attachments
-        </div>
-        <div class="group-attachments">
-            <starcounter-include partial="{{model.ChatMessageDraft}}"></starcounter-include>
+        <div>
+            <button class="btn btn-default" id="more-button" onclick="growDiv()">Add attachment <span class="caret" /></button>
+            <div id='expandablePanel' class="expandable panel panel-default">
+                <div class='panel-body'>
+                    <starcounter-include partial="{{model.ChatMessageDraft}}"></starcounter-include>
+                </div>
+            </div>
         </div>
         <div class="group-warning">
             <template is="dom-if" if="{{model.Warning}}">
@@ -50,5 +52,16 @@
                 }, 100);
             };
         })();
+
+        function growDiv() {
+            var growDiv = document.getElementById('expandablePanel');
+            if (growDiv.clientHeight) {
+                growDiv.style.height = 0;
+            } else {
+                var wrapper = growDiv.querySelector('.panel-body');
+                growDiv.style.height = wrapper.clientHeight + "px";
+            }
+            document.activeElement.blur()
+        }
     </script>
 </template>
