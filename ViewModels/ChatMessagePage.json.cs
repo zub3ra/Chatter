@@ -1,5 +1,4 @@
 using System;
-using Chatter.Helpers;
 using Starcounter;
 using Simplified.Ring6;
 
@@ -26,11 +25,37 @@ namespace Chatter {
         {
             Data.IsDraft = false;
             Data.Date = DateTime.Now;
-            var key = Data.Key;
             Transaction.Commit();
-            Data = null;
+
             //Send message to ChatGroupPage
-            EventBus.Instance.PostEvent(new RefreshChatGroupPageEvent(key));
+
+            StandalonePage master = GetStandalonePage();
+
+            if (master == null)
+            {
+                return;
+            }
+
+            ChatGroupPage page = master.CurrentPage as ChatGroupPage;
+
+            if (page == null)
+            {
+                return;
+            }
+
+            page.Refresh(Data.Key);
+        }
+
+        protected StandalonePage GetStandalonePage()
+        {
+            StandalonePage page = null;
+
+            if (Session.Current != null && Session.Current.Data is StandalonePage)
+            {
+                page = Session.Current.Data as StandalonePage;
+            }
+
+            return page;
         }
 
         public void SetDraft(string path)

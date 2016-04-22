@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Chatter.Helpers;
 using Starcounter;
 using Simplified.Ring1;
 using Simplified.Ring3;
@@ -18,7 +17,6 @@ namespace Chatter {
             this.Data = group;
             this.RefreshChatMessages();
             this.SetNewChatMessage();
-            EventBus.Instance.Register(this);
         }
 
         public void RefreshUser() {
@@ -89,12 +87,10 @@ namespace Chatter {
             });
         }
 
-        public void EventBusReceiveEvent(RefreshChatGroupPageEvent e)
+        public void Refresh(string key)
         {
+            PushChanges(key);
             SetNewChatMessage();
-
-            var page = Self.GET<Json>("/chatter/partials/chatmessages/" + e.ChatMessageKey);
-            this.ChatMessagePages.Add(page);
         }
 
         void Handle(Input.AttachmentSearch Action) {

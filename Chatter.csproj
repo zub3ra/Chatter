@@ -62,8 +62,6 @@
     <Compile Include="Api\CommitHooks.cs" />
     <Compile Include="Api\MainHandlers.cs" />
     <Compile Include="Helpers\DefaultStyles.cs" />
-    <Compile Include="Helpers\EventBus.cs" />
-    <Compile Include="Helpers\RefreshChatGroupPageEvent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ChatMessagePage.json.cs">
