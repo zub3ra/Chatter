@@ -41,7 +41,7 @@ ul.autocomplete li a {
 
 .aplication-container {
     float: left;
-    width: 95%;
+    width: 90%;
     margin-bottom: 0px;
 }
 
@@ -49,4 +49,5 @@ ul.autocomplete li a {
     float: left;
     width: 5%;
     text-align: center;
+    margin: auto;
 }

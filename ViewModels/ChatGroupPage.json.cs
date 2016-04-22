@@ -58,6 +58,14 @@ namespace Chatter {
             {
                 IsDraft = true
             };
+            SystemUser user = null;
+            if (!string.IsNullOrEmpty(this.UserKey))
+            {
+                user = DbHelper.FromID(DbHelper.Base64DecodeObjectID(this.UserKey)) as SystemUser;
+            }
+            draft.Group = Data;
+            draft.UserName = UserName;
+            draft.User = user;
             ChatMessageDraft = Self.GET<Json>("/chatter/partials/chatmessages/" + draft.Key);
             this.Warning = string.Empty;
         }
@@ -83,25 +91,10 @@ namespace Chatter {
 
         public void EventBusReceiveEvent(RefreshChatGroupPageEvent e)
         {
-            var message = e.ChatMessage;
-            UpdateMessage(message);
-            e.Transaction.Commit();
-            
-            
             SetNewChatMessage();
-            //ChatMessagePages.Add(Self.GET<Json>("/chatter/partials/chatmessages/" + message.Key));
-        }
 
-
-        public void UpdateMessage(ChatMessage chatMessage) {
-            SystemUser user = null;
-
-            if (!string.IsNullOrEmpty(this.UserKey)) {
-                user = DbHelper.FromID(DbHelper.Base64DecodeObjectID(this.UserKey)) as SystemUser;
-            }
-            chatMessage.Group = Data;
-            chatMessage.UserName = UserName;
-            chatMessage.User = user;
+            var page = Self.GET<Json>("/chatter/partials/chatmessages/" + e.ChatMessageKey);
+            this.ChatMessagePages.Add(page);
         }
 
         void Handle(Input.AttachmentSearch Action) {

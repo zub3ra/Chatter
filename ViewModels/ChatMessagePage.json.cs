@@ -26,9 +26,11 @@ namespace Chatter {
         {
             Data.IsDraft = false;
             Data.Date = DateTime.Now;
-
+            var key = Data.Key;
+            Transaction.Commit();
+            Data = null;
             //Send message to ChatGroupPage
-            EventBus.Instance.PostEvent(new RefreshChatGroupPageEvent(Data, Transaction));
+            EventBus.Instance.PostEvent(new RefreshChatGroupPageEvent(key));
         }
 
         public void SetDraft(string path)
