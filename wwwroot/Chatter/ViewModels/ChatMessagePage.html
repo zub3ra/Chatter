@@ -5,7 +5,7 @@
                 <a href="{{model.User.Url}}">{{model.User.WhoIs.Name}}</a>
             </template>
             <template is="dom-if" if="{{!model.User.WhoIs.Name}}">
-                <span>{{model.UserName}}</span>
+                <span>Anonymous</span>
             </template>
         </div>
         <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>

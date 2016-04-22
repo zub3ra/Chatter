@@ -1,7 +1,7 @@
 using System;
+using Chatter.Helpers;
 using Starcounter;
 using Simplified.Ring6;
-using Starcounter.Templates;
 
 namespace Chatter {
     partial class ChatMessagePage : Page, IBound<ChatMessage>
@@ -26,7 +26,9 @@ namespace Chatter {
         {
             Data.IsDraft = false;
             Data.Date = DateTime.Now;
-            (Parent as ChatGroupPage).AddNewMessage(Data);
+
+            //Send message to ChatGroupPage
+            EventBus.Instance.PostEvent(new RefreshChatGroupPageEvent(Data, Transaction));
         }
 
         public void SetDraft(string path)

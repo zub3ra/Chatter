@@ -1,13 +1,11 @@
 using System;
 using System.Linq;
+using Chatter.Helpers;
 using Starcounter;
-using Starcounter.Internal;
 using Simplified.Ring1;
 using Simplified.Ring3;
 using Simplified.Ring5;
 using Simplified.Ring6;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Chatter {
 
@@ -16,11 +14,11 @@ namespace Chatter {
 
         public void RefreshData(string ChatGroupId) {
             var group = DbHelper.FromID(DbHelper.Base64DecodeObjectID(ChatGroupId)) as ChatGroup;
-            
             this.RefreshUser();
             this.Data = group;
             this.RefreshChatMessages();
             this.SetNewChatMessage();
+            EventBus.Instance.Register(this);
         }
 
         public void RefreshUser() {
@@ -60,13 +58,8 @@ namespace Chatter {
             {
                 IsDraft = true
             };
-            this.ChatMessageDraft = Self.GET<Json>("/chatter/partials/chatmessages/" + draft.Key);
+            ChatMessageDraft = Self.GET<Json>("/chatter/partials/chatmessages/" + draft.Key);
             this.Warning = string.Empty;
-        }
-
-        public void AddAttachment(Something Something)
-        {
-            this.ChatMessageDraft.Data = Something;
         }
 
         protected void PushChanges(string ChatMessageKey) {
@@ -88,19 +81,27 @@ namespace Chatter {
             });
         }
 
-        public void AddNewMessage(ChatMessage chatMessage) {
+        public void EventBusReceiveEvent(RefreshChatGroupPageEvent e)
+        {
+            var message = e.ChatMessage;
+            UpdateMessage(message);
+            e.Transaction.Commit();
+            
+            
+            SetNewChatMessage();
+            //ChatMessagePages.Add(Self.GET<Json>("/chatter/partials/chatmessages/" + message.Key));
+        }
+
+
+        public void UpdateMessage(ChatMessage chatMessage) {
             SystemUser user = null;
 
             if (!string.IsNullOrEmpty(this.UserKey)) {
                 user = DbHelper.FromID(DbHelper.Base64DecodeObjectID(this.UserKey)) as SystemUser;
             }
-
             chatMessage.Group = Data;
-            chatMessage.UserName = this.UserName;
+            chatMessage.UserName = UserName;
             chatMessage.User = user;
-            Transaction.Commit();
-            PushChanges(ChatMessage.Data.Key);
-            SetNewChatMessage();
         }
 
         void Handle(Input.AttachmentSearch Action) {
@@ -129,10 +130,6 @@ namespace Chatter {
                 }
 
                 this.NameAndType = string.Format("{0} - {1}", this.Name, this.Type);
-            }
-
-            void Handle(Input.Choose Action) {
-                this.ParentPage.AddAttachment(this.Data);
             }
 
             ChatGroupPage ParentPage {

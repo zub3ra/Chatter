@@ -7,7 +7,7 @@ namespace Chatter {
     {
         public void RefreshData(string chatMessageDraftId)
         {
-            var message = (Something)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageDraftId));
+            var message = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageDraftId));
             var messageText = new ChatMessageText();
             messageText.MessageText = messageText;
             messageText.ChatMessage = message;

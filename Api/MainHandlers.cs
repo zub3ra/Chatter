@@ -1,5 +1,4 @@
 ﻿using Starcounter;
-using Simplified.Ring1;
 using Simplified.Ring6;
 using System;
 
@@ -164,10 +163,20 @@ namespace Chatter {
             //For TextPage similar in Images, People etc.
             Handle.GET("/chatter/partials/chatattachmenttext/{?}", (string chatMessageDraftId) =>
             {
-                //Do that because ontology mapping support just 1 parameter
-                var path = chatMessageDraftId + " text";
-                var draft = Self.GET("/chatter/partials/chatdraftannouncement/" + Base64Encode(path));
-                return draft;
+                var message = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageDraftId));
+                if (message.IsDraft)
+                {
+                    //Do that because ontology mapping support just 1 parameter
+                    var path = chatMessageDraftId + " text";
+                    var draft = Self.GET("/chatter/partials/chatdraftannouncement/" + Base64Encode(path));
+                    return draft;
+                }
+                else
+                {
+                    var page = new ChatMessageTextPreviewPage();
+                    page.RefreshData(chatMessageDraftId);
+                    return page;
+                }
             });
             Handle.GET("/chatter/partials/chatmessagetext/{?}", (string chatmessageId) =>
             {
@@ -194,17 +203,13 @@ namespace Chatter {
             UriMapping.OntologyMap("/chatter/partials/chatattachment/@w", "simplified.ring6.chatattachment", objectId => objectId, objectId => null);
 
             //For TextPage similar in Images, People etc.
-            UriMapping.OntologyMap("/chatter/partials/chatattachmenttext/@w", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
-            {
-                var message = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId));
-                return message.IsDraft ? objectId : null;
-            });
+            UriMapping.OntologyMap("/chatter/partials/chatattachmenttext/@w", "simplified.ring6.chatmessage", null, null);
             UriMapping.OntologyMap("/chatter/partials/chatmessagetext/@w", "simplified.ring6.chatattachment", (string objectId) => objectId, (string objectId) =>
             {
                 var data = Base64Decode(objectId).Split(' ');
                 if (data[1] == "text")
                 {
-                    return data[1];
+                    return data[0];
                 }
                 return null;
             });
