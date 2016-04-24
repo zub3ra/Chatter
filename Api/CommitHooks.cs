@@ -1,6 +1,7 @@
 ﻿using Starcounter;
 using Starcounter.Internal;
 using Simplified.Ring5;
+using Simplified.Ring6;
 
 namespace Chatter {
     internal class CommitHooks {
@@ -15,6 +16,13 @@ namespace Chatter {
 
             Hook<SystemUserSession>.CommitUpdate += (s, a) => {
                 this.RefreshSignInState();
+            };
+
+            Hook<ChatMessageText>.CommitInsert += (s, a) => {
+                if (string.IsNullOrEmpty(a.Text))
+                {
+                    a.Delete();
+                }
             };
         }
 

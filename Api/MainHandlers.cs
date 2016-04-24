@@ -1,6 +1,7 @@
 ﻿using Starcounter;
 using Simplified.Ring6;
 using System;
+using Simplified.Ring1;
 
 namespace Chatter {
 
@@ -147,15 +148,14 @@ namespace Chatter {
             });
 
             //For draft
-            Handle.GET("/chatter/partials/chatmessagedraft/{?}", (string objectPath) => {
-                //Do that because ontology mapping support just 1 parameter
-                var data = Base64Decode(objectPath).Split(' ');
+            Handle.GET("/chatter/partials/chatmessagedraft/{?}", (string objectId) => {
                 var page = new ChatMessagePage
                 {
                     Html = "/Chatter/ViewModels/ChatMessageDraft.html"
                 };
-                page.RefreshData(data[0]);
-                page.SetDraft(objectPath);
+                var relation = (Relation)DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId));
+                page.RefreshData(relation.ToWhat.GetObjectID());
+                page.SetDraft(objectId);
                 return page;
             });
             Handle.GET("/chatter/partials/chatattachment/{?}", (string objectPath) => null);
@@ -166,9 +166,11 @@ namespace Chatter {
                 var message = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageDraftId));
                 if (message.IsDraft)
                 {
-                    //Do that because ontology mapping support just 1 parameter
-                    var path = chatMessageDraftId + " text";
-                    var draft = Self.GET("/chatter/partials/chatdraftannouncement/" + Base64Encode(path));
+                    var messageText = new ChatMessageText();
+                    messageText.MessageText = messageText;
+                    messageText.ChatMessage = message;
+
+                    var draft = Self.GET("/chatter/partials/chatdraftannouncement/" + messageText.GetObjectID());
                     return draft;
                 }
                 else
@@ -206,26 +208,10 @@ namespace Chatter {
             UriMapping.OntologyMap("/chatter/partials/chatattachmenttext/@w", "simplified.ring6.chatmessage", null, null);
             UriMapping.OntologyMap("/chatter/partials/chatmessagetext/@w", "simplified.ring6.chatattachment", (string objectId) => objectId, (string objectId) =>
             {
-                var data = Base64Decode(objectId).Split(' ');
-                if (data[1] == "text")
-                {
-                    return data[0];
-                }
-                return null;
+                var sth = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId));
+                return sth.GetType() == typeof(ChatMessageText) ? sth.GetObjectID() : null;
             });
             UriMapping.OntologyMap("/chatter/partials/chatdraftannouncement/@w", "simplified.ring6.chatdraftannouncement", objectId => objectId, objectId => null);
-        }
-
-        private string Base64Encode(string plainText)
-        {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return Convert.ToBase64String(plainTextBytes);
-        }
-
-        private string Base64Decode(string base64EncodedData)
-        {
-            var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
-            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
     }
 }

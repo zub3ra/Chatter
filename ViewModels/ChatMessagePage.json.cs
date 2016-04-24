@@ -58,10 +58,10 @@ namespace Chatter {
             return page;
         }
 
-        public void SetDraft(string path)
+        public void SetDraft(string objectId)
         {
             Data.IsDraft = true;
-            Draft = Self.GET("/chatter/partials/chatattachment/" + path);
+            Draft = Self.GET("/chatter/partials/chatattachment/" + objectId);
         }
     }
 }

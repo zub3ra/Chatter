@@ -89,7 +89,7 @@ namespace Chatter {
 
         public void Refresh(string key)
         {
-            PushChanges(key);
+            ChatMessagePages.Add(Self.GET<Json>("/chatter/partials/chatmessages/" + key));
             SetNewChatMessage();
         }
 
