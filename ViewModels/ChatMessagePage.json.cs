@@ -1,27 +1,39 @@
+using System;
+using Chatter.Helpers;
 using Starcounter;
 using Simplified.Ring6;
 
 namespace Chatter {
-    partial class ChatMessagePage : Page, IBound<ChatMessage> {
-        public void RefreshData(string ChatMessageId) {
-            ChatMessage message = DbHelper.FromID(DbHelper.Base64DecodeObjectID(ChatMessageId)) as ChatMessage;
-
-            this.Data = message;
-            this.ChatAttachmentPages.Clear();
-
-            var attachments = Db.SQL<ChatAttachment>("SELECT a FROM Simplified.Ring6.ChatAttachment a WHERE a.Message = ?", message);
-
-            foreach (var item in attachments) {
-                this.ChatAttachmentPages.Add(Self.GET("/chatter/partials/chatattachment/" + item.Key));
-            }
+    partial class ChatMessagePage : Page, IBound<ChatMessage>
+    {
+        public void RefreshData(string chatMessageId)
+        {
+            var message = (ChatMessage) DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
+            Data = message;
         }
 
         [ChatMessagePage_json.User]
-        public partial class ChatMessageUserPage : Json {
-            protected override void OnData() {
+        public partial class ChatMessageUserPage : Json
+        {
+            protected override void OnData()
+            {
                 base.OnData();
-                this.Url = string.Format("/chatter/systemuser/{0}", this.Key);
+                Url = $"/chatter/systemuser/{Key}";
             }
+        }
+
+        void Handle(Input.Send Action)
+        {
+            Data.IsDraft = false;
+            Data.Date = DateTime.Now;
+            Transaction.Commit();
+            PageManager.Refresh(Data.Key);
+        }
+
+        public void SetDraft(string objectId)
+        {
+            Data.IsDraft = true;
+            Draft = Self.GET("/chatter/partials/chatattachment/" + objectId);
         }
     }
 }

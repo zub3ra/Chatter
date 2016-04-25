@@ -5,13 +5,7 @@
                 <a href="{{model.User.Url}}">{{model.User.WhoIs.Name}}</a>
             </template>
             <template is="dom-if" if="{{!model.User.WhoIs.Name}}">
-                <span>{{model.UserName}}</span>
-            </template>
-        </div>
-        <div class="message-text">{{model.Text}}</div>
-        <div class="message-attachments">
-            <template is="dom-repeat" items="{{model.ChatAttachmentPages}}">
-                <starcounter-include partial="{{item}}"></starcounter-include>
+                <span>Anonymous</span>
             </template>
         </div>
         <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>

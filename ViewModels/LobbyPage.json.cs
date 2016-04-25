@@ -1,18 +1,19 @@
+using Simplified.Ring1;
 using Starcounter;
 using Simplified.Ring6;
 
 namespace Chatter {
     partial class LobbyPage : Page {
         public void RefreshData() {
-            this.ChatGroups = Db.SQL<ChatGroup>("SELECT g FROM Simplified.Ring6.ChatGroup g ORDER BY g.Name");
+            ChatGroups = Db.SQL<ChatGroup>("SELECT g FROM Simplified.Ring6.ChatGroup g ORDER BY g.Name");
         }
 
         void Handle(Input.GoToNewGroup Action) {
-            string name = string.IsNullOrEmpty(this.NewGroupName) ? "Anonymous group" : this.NewGroupName;
+            var name = string.IsNullOrEmpty(this.NewGroupName) ? "Anonymous group" : this.NewGroupName;
             ChatGroup group = null;
 
             Db.Transact(() => {
-                group = new ChatGroup() {
+                group = new ChatGroup {
                     Name = name
                 };
             });
@@ -24,33 +25,33 @@ namespace Chatter {
         partial class LobbyPageChatGroupRow : Json, IBound<ChatGroup> {
             void Handle(Input.Delete Action) {
                 Db.Transact(() => {
-                    var messages = Db.SQL<ChatMessage>("SELECT m FROM Simplified.Ring6.ChatMessage m WHERE m.\"Group\" = ?", this.Data);
+                    var messages = Db.SQL<ChatMessage>("SELECT m FROM Simplified.Ring6.ChatMessage m WHERE m.\"Group\" = ?", Data);
 
-                    foreach (ChatMessage message in messages) {
-                        var attachments = Db.SQL<ChatAttachment>("SELECT a FROM Simplified.Ring6.ChatAttachment a WHERE a.Message = ?", message);
-
-                        foreach (ChatAttachment attachment in attachments) {
-                            attachment.Delete();
+                    foreach (ChatMessage message in messages)
+                    {
+                        var relations = Db.SQL<Relation>("SELECT m FROM Simplified.Ring1.Relation m WHERE m.ToWhat = ?", message);
+                        foreach (var relation in relations)
+                        {
+                            relation.Delete();
                         }
-
                         message.Delete();
                     }
 
-                    this.Data.Delete();
+                    Data.Delete();
                 });
 
-                this.ParentPage.RefreshData();
+                ParentPage.RefreshData();
             }
 
             public LobbyPage ParentPage {
                 get {
-                    return this.Parent.Parent as LobbyPage;
+                    return Parent.Parent as LobbyPage;
                 }
             }
 
             protected override void OnData() {
                 base.OnData();
-                this.Url = string.Format("/chatter/chatgroup/{0}", this.Key);
+                Url = $"/chatter/chatgroup/{Key}";
             }
         }
     }

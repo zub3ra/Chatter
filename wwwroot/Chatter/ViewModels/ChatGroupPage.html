@@ -20,89 +20,13 @@
                 <starcounter-include partial="{{item}}"></starcounter-include>
             </template>
         </div>
-
-        <style>
-            .expandable {
-                -moz-transition: height .5s;
-                -ms-transition: height .5s;
-                -o-transition: height .5s;
-                -webkit-transition: height .5s;
-                transition: height .5s;
-                height: 0;
-                overflow: hidden;
-                margin-top: 1px;
-            }
-
-            #more-button {
-                box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.4);
-            }
-            .application {
-                margin-top: 15px;
-                margin-bottom: 15px;
-                display: flex;
-                align-items: center;
-                width: 100%;
-            }
-
-            .aplication-container {
-                float: left;
-                width: 95%;
-                margin-bottom: 0px;
-            }
-
-            .aplication-add {
-                float: left;
-                width: 5%;
-                text-align: center;
-            }
-        </style>
         <div>
             <button class="btn btn-default" id="more-button" onclick="growDiv()">Add attachment <span class="caret" /></button>
             <div id='expandablePanel' class="expandable panel panel-default">
                 <div class='panel-body'>
-                    <div class="application">
-                        <div class="aplication-container panel panel-default">
-                            <div class="panel-body">
-                                <starcounter-include partial="{{model.ChooseAttachment}}"></starcounter-include>
-                            </div>
-                        </div>
-                        <div class="aplication-add">
-                            <button type="button" class="btn btn-small btn-success aplication-add-button" onclick="++this.value;" value="{{model.Send$::click}}">
-                                <span class="glyphicon glyphicon-plus"></span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="application">
-                        <div class="aplication-container panel panel-default">
-                            <div class="panel-body">
-                                People
-                            </div>
-                        </div>
-                        <div class="aplication-add">
-                            <button type="button" class="btn btn-small btn-success aplication-add-button" onclick="++this.value;" value="{{model.Send$::click}}">
-                                <span class="glyphicon glyphicon-plus"></span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="application">
-                        <div class="aplication-container panel panel-default">
-                            <div class="panel-body">
-                                <input type="text" value="{{model.ChatMessage.Text$::input}}" on-keyup="onInputKeyup" class="form-control" placeholder="Input your message" />
-                            </div>
-                        </div>
-                        <div class="aplication-add">
-                            <button type="button" class="btn btn-small btn-success aplication-add-button" onclick="++this.value;" value="{{model.Send$::click}}">
-                                <span class="glyphicon glyphicon-plus"></span>
-                            </button>
-                        </div>
-                    </div>
+                    <starcounter-include partial="{{model.ChatMessageDraft}}"></starcounter-include>
                 </div>
             </div>
-        </div>
-        <div class="group-warning">
-            <template is="dom-if" if="{{model.Warning}}">
-                <span>{{model.Warning}}</span>
-            </template>
         </div>
         <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
     </template>
