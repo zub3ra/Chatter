@@ -2,31 +2,10 @@
     "Html": "",
     "Name": "",
     
-	"UserName$": "",
+	  "UserName$": "",
     "UserKey": "",
-
     "ChatMessagePages": [ { } ],
+    "ChatMessageDraft": { },
 
-  "ChatMessage": {
-    "Text$": "",
-    "Name": "",
-    "Type": "",
-    "Delete$": ""
-  },
-
-  "ChatMessageDraft": { },
-
-    "AttachmentSearch$": "",
-    "FoundAttachment": [
-        {
-            "Name": "",
-            "Type": "", 
-            "NameAndType": "",
-            "Choose$": 0
-        }
-    ],
-    "ClearFoundAttachments$": 0,
-
-	"Send$": 0,
-    "Warning": ""
+	  "Send$": 0
 }

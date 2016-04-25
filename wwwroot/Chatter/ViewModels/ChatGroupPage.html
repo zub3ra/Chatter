@@ -28,11 +28,6 @@
                 </div>
             </div>
         </div>
-        <div class="group-warning">
-            <template is="dom-if" if="{{model.Warning}}">
-                <span>{{model.Warning}}</span>
-            </template>
-        </div>
         <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
     </template>
     <script>

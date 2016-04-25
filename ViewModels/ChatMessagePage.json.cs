@@ -1,13 +1,14 @@
 using System;
+using Chatter.Helpers;
 using Starcounter;
 using Simplified.Ring6;
 
 namespace Chatter {
     partial class ChatMessagePage : Page, IBound<ChatMessage>
     {
-        public void RefreshData(string ChatMessageId)
+        public void RefreshData(string chatMessageId)
         {
-            var message = (ChatMessage) DbHelper.FromID(DbHelper.Base64DecodeObjectID(ChatMessageId));
+            var message = (ChatMessage) DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
             Data = message;
         }
 
@@ -17,7 +18,7 @@ namespace Chatter {
             protected override void OnData()
             {
                 base.OnData();
-                Url = string.Format("/chatter/systemuser/{0}", this.Key);
+                Url = $"/chatter/systemuser/{Key}";
             }
         }
 
@@ -26,36 +27,7 @@ namespace Chatter {
             Data.IsDraft = false;
             Data.Date = DateTime.Now;
             Transaction.Commit();
-
-            //Send message to ChatGroupPage
-
-            StandalonePage master = GetStandalonePage();
-
-            if (master == null)
-            {
-                return;
-            }
-
-            ChatGroupPage page = master.CurrentPage as ChatGroupPage;
-
-            if (page == null)
-            {
-                return;
-            }
-
-            page.Refresh(Data.Key);
-        }
-
-        protected StandalonePage GetStandalonePage()
-        {
-            StandalonePage page = null;
-
-            if (Session.Current != null && Session.Current.Data is StandalonePage)
-            {
-                page = Session.Current.Data as StandalonePage;
-            }
-
-            return page;
+            PageManager.Refresh(Data.Key);
         }
 
         public void SetDraft(string objectId)
