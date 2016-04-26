@@ -27,12 +27,22 @@ namespace Chatter {
 
         void Handle(Input.Send Action)
         {
-            var warningPage = Self.GET<Json>("/chatter/partials/chatwarning/" + Relation.GetObjectID());
+            var relationId = Relation.GetObjectID();
+            var warningPage = Self.GET<Json>("/chatter/partials/chatwarning/" + relationId);
             if (warningPage == null)
             {
                 Warning = null;
                 Data.IsDraft = false;
                 Data.Date = DateTime.Now;
+
+                var relations = Db.SQL<Relation>(@"SELECT m FROM Simplified.Ring1.Relation m WHERE m.ToWhat = ?", Data);
+                foreach (var relation in relations)
+                {
+                    if (relation.GetObjectID() != relationId)
+                    {
+                        relation.Delete();
+                    }
+                }
                 Transaction.Commit();
                 PageManager.Refresh(Data.Key);
             }

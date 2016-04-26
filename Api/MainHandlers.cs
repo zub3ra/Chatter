@@ -144,8 +144,8 @@ namespace Chatter {
                 page.RefreshData(systemUserId);
                 return page;
             });
-
-            //For draft
+            
+            #region Draft handlers
             Handle.GET("/chatter/partials/chatmessagedraft/{?}", (string relationId) => {
                 var page = new ChatMessagePage
                 {
@@ -158,8 +158,9 @@ namespace Chatter {
             });
             Handle.GET("/chatter/partials/chatattachment/{?}", (string objectId) => null);
             Handle.GET("/chatter/partials/chatwarning/{?}", (string objectId) => null);
+            #endregion
 
-            //For custom applications
+            #region Custom application handlers
             Handle.GET("/chatter/partials/chatattachmenttext/{?}", (string chatMessageId) =>
             {
                 var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
@@ -190,6 +191,7 @@ namespace Chatter {
                 page.RefreshData(chatMessageTextId);
                 return page;
             });
+            #endregion
         }
 
         protected void RegisterMap() {
@@ -203,12 +205,13 @@ namespace Chatter {
                 return chatMessage.IsDraft ? null : objectId;
             });
 
-            //For draft
+            #region Draft ontology mapping
             UriMapping.OntologyMap("/chatter/partials/chatmessagedraft/@w", "simplified.ring6.chatdraftannouncement", null, null);
             UriMapping.OntologyMap("/chatter/partials/chatattachment/@w", "simplified.ring6.chatattachment", objectId => objectId, objectId => null);
             UriMapping.OntologyMap("/chatter/partials/chatwarning/@w", "simplified.ring6.chatwarning", objectId => objectId, objectId => null);
+            #endregion
 
-            //For custom applications
+            #region Custom application ontology mapping
             UriMapping.OntologyMap("/chatter/partials/chatattachmenttext/@w", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
             {
                 var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId));
@@ -236,6 +239,7 @@ namespace Chatter {
                 var result = ChatMessageTextValidator.IsValid(chatMessageText as ChatMessageText);
                 return string.IsNullOrEmpty(result) ? null : chatMessageText.GetObjectID();
             });
+            #endregion
         }
     }
 }
