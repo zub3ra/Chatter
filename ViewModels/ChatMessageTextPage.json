@@ -1,4 +1,5 @@
 {
     "Html": "/Chatter/ViewModels/ChatMessageTextPage.html",
-    "Text$":  ""
+    "Text$": "",
+    "Warning": ""
 }

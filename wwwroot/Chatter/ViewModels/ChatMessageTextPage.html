@@ -1,6 +1,11 @@
 ﻿<template>
     <template is="dom-bind">
         <input type="text" value="{{model.Text$::input}}" class="form-control" placeholder="Input your message"/>
+        <div class="group-warning">
+            <template is="dom-if" if="{{model.Warning}}">
+                <span>{{model.Warning}}</span>
+            </template>
+        </div>
         <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
     </template>
 </template>

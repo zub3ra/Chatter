@@ -12,5 +12,6 @@
       }
     },
     "Send$": 0,
-    "Draft": { }
+    "Draft": { },
+    "Warning": { }
 }

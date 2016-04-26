@@ -1,4 +1,5 @@
-﻿using Starcounter;
+﻿using Chatter.Helpers;
+using Starcounter;
 using Simplified.Ring6;
 using Simplified.Ring1;
 
@@ -152,12 +153,13 @@ namespace Chatter {
                 };
                 var relation = (Relation)DbHelper.FromID(DbHelper.Base64DecodeObjectID(relationId));
                 page.RefreshData(relation.ToWhat.GetObjectID());
-                page.SetDraft(relationId);
+                page.SetDraft(relation);
                 return page;
             });
             Handle.GET("/chatter/partials/chatattachment/{?}", (string objectId) => null);
+            Handle.GET("/chatter/partials/chatwarning/{?}", (string objectId) => null);
 
-            //For TextPage similar in Images, People etc.
+            //For custom applications
             Handle.GET("/chatter/partials/chatattachmenttext/{?}", (string chatMessageId) =>
             {
                 var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
@@ -181,6 +183,13 @@ namespace Chatter {
                 return page;
             });
             Handle.GET("/chatter/partials/chatdraftannouncement/{?}", (string objectPath) => null);
+
+            Handle.GET("/chatter/partials/chatmessagetextwarning/{?}", (string chatMessageTextId) =>
+            {
+                var page = new ChatMessageTextWarningPage();
+                page.RefreshData(chatMessageTextId);
+                return page;
+            });
         }
 
         protected void RegisterMap() {
@@ -197,6 +206,7 @@ namespace Chatter {
             //For draft
             UriMapping.OntologyMap("/chatter/partials/chatmessagedraft/@w", "simplified.ring6.chatdraftannouncement", null, null);
             UriMapping.OntologyMap("/chatter/partials/chatattachment/@w", "simplified.ring6.chatattachment", objectId => objectId, objectId => null);
+            UriMapping.OntologyMap("/chatter/partials/chatwarning/@w", "simplified.ring6.chatwarning", objectId => objectId, objectId => null);
 
             //For custom applications
             UriMapping.OntologyMap("/chatter/partials/chatattachmenttext/@w", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
@@ -218,6 +228,14 @@ namespace Chatter {
                 return chatMessageText.GetType() == typeof(ChatMessageText) ? chatMessageText.GetObjectID() : null;
             });
             UriMapping.OntologyMap("/chatter/partials/chatdraftannouncement/@w", "simplified.ring6.chatdraftannouncement", objectId => objectId, objectId => null);
+            UriMapping.OntologyMap("/chatter/partials/chatmessagetextwarning/@w", "simplified.ring6.chatwarning", (string objectId) => objectId, (string objectId) =>
+            {
+                var chatMessageText = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId));
+                if (chatMessageText.GetType() != typeof (ChatMessageText)) return null;
+
+                var result = ChatMessageTextValidator.IsValid(chatMessageText as ChatMessageText);
+                return string.IsNullOrEmpty(result) ? null : chatMessageText.GetObjectID();
+            });
         }
     }
 }
