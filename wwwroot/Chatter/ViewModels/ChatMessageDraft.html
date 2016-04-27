@@ -1,13 +1,13 @@
 ﻿<template>
     <template is="dom-bind">
-        <div class="application">
-            <div class="aplication-container panel panel-default">
+        <div class="chatter-message-draft">
+            <div class="chatter-message-draft__container panel panel-default">
                 <div class="panel-body">
                     <starcounter-include partial="{{model.Draft}}"></starcounter-include>
                     <starcounter-include partial="{{model.Warning}}"></starcounter-include>
                 </div>
             </div>
-            <div class="aplication-add">
+            <div class="chatter-message-draft__add-button">
                 <button type="button" class="btn btn-small btn-success aplication-add-button" onclick="++this.value;" value="{{model.Send$::click}}">Send</button>
             </div>
         </div>

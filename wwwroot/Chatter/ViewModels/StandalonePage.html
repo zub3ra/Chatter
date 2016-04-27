@@ -16,16 +16,16 @@
     <link rel="import" href="/sys/bootstrap.html" />
     <link href="/Chatter/css/standalone.css" rel="stylesheet" />
 </head>
-<body>
+<body class="chatter-body">
     <template id="root" is="dom-bind">
-        <nav id="top-menu">
-            <ul>
-                <li>
-                    <a href="/chatter">Home</a>
+        <nav id="chatter-body__nav-menu">
+            <ul class="chatter-body__nav-menu-ul">
+                <li class="chatter-body__nav-menu-il">
+                    <a class="chatter-body__nav-menu-a" href="/chatter">Home</a>
                 </li>
             </ul>
         </nav>
-        <div id="body">
+        <div class="chatter-body__starcounter-include">
             <starcounter-include partial="{{model.CurrentPage}}"></starcounter-include>
         </div>
         <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
