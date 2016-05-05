@@ -152,7 +152,7 @@ namespace Chatter {
                     Html = "/Chatter/ViewModels/ChatMessageDraft.html"
                 };
                 var relation = (Relation)DbHelper.FromID(DbHelper.Base64DecodeObjectID(relationId));
-                page.RefreshData(relation.ToWhat.GetObjectID());
+                page.RefreshData(relation.WhatIs.GetObjectID());
                 page.SetDraft(relation);
                 return page;
             });
@@ -165,10 +165,13 @@ namespace Chatter {
             {
                 var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
                 var chatMessageText = new ChatMessageText();
-                chatMessageText.MessageText = chatMessageText;
-                chatMessageText.ChatMessage = chatMessage;
+                var relation = new TextRelation
+                {
+                    Content = chatMessageText,
+                    Concept = chatMessage
+                };
 
-                var draft = Self.GET("/chatter/partials/chatdraftannouncement/" + chatMessageText.GetObjectID());
+                var draft = Self.GET("/chatter/partials/chatdraftannouncement/" + relation.GetObjectID());
                 return draft;
             });
             Handle.GET("/chatter/partials/chatattachmenttextpreview/{?}", (string chatMessageTextId) =>
@@ -222,22 +225,22 @@ namespace Chatter {
                 var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId));
                 if (chatMessage.IsDraft) return null;
 
-                var chatMessageText = Db.SQL<ChatMessageText>(@"Select m from Simplified.Ring6.ChatMessageText m Where m.ToWhat = ?", chatMessage).First;
-                return chatMessageText?.GetObjectID();
+                var textRelation = Db.SQL<TextRelation>(@"Select m from Simplified.Ring6.TextRelation m Where m.WhatIs = ?", chatMessage).First;
+                return textRelation?.Content?.GetObjectID();
             });
             UriMapping.OntologyMap("/chatter/partials/chatmessagetext/@w", "simplified.ring6.chatattachment", (string objectId) => objectId, (string objectId) =>
             {
-                var chatMessageText = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId));
-                return chatMessageText.GetType() == typeof(ChatMessageText) ? chatMessageText.GetObjectID() : null;
+                var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as TextRelation;
+                return textRelation?.Content?.GetObjectID();
             });
             UriMapping.OntologyMap("/chatter/partials/chatdraftannouncement/@w", "simplified.ring6.chatdraftannouncement", objectId => objectId, objectId => null);
             UriMapping.OntologyMap("/chatter/partials/chatmessagetextwarning/@w", "simplified.ring6.chatwarning", (string objectId) => objectId, (string objectId) =>
             {
-                var chatMessageText = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId));
-                if (chatMessageText.GetType() != typeof (ChatMessageText)) return null;
+                var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as TextRelation;
+                if (textRelation?.Content == null) return null;
 
-                var result = ChatMessageTextValidator.IsValid(chatMessageText as ChatMessageText);
-                return string.IsNullOrEmpty(result) ? null : chatMessageText.GetObjectID();
+                var result = ChatMessageTextValidator.IsValid(textRelation.Content);
+                return string.IsNullOrEmpty(result) ? null : textRelation.Content.GetObjectID();
             });
             #endregion
         }
