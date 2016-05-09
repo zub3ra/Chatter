@@ -13,7 +13,6 @@ namespace Chatter.Helpers
         private static StandalonePage GetStandalonePage()
         {
             StandalonePage page = null;
-
             if (Session.Current != null && Session.Current.Data is StandalonePage)
             {
                 page = Session.Current.Data as StandalonePage;
