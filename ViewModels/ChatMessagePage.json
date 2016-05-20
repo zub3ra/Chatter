@@ -13,5 +13,6 @@
     },
     "Send$": 0,
     "Draft": { },
+    "PreviewText": { },
     "Warning": { }
 }

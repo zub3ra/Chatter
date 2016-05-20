@@ -4,10 +4,11 @@ using Starcounter;
 namespace Chatter {
     partial class ChatMessageTextPage : Page, IBound<ChatMessageText>
     {
-        public void RefreshData(string chatMessageDraftId)
+        public void AddNew(TextRelation textRelation)
         {
-            var messageText = DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageDraftId)) as ChatMessageText;
-            Data = messageText;
+            var chatMessageText = new ChatMessageText();
+            textRelation.Content = chatMessageText;
+            Data = chatMessageText;
         }
 
         public bool IsValid()

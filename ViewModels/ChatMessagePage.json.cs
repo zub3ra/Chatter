@@ -29,17 +29,19 @@ namespace Chatter {
         {
             var relationId = Relation.GetObjectID();
             var warningPage = Self.GET<Json>("/chatter/partials/chatwarning/" + relationId);
-            if (warningPage == null)
+            var error = Db.SQL<ChatWarning>(@"Select m from Simplified.Ring6.ChatWarning m Where m.ErrorRelation = ?", Relation).First;
+            if (error == null)
             {
                 Warning = null;
                 Data.IsDraft = false;
                 Data.Date = DateTime.Now;
 
                 var relations = Db.SQL<Relation>(@"SELECT m FROM Simplified.Ring1.Relation m WHERE m.WhatIs = ?", Data);
-                foreach (var relation in relations)
+                foreach (Relation relation in relations)
                 {
                     if (relation.GetObjectID() != relationId)
                     {
+                        relation.ToWhat?.Delete();
                         relation.Delete();
                     }
                 }

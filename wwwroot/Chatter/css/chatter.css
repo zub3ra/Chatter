@@ -7,6 +7,7 @@
     height: auto;
     overflow: hidden;
     margin-top: 1px;
+    width: 1000px;
 }
 
 .chatter-group__attachment-button {
