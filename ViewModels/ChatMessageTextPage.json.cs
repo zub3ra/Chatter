@@ -4,7 +4,7 @@ using Starcounter;
 namespace Chatter {
     partial class ChatMessageTextPage : Page, IBound<ChatMessageText>
     {
-        public void AddNew(TextRelation textRelation)
+        public void AddNew(ChatMessageTextRelation textRelation)
         {
             var chatMessageText = new ChatMessageText();
             textRelation.Content = chatMessageText;

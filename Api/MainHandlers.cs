@@ -166,7 +166,7 @@ namespace Chatter {
             Handle.GET("/chatter/partials/chatattachmenttext/{?}", (string chatMessageId) =>
             {
                 var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
-                var relation = new TextRelation
+                var relation = new ChatMessageTextRelation
                 {
                     Concept = chatMessage
                 };
@@ -182,7 +182,7 @@ namespace Chatter {
                 var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
                 if (chatMessage.IsDraft) return new Page();
 
-                var textRelation = Db.SQL<TextRelation>(@"Select m from Simplified.Ring6.TextRelation m Where m.WhatIs = ?", chatMessage).First;
+                var textRelation = Db.SQL<ChatMessageTextRelation>(@"Select m from Simplified.Ring6.TextRelation m Where m.WhatIs = ?", chatMessage).First;
                 var chatMessageTextId = textRelation?.Content?.GetObjectID();
                 if(chatMessageTextId == null) return new Page();
 
@@ -192,7 +192,7 @@ namespace Chatter {
             });
             Handle.GET("/chatter/partials/chatmessagetext/{?}", (string textRelationId) =>
             {
-                var textRelation = (TextRelation)DbHelper.FromID(DbHelper.Base64DecodeObjectID(textRelationId));
+                var textRelation = (ChatMessageTextRelation)DbHelper.FromID(DbHelper.Base64DecodeObjectID(textRelationId));
                 var page = new ChatMessageTextPage();
                 page.AddNew(textRelation);
                 return page;
@@ -201,7 +201,7 @@ namespace Chatter {
 
             Handle.GET("/chatter/partials/chatmessagetextwarning/{?}", (string textRelationId) =>
             {
-                var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(textRelationId)) as TextRelation;
+                var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(textRelationId)) as ChatMessageTextRelation;
                 var page = new ChatMessageTextWarningPage();
                 page.RefreshData(textRelation);
                 return page;
@@ -224,7 +224,7 @@ namespace Chatter {
             UriMapping.OntologyMap("/chatter/partials/chatmessagedraft/@w", "simplified.ring6.chatdraftannouncement");
             UriMapping.OntologyMap("/chatter/partials/chatattachment/@w", "simplified.ring6.chatattachment", (string objectId) => objectId,(string objectId) =>
             {
-                var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as TextRelation;
+                var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as ChatMessageTextRelation;
                 return textRelation == null? objectId : null;
             });
             UriMapping.OntologyMap("/chatter/partials/chatwarning/@w", "simplified.ring6.chatwarning");
@@ -238,14 +238,14 @@ namespace Chatter {
             });
             UriMapping.OntologyMap("/chatter/partials/chatmessagetext/@w", "simplified.ring6.chatattachment", (string objectId) => objectId, (string objectId) =>
             {
-                var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as TextRelation;
+                var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as ChatMessageTextRelation;
                 return textRelation?.GetObjectID();
             });
             //in other applicaiton please remove objectId => objectId, objectId => null
             UriMapping.OntologyMap("/chatter/partials/chatdraftannouncement/@w", "simplified.ring6.chatdraftannouncement", objectId => objectId, objectId => null);
             UriMapping.OntologyMap("/chatter/partials/chatmessagetextwarning/@w", "simplified.ring6.chatwarning", (string objectId) => objectId, (string objectId) =>
             {
-                var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as TextRelation;
+                var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as ChatMessageTextRelation;
                 return textRelation?.GetObjectID();
             });
             #endregion
