@@ -36,12 +36,12 @@ namespace Chatter {
                 Data.IsDraft = false;
                 Data.Date = DateTime.Now;
 
-                var relations = Db.SQL<Relation>(@"SELECT m FROM Simplified.Ring1.Relation m WHERE m.WhatIs = ?", Data);
+                var relations = Db.SQL<Relation>(@"SELECT m FROM Simplified.Ring1.Relation m WHERE m.ToWhat = ?", Data);
                 foreach (Relation relation in relations)
                 {
                     if (relation.GetObjectID() != relationId)
                     {
-                        relation.ToWhat?.Delete();
+                        relation.WhatIs?.Delete();
                         relation.Delete();
                     }
                 }

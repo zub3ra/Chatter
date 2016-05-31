@@ -154,7 +154,7 @@ namespace Chatter {
                     Html = "/Chatter/ViewModels/ChatMessageDraft.html"
                 };
                 var relation = (Relation)DbHelper.FromID(DbHelper.Base64DecodeObjectID(relationId));
-                page.RefreshData(relation.WhatIs.GetObjectID());
+                page.RefreshData(relation.ToWhat.GetObjectID());
                 page.SetDraft(relation);
                 return page;
             });
@@ -182,7 +182,7 @@ namespace Chatter {
                 var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
                 if (chatMessage.IsDraft) return new Page();
 
-                var textRelation = Db.SQL<ChatMessageTextRelation>(@"Select m from Simplified.Ring6.TextRelation m Where m.WhatIs = ?", chatMessage).First;
+                var textRelation = Db.SQL<ChatMessageTextRelation>(@"Select m from Simplified.Ring6.ChatMessageTextRelation m Where m.ToWhat = ?", chatMessage).First;
                 var chatMessageTextId = textRelation?.Content?.GetObjectID();
                 if(chatMessageTextId == null) return new Page();
 

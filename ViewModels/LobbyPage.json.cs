@@ -30,8 +30,9 @@ namespace Chatter {
                     foreach (ChatMessage message in messages)
                     {
                         var relations = Db.SQL<Relation>("SELECT m FROM Simplified.Ring1.Relation m WHERE m.ToWhat = ?", message);
-                        foreach (var relation in relations)
+                        foreach (Relation relation in relations)
                         {
+                            relation.WhatIs?.Delete();
                             relation.Delete();
                         }
                         message.Delete();
