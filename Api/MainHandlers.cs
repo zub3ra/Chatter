@@ -161,7 +161,7 @@ namespace Chatter {
             #endregion
 
             #region Custom application handlers
-            Handle.GET("/chatter/partials/chatmessages2/{?}", (string chatMessageId) =>
+            Handle.GET("/chatter/partials/chatmessages-draft/{?}", (string chatMessageId) =>
             {
                 var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
                 var relation = new ChatMessageTextRelation
@@ -214,24 +214,21 @@ namespace Chatter {
             UriMapping.Map("/chatter/menu", "/sc/mapping/menu");
 
             UriMapping.OntologyMap("/chatter/partials/people/@w", "simplified.ring2.person");
+
+            #region Custom application ontology mapping
             UriMapping.OntologyMap("/chatter/partials/chatmessages/@w", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
             {
                 var message = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as ChatMessage;
                 return message.IsDraft ? null : objectId;
             });
-
-            #region Draft ontology mapping
-            UriMapping.OntologyMap("/chatter/partials/chatdraftannouncements/@w", "simplified.ring6.chatdraftannouncement");
-            UriMapping.OntologyMap("/chatter/partials/chatattachments/@w", "simplified.ring6.chatattachment");
-            #endregion
-
-            #region Custom application ontology mapping
-            UriMapping.OntologyMap("/chatter/partials/chatmessages2/@w", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
+            UriMapping.OntologyMap("/chatter/partials/chatmessages-draft/@w", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
             {
                 var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId));
                 return chatMessage.IsDraft ? objectId : null;
             });
-            //in other applicaiton please remove objectId => objectId, objectId => null
+
+            UriMapping.OntologyMap("/chatter/partials/chatattachments/@w", "simplified.ring6.chatattachment");
+            UriMapping.OntologyMap("/chatter/partials/chatdraftannouncements/@w", "simplified.ring6.chatdraftannouncement");
             UriMapping.OntologyMap("/chatter/partials/chatwarnings/@w", "simplified.ring6.chatwarning");
             #endregion
         }
