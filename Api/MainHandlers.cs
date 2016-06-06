@@ -197,8 +197,6 @@ namespace Chatter {
                 page.AddNew(textRelation);
                 return page;
             });
-            Handle.GET("/chatter/partials/chatdraftannouncements2/{?}", (string objectPath) => new Page());
-
             Handle.GET("/chatter/partials/chatwarnings2/{?}", (string textRelationId) =>
             {
                 var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(textRelationId)) as ChatMessageTextRelation;
@@ -242,7 +240,6 @@ namespace Chatter {
                 return textRelation?.GetObjectID();
             });
             //in other applicaiton please remove objectId => objectId, objectId => null
-            UriMapping.OntologyMap("/chatter/partials/chatdraftannouncements2/@w", "simplified.ring6.chatdraftannouncement", objectId => objectId, objectId => null);
             UriMapping.OntologyMap("/chatter/partials/chatwarnings2/@w", "simplified.ring6.chatwarning", (string objectId) => objectId, (string objectId) =>
             {
                 var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as ChatMessageTextRelation;
