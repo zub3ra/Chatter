@@ -28,7 +28,7 @@ namespace Chatter {
         void Handle(Input.Send Action)
         {
             var relationId = Relation.GetObjectID();
-            var warningPage = Self.GET<Json>("/chatter/partials/chatwarning/" + relationId);
+            var warningPage = Self.GET<Json>("/chatter/partials/chatwarnings/" + relationId);
             var error = Db.SQL<ChatWarning>(@"Select m from Simplified.Ring6.ChatWarning m Where m.ErrorRelation = ?", Relation).First;
             if (error == null)
             {
@@ -58,7 +58,7 @@ namespace Chatter {
         {
             Relation = relation;
             Data.IsDraft = true;
-            Draft = Self.GET("/chatter/partials/chatattachment/" + relation.GetObjectID());
+            Draft = Self.GET("/chatter/partials/chatattachments/" + relation.GetObjectID());
         }
     }
 }

@@ -133,7 +133,7 @@ namespace Chatter {
                 return page;
             });
 
-            Handle.GET("/chatter/partials/person/{?}", (string personId) => {
+            Handle.GET("/chatter/partials/people/{?}", (string personId) => {
                 var page = new PersonPage();
 
                 page.RefreshData(personId);
@@ -148,7 +148,7 @@ namespace Chatter {
             });
             
             #region Draft handlers
-            Handle.GET("/chatter/partials/chatmessagedraft/{?}", (string relationId) => {
+            Handle.GET("/chatter/partials/chatdraftannouncements/{?}", (string relationId) => {
                 var page = new ChatMessagePage
                 {
                     Html = "/Chatter/ViewModels/ChatMessageDraft.html"
@@ -158,12 +158,12 @@ namespace Chatter {
                 page.SetDraft(relation);
                 return page;
             });
-            Handle.GET("/chatter/partials/chatattachment/{?}", (string objectId) => new Page());
-            Handle.GET("/chatter/partials/chatwarning/{?}", (string objectId) => new Page());
+            Handle.GET("/chatter/partials/chatattachments/{?}", (string objectId) => new Page());
+            Handle.GET("/chatter/partials/chatwarnings/{?}", (string objectId) => new Page());
             #endregion
 
             #region Custom application handlers
-            Handle.GET("/chatter/partials/chatattachmenttext/{?}", (string chatMessageId) =>
+            Handle.GET("/chatter/partials/chatmessages2/{?}", (string chatMessageId) =>
             {
                 var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
                 var relation = new ChatMessageTextRelation
@@ -173,7 +173,7 @@ namespace Chatter {
 
                 var page = new ChatAttachmentPage
                 {
-                    SubPage = Self.GET("/chatter/partials/chatdraftannouncement/" + relation.GetObjectID())
+                    SubPage = Self.GET("/chatter/partials/chatdraftannouncements/" + relation.GetObjectID())
                 };
                 return page;
             });
@@ -190,16 +190,16 @@ namespace Chatter {
                 page.RefreshData(chatMessageTextId);
                 return page;
             });
-            Handle.GET("/chatter/partials/chatmessagetext/{?}", (string textRelationId) =>
+            Handle.GET("/chatter/partials/chatattachments2/{?}", (string textRelationId) =>
             {
                 var textRelation = (ChatMessageTextRelation)DbHelper.FromID(DbHelper.Base64DecodeObjectID(textRelationId));
                 var page = new ChatMessageTextPage();
                 page.AddNew(textRelation);
                 return page;
             });
-            Handle.GET("/chatter/partials/chatdraftannouncement/{?}", (string objectPath) => new Page());
+            Handle.GET("/chatter/partials/chatdraftannouncements2/{?}", (string objectPath) => new Page());
 
-            Handle.GET("/chatter/partials/chatmessagetextwarning/{?}", (string textRelationId) =>
+            Handle.GET("/chatter/partials/chatwarnings2/{?}", (string textRelationId) =>
             {
                 var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(textRelationId)) as ChatMessageTextRelation;
                 var page = new ChatMessageTextWarningPage();
@@ -213,7 +213,7 @@ namespace Chatter {
             UriMapping.Map("/chatter/app-name", "/sc/mapping/app-name");
             UriMapping.Map("/chatter/menu", "/sc/mapping/menu");
 
-            UriMapping.OntologyMap("/chatter/partials/person/@w", "simplified.ring2.person");
+            UriMapping.OntologyMap("/chatter/partials/people/@w", "simplified.ring2.person");
             UriMapping.OntologyMap("/chatter/partials/chatmessages/@w", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
             {
                 var message = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as ChatMessage;
@@ -221,29 +221,29 @@ namespace Chatter {
             });
 
             #region Draft ontology mapping
-            UriMapping.OntologyMap("/chatter/partials/chatmessagedraft/@w", "simplified.ring6.chatdraftannouncement");
-            UriMapping.OntologyMap("/chatter/partials/chatattachment/@w", "simplified.ring6.chatattachment", (string objectId) => objectId,(string objectId) =>
+            UriMapping.OntologyMap("/chatter/partials/chatdraftannouncements/@w", "simplified.ring6.chatdraftannouncement");
+            UriMapping.OntologyMap("/chatter/partials/chatattachments/@w", "simplified.ring6.chatattachment", (string objectId) => objectId,(string objectId) =>
             {
                 var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as ChatMessageTextRelation;
                 return textRelation == null? objectId : null;
             });
-            UriMapping.OntologyMap("/chatter/partials/chatwarning/@w", "simplified.ring6.chatwarning");
+            UriMapping.OntologyMap("/chatter/partials/chatwarnings/@w", "simplified.ring6.chatwarning");
             #endregion
 
             #region Custom application ontology mapping
-            UriMapping.OntologyMap("/chatter/partials/chatattachmenttext/@w", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
+            UriMapping.OntologyMap("/chatter/partials/chatmessages2/@w", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
             {
                 var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId));
                 return chatMessage.IsDraft ? objectId : null;
             });
-            UriMapping.OntologyMap("/chatter/partials/chatmessagetext/@w", "simplified.ring6.chatattachment", (string objectId) => objectId, (string objectId) =>
+            UriMapping.OntologyMap("/chatter/partials/chatattachments2/@w", "simplified.ring6.chatattachment", (string objectId) => objectId, (string objectId) =>
             {
                 var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as ChatMessageTextRelation;
                 return textRelation?.GetObjectID();
             });
             //in other applicaiton please remove objectId => objectId, objectId => null
-            UriMapping.OntologyMap("/chatter/partials/chatdraftannouncement/@w", "simplified.ring6.chatdraftannouncement", objectId => objectId, objectId => null);
-            UriMapping.OntologyMap("/chatter/partials/chatmessagetextwarning/@w", "simplified.ring6.chatwarning", (string objectId) => objectId, (string objectId) =>
+            UriMapping.OntologyMap("/chatter/partials/chatdraftannouncements2/@w", "simplified.ring6.chatdraftannouncement", objectId => objectId, objectId => null);
+            UriMapping.OntologyMap("/chatter/partials/chatwarnings2/@w", "simplified.ring6.chatwarning", (string objectId) => objectId, (string objectId) =>
             {
                 var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as ChatMessageTextRelation;
                 return textRelation?.GetObjectID();
