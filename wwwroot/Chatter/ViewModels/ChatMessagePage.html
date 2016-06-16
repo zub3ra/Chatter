@@ -1,19 +1,14 @@
 ﻿<template>
     <template is="dom-bind">
-        <div class="message-user">
+        <div class="chatter-user">
             <template is="dom-if" if="{{model.User.WhoIs.Name}}">
                 <a href="{{model.User.Url}}">{{model.User.WhoIs.Name}}</a>
             </template>
             <template is="dom-if" if="{{!model.User.WhoIs.Name}}">
-                <span>{{model.UserName}}</span>
+                <span>Anonymous</span>
             </template>
         </div>
-        <div class="message-text">{{model.Text}}</div>
-        <div class="message-attachments">
-            <template is="dom-repeat" items="{{model.ChatAttachmentPages}}">
-                <starcounter-include partial="{{item}}"></starcounter-include>
-            </template>
-        </div>
+        <starcounter-include partial="{{model.PreviewText}}"></starcounter-include>
         <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
     </template>
 </template>

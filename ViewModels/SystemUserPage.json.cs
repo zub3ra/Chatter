@@ -7,7 +7,7 @@ namespace Chatter {
             SystemUser user = DbHelper.FromID(DbHelper.Base64DecodeObjectID(SystemUserId)) as SystemUser;
 
             this.Data = user;
-            this.Person = Self.GET("/chatter/partials/person/" + user.WhoIs.Key);
+            this.Person = Self.GET("/chatter/partials/people/" + user.WhoIs.Key);
         }
     }
 }

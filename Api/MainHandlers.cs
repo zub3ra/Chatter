@@ -1,7 +1,8 @@
-﻿using Starcounter;
-using Simplified.Ring1;
+﻿using Chatter.Helpers;
+using Starcounter;
 using Simplified.Ring6;
-using System;
+using Simplified.Ring1;
+using Starcounter.Advanced;
 
 namespace Chatter {
 
@@ -17,9 +18,9 @@ namespace Chatter {
             });
 
             Handle.GET("/chatter/standalone", () => {
-                Session session = Session.Current;
+                var session = Session.Current;
 
-                if (session != null && session.Data != null) {
+                if (session?.Data != null) {
                     return session.Data;
                 }
 
@@ -27,10 +28,10 @@ namespace Chatter {
 
                 if (session == null) {
                     session = new Session(SessionOptions.PatchVersioning);
-                    session.AddDestroyDelegate((Session s) => {
+                    session.AddDestroyDelegate(s => {
                         Db.Transact(() => {
-                            String ss = s.ToAsciiString();
-                            SavedSession saved = Db.SQL<SavedSession>("SELECT s FROM SavedSession s WHERE s.SessionId = ?", ss).First;
+                            var ss = s.ToAsciiString();
+                            var saved = Db.SQL<SavedSession>("SELECT s FROM SavedSession s WHERE s.SessionId = ?", ss).First;
                             saved.Delete();
                         });
                     });
@@ -38,7 +39,7 @@ namespace Chatter {
                     standalone.Html = "/Chatter/viewmodels/StandalonePage.html";
 
                     Db.Transact(() => {
-                        new SavedSession() {
+                        new SavedSession {
                             SessionId = session.ToAsciiString()
                         };
                     });
@@ -82,9 +83,9 @@ namespace Chatter {
                 });
             });
 
-            this.RegisterLauncher();
-            this.RegisterPartials();
-            this.RegisterMap();
+            RegisterLauncher();
+            RegisterPartials();
+            RegisterMap();
         }
 
         protected void RegisterLauncher() {
@@ -93,7 +94,7 @@ namespace Chatter {
             });
 
             Handle.GET("/chatter/menu", () => {
-                Page p = new Page() {
+                var p = new Page {
                     Html = "/Chatter/ViewModels/MenuPage.html"
                 };
                 return p;
@@ -101,26 +102,29 @@ namespace Chatter {
         }
 
         protected void RegisterPartials() {
-            Handle.GET("/chatter/partials/chatgroups/{?}", (string ChatGroupId) => {
-                var page = new ChatGroupPage() {
+            Handle.GET("/chatter/partials/chatgroups/{?}", (string chatGroupId) => {
+                var page = new ChatGroupPage {
                     Html = "/Chatter/ViewModels/ChatGroupPage.html"
                 };
 
-                page.RefreshData(ChatGroupId);
+                page.RefreshData(chatGroupId);
 
                 return page;
             });
 
-            Handle.GET("/chatter/partials/chatmessages/{?}", (string ObjectId) => {
-                var page = new ChatMessagePage();
-
-                page.RefreshData(ObjectId);
-
+            Handle.GET("/chatter/partials/chatmessages/{?}", (string objectId) => {
+                var message = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as ChatMessage;
+                var page = new ChatMessagePage
+                {
+                    Data = message,
+                    PreviewText = Self.GET("/chatter/partials/chatattachmenttextpreview/" + objectId)
+                };
+                page.RefreshData(objectId);
                 return page;
             });
 
             Handle.GET("/chatter/partials/chatgroups", () => {
-                var page = new LobbyPage() {
+                var page = new LobbyPage {
                     Html = "/Chatter/ViewModels/LobbyPage.html"
                 };
 
@@ -129,50 +133,104 @@ namespace Chatter {
                 return page;
             });
 
-            Handle.GET("/chatter/partials/person/{?}", (string PersonId) => {
-                PersonPage page = new PersonPage();
+            Handle.GET("/chatter/partials/people/{?}", (string personId) => {
+                var page = new PersonPage();
 
-                page.RefreshData(PersonId);
-
-                return page;
-            });
-
-            Handle.GET("/chatter/partials/systemuser/{?}", (string SystemUserId) => {
-                SystemUserPage page = new SystemUserPage();
-
-                page.RefreshData(SystemUserId);
+                page.RefreshData(personId);
 
                 return page;
             });
 
-            Handle.GET("/chatter/partials/chatattachment/{?}", (string ChatAttachmentId) => {
-                ChatAttachmentPage page = new ChatAttachmentPage();
-                ChatAttachment rel = DbHelper.FromID(DbHelper.Base64DecodeObjectID(ChatAttachmentId)) as ChatAttachment;
-                Something obj = rel.Attachment;
-
-                page.Data = rel;
-
-                if (obj != null) {
-                    System.Type type = obj.GetType();
-
-                    if (type == typeof(ChatGroup)) {
-                        page.Html = "/Chatter/ViewModels/ChatAttachmentGroupPage.html";
-                    } else {
-                        page.Html += "?" + obj.GetType().FullName;
-                    }
-                }
-
+            Handle.GET("/chatter/partials/systemuser/{?}", (string systemUserId) => {
+                var page = new SystemUserPage();
+                page.RefreshData(systemUserId);
                 return page;
             });
+            
+            #region Draft handlers
+            Handle.GET("/chatter/partials/chatdraftannouncements/{?}", (string relationId) => {
+                var page = new ChatMessagePage
+                {
+                    Html = "/Chatter/ViewModels/ChatMessageDraft.html"
+                };
+                var relation = (Relation)DbHelper.FromID(DbHelper.Base64DecodeObjectID(relationId));
+                page.RefreshData(relation.ToWhat.GetObjectID());
+                page.SetDraft(relation);
+                return page;
+            });
+            #endregion
+
+            #region Custom application handlers
+            Handle.GET("/chatter/partials/chatmessages-draft/{?}", (string chatMessageId) =>
+            {
+                var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
+                var relation = new ChatMessageTextRelation
+                {
+                    Concept = chatMessage
+                };
+
+                var page = new ChatAttachmentPage
+                {
+                    SubPage = Self.GET("/chatter/partials/chatdraftannouncements/" + relation.GetObjectID())
+                };
+                return page;
+            });
+            Handle.GET("/chatter/partials/chatattachmenttextpreview/{?}", (string chatMessageId) =>
+            {
+                var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
+                if (chatMessage.IsDraft) return new Page();
+
+                var textRelation = Db.SQL<ChatMessageTextRelation>(@"Select m from Simplified.Ring6.ChatMessageTextRelation m Where m.ToWhat = ?", chatMessage).First;
+                var chatMessageTextId = textRelation?.Content?.GetObjectID();
+                if(chatMessageTextId == null) return new Page();
+
+                var page = new ChatMessageTextPreviewPage();
+                page.RefreshData(chatMessageTextId);
+                return page;
+            });
+            Handle.GET("/chatter/partials/chatattachments/{?}", (string textRelationId) => 
+            {
+                var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(textRelationId)) as ChatMessageTextRelation;
+                if (textRelation == null) return new Page();
+
+                var page = new ChatMessageTextPage();
+                page.AddNew(textRelation);
+                return page;
+            });
+            Handle.GET("/chatter/partials/chatwarnings/{?}", (string textRelationId) =>
+            {
+                var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(textRelationId)) as ChatMessageTextRelation;
+                if (textRelation == null) return new Page();
+
+                var page = new ChatMessageTextWarningPage();
+                page.RefreshData(textRelation);
+                return page;
+            });
+            #endregion
         }
 
         protected void RegisterMap() {
             UriMapping.Map("/chatter/app-name", "/sc/mapping/app-name");
             UriMapping.Map("/chatter/menu", "/sc/mapping/menu");
 
-            UriMapping.OntologyMap("/chatter/partials/person/@w", "simplified.ring2.person", null, null);
-            UriMapping.OntologyMap("/chatter/partials/chatgroups/@w", "simplified.ring6.chatgroup", null, null);
-            UriMapping.OntologyMap("/chatter/partials/chatattachment/@w", "simplified.ring6.chatattachment", null, null);
+            UriMapping.OntologyMap("/chatter/partials/people/@w", "simplified.ring2.person");
+
+            #region Custom application ontology mapping
+            UriMapping.OntologyMap("/chatter/partials/chatmessages/@w", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
+            {
+                var message = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as ChatMessage;
+                return message.IsDraft ? null : objectId;
+            });
+            UriMapping.OntologyMap("/chatter/partials/chatmessages-draft/@w", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
+            {
+                var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId));
+                return chatMessage.IsDraft ? objectId : null;
+            });
+
+            UriMapping.OntologyMap("/chatter/partials/chatattachments/@w", "simplified.ring6.chatattachment");
+            UriMapping.OntologyMap("/chatter/partials/chatdraftannouncements/@w", "simplified.ring6.chatdraftannouncement");
+            UriMapping.OntologyMap("/chatter/partials/chatwarnings/@w", "simplified.ring6.chatwarning");
+            #endregion
         }
     }
 }

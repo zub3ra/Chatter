@@ -2,15 +2,15 @@
 <link href="/Chatter/css/chatter.css" rel="stylesheet" />
 
 <template>
-    <template is="dom-bind">
-        <h1>Select or create chat room</h1>
-        <div class="lobby-input">
+    <template is="dom-bind" class="chatter-lobby">
+        <h1 class="chatter-lobby__heading-one">Select or create chat room</h1>
+        <div class="chatter-lobby__input">
             <input class="form-control" value="{{model.NewGroupName$::input}}" on-keyup="onInputKeyup" placeholder="Chat room name" />
         </div>
-        <div class="lobby-button">
+        <div class="chatter-lobby__button">
             <button class="btn btn-primary" onmousedown="++this.value;" value="{{model.GoToNewGroup$::click}}">Create</button>
         </div>
-        <table class="table table-bordered lobby-table">
+        <table class="chatter-lobby__table table table-bordered">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -20,7 +20,7 @@
             <tbody>
                 <template is="dom-repeat" items="{{model.ChatGroups}}">
                     <tr>
-                        <td>
+                        <td class="chatter-lobby__table--td">
                             <span>{{item.Name}}</span>
                         </td>
                         <td>
@@ -34,16 +34,5 @@
         <link is="puppet-redirect" history url$="{{model.RedirectUrl$}}" />
         <dom-bind-notifier observed-object="{{model}}" path="model" deep></dom-bind-notifier>
     </template>
-    <script>
-        (function () {
-            var script = document._currentScript || document.currentScript;
-            var template = script.previousElementSibling;
-
-            template.onInputKeyup = function (e) {
-                if (e.keyCode == 13) {
-                    template.set("model.GoToNewGroup$", template.model.GoToNewGroup$ + 1);
-                }
-            };
-        })();
-    </script>
+    <script src="/Chatter/js/LobbyPageScript.js/"></script>
 </template>
