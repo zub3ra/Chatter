@@ -215,23 +215,23 @@ namespace Chatter {
             UriMapping.Map("/chatter/app-name", "/sc/mapping/app-name");
             UriMapping.Map("/chatter/menu", "/sc/mapping/menu");
 
-            UriMapping.OntologyMap("/chatter/partials/people/@w", "simplified.ring2.person");
+            UriMapping.OntologyMap("/chatter/partials/people/{?}", "simplified.ring2.person");
 
             #region Custom application ontology mapping
-            UriMapping.OntologyMap("/chatter/partials/chatmessages/@w", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
+            UriMapping.OntologyMap("/chatter/partials/chatmessages/{?}", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
             {
                 var message = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as ChatMessage;
                 return message.IsDraft ? null : objectId;
             });
-            UriMapping.OntologyMap("/chatter/partials/chatmessages-draft/@w", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
+            UriMapping.OntologyMap("/chatter/partials/chatmessages-draft/{?}", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
             {
                 var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId));
                 return chatMessage.IsDraft ? objectId : null;
             });
 
-            UriMapping.OntologyMap("/chatter/partials/chatattachments/@w", "simplified.ring6.chatattachment");
-            UriMapping.OntologyMap("/chatter/partials/chatdraftannouncements/@w", "simplified.ring6.chatdraftannouncement");
-            UriMapping.OntologyMap("/chatter/partials/chatwarnings/@w", "simplified.ring6.chatwarning");
+            UriMapping.OntologyMap("/chatter/partials/chatattachments/{?}", "simplified.ring6.chatattachment");
+            UriMapping.OntologyMap("/chatter/partials/chatdraftannouncements/{?}", "simplified.ring6.chatdraftannouncement");
+            UriMapping.OntologyMap("/chatter/partials/chatwarnings/{?}", "simplified.ring6.chatwarning");
             #endregion
         }
     }
