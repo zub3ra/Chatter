@@ -3,7 +3,7 @@ using Simplified.Ring6;
 using Starcounter;
 
 namespace Chatter {
-    partial class ChatMessageTextWarningPage : Page
+    partial class ChatMessageTextWarningPage : Json
     {
         public void RefreshData(ChatMessageTextRelation textRelation)
         {

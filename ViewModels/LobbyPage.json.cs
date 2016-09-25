@@ -3,7 +3,8 @@ using Starcounter;
 using Simplified.Ring6;
 
 namespace Chatter {
-    partial class LobbyPage : Page {
+    partial class LobbyPage : Json
+    {
         public void RefreshData() {
             ChatGroups = Db.SQL<ChatGroup>("SELECT g FROM Simplified.Ring6.ChatGroup g ORDER BY g.Name");
         }

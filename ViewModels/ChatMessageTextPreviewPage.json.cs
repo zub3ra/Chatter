@@ -2,7 +2,7 @@ using Simplified.Ring6;
 using Starcounter;
 
 namespace Chatter {
-    partial class ChatMessageTextPreviewPage : Page, IBound<ChatMessageText>
+    partial class ChatMessageTextPreviewPage : Json, IBound<ChatMessageText>
     {
         public void RefreshData(string chatMessageDraftId)
         {

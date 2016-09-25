@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Chatter {
 
-    partial class ChatGroupPage : Page, IBound<ChatGroup> {
+    partial class ChatGroupPage : Json, IBound<ChatGroup> {
         private readonly long _maxMsgs = 10;
 
         public void RefreshData(string chatGroupId) {

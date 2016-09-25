@@ -1,6 +1,7 @@
 using Starcounter;
 
 namespace Chatter {
-    partial class StandalonePage : Page {
+    partial class StandalonePage : Json
+    {
     }
 }

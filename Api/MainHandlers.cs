@@ -17,6 +17,9 @@ namespace Chatter {
                 Db.SlowSQL("DELETE FROM SavedSession");
             });
 
+            Application.Current.Use(new HtmlFromJsonProvider());
+            Application.Current.Use(new PartialToStandaloneHtmlProvider());
+
             Handle.GET("/chatter/standalone", () => {
                 var session = Session.Current;
 
@@ -35,8 +38,6 @@ namespace Chatter {
                             saved.Delete();
                         });
                     });
-
-                    standalone.Html = "/Chatter/viewmodels/StandalonePage.html";
 
                     Db.Transact(() => {
                         new SavedSession {
@@ -94,9 +95,10 @@ namespace Chatter {
             });
 
             Handle.GET("/chatter/menu", () => {
-                var p = new Page {
-                    Html = "/Chatter/ViewModels/MenuPage.html"
-                };
+                var master = (StandalonePage)Self.GET("/chatter/standalone");
+                master.ShowMenu = false;
+
+                var p = new MenuPage();
                 return p;
             });
         }
@@ -178,11 +180,11 @@ namespace Chatter {
             Handle.GET("/chatter/partials/chatattachmenttextpreview/{?}", (string chatMessageId) =>
             {
                 var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
-                if (chatMessage.IsDraft) return new Page();
+                if (chatMessage.IsDraft) return new Json();
 
                 var textRelation = Db.SQL<ChatMessageTextRelation>(@"Select m from Simplified.Ring6.ChatMessageTextRelation m Where m.ToWhat = ?", chatMessage).First;
                 var chatMessageTextId = textRelation?.Content?.GetObjectID();
-                if(chatMessageTextId == null) return new Page();
+                if(chatMessageTextId == null) return new Json();
 
                 var page = new ChatMessageTextPreviewPage();
                 page.RefreshData(chatMessageTextId);
@@ -191,7 +193,7 @@ namespace Chatter {
             Handle.GET("/chatter/partials/chatattachments/{?}", (string textRelationId) => 
             {
                 var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(textRelationId)) as ChatMessageTextRelation;
-                if (textRelation == null) return new Page();
+                if (textRelation == null) return new Json();
 
                 var page = new ChatMessageTextPage();
                 page.AddNew(textRelation);
@@ -200,7 +202,7 @@ namespace Chatter {
             Handle.GET("/chatter/partials/chatwarnings/{?}", (string textRelationId) =>
             {
                 var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(textRelationId)) as ChatMessageTextRelation;
-                if (textRelation == null) return new Page();
+                if (textRelation == null) return new Json();
 
                 var page = new ChatMessageTextWarningPage();
                 page.RefreshData(textRelation);

@@ -84,6 +84,9 @@
     <Compile Include="ViewModels\ChatGroupPage.json.cs">
       <DependentUpon>ChatGroupPage.json</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\MenuPage.json.cs">
+      <DependentUpon>MenuPage.json</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\PersonPage.json.cs">
       <DependentUpon>PersonPage.json</DependentUpon>
     </Compile>
@@ -111,7 +114,6 @@
     <Content Include="wwwroot\Chatter\ViewModels\ChatMessageTextPreviewPage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\ChatMessageTextPage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\ChatMessagePage.html" />
-    <Content Include="wwwroot\Chatter\ViewModels\LauncherWrapperPage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\LobbyPage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\MenuPage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\ChatGroupPage.html" />
@@ -178,6 +180,11 @@
   </ItemGroup>
   <ItemGroup>
     <TypedJSON Include="ViewModels\ChatAttachmentPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+  </ItemGroup>
+  <ItemGroup>
+    <TypedJSON Include="ViewModels\MenuPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
   </ItemGroup>

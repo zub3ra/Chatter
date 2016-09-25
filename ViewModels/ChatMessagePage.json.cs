@@ -5,7 +5,7 @@ using Starcounter;
 using Simplified.Ring6;
 
 namespace Chatter {
-    partial class ChatMessagePage : Page, IBound<ChatMessage>
+    partial class ChatMessagePage : Json, IBound<ChatMessage>
     {
         private Relation Relation { get; set; }
 
