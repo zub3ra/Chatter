@@ -2,6 +2,7 @@ using Starcounter;
 using Simplified.Ring3;
 using Simplified.Ring5;
 using Simplified.Ring6;
+using System.Linq;
 
 namespace Chatter {
 
@@ -28,6 +29,29 @@ namespace Chatter {
                 UserKey = null;
                 UserName = "Anonymous";
             }
+        }
+
+        protected void PushChanges(string ChatMessageKey)
+        {
+            Session.ScheduleTask(Db.SQL<SavedSession>("SELECT s FROM SavedSession s").Select(x => x.SessionId).ToList(), (Session s, string sessionId) => {
+                StandalonePage master = s.Data as StandalonePage;
+
+                if (master != null && master.CurrentPage is ChatGroupPage)
+                {
+                    ChatGroupPage page = (ChatGroupPage)master.CurrentPage;
+
+                    if (page.Data.Equals(this.Data))
+                    {
+                        if (page.ChatMessagePages.Count >= _maxMsgs)
+                        {
+                            page.ChatMessagePages.RemoveAt(0);
+                        }
+
+                        page.ChatMessagePages.Add(Self.GET<Json>("/chatter/partials/chatmessages/" + ChatMessageKey));
+                        s.CalculatePatchAndPushOnWebSocket();
+                    }
+                }
+            });
         }
 
         public void RefreshChatMessages() {
@@ -66,7 +90,7 @@ namespace Chatter {
 
         public void Refresh(string key)
         {
-            ChatMessagePages.Add(Self.GET<Json>("/chatter/partials/chatmessages/" + key));
+            PushChanges(key);
             SetNewChatMessage();
         }
 
