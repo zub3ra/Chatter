@@ -1,6 +1,6 @@
 # Chatter
 
-Sample app to chat about anything. Create chat rooms, mention things, add attachments. Messages are pushed over WebSocket.
+Chat about anything. Create chat rooms, mention things, add attachments. Messages are pushed over WebSocket.
 
 ---
 
