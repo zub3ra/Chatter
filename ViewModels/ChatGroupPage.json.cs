@@ -31,12 +31,12 @@ namespace Chatter {
             }
         }
 
-        protected void PushChanges(string ChatMessageKey)
+        protected void PushChanges(string chatMessageKey)
         {
             Session.ScheduleTask(Db.SQL<SavedSession>("SELECT s FROM SavedSession s").Select(x => x.SessionId).ToList(), (Session s, string sessionId) => {
                 StandalonePage master = s.Data as StandalonePage;
 
-                if (master != null && master.CurrentPage is ChatGroupPage)
+                if (master?.CurrentPage is ChatGroupPage)
                 {
                     ChatGroupPage page = (ChatGroupPage)master.CurrentPage;
 
@@ -47,7 +47,7 @@ namespace Chatter {
                             page.ChatMessagePages.RemoveAt(0);
                         }
 
-                        page.ChatMessagePages.Add(Self.GET<Json>("/chatter/partials/chatmessages/" + ChatMessageKey));
+                        page.ChatMessagePages.Add(Self.GET<Json>("/chatter/partials/chatmessages/" + chatMessageKey));
                         s.CalculatePatchAndPushOnWebSocket();
                     }
                 }
