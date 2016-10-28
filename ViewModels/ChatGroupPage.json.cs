@@ -61,8 +61,8 @@ namespace Chatter {
 
             var offset = count > _maxMsgs ? count - _maxMsgs : 0;
             var messages = Db.SQL<ChatMessage>(@"
-					SELECT m FROM Simplified.Ring6.ChatMessage m WHERE m.""Group"" = ? 
-					ORDER BY m.""Date"" ASC FETCH ? OFFSET ?", Data, 10, offset);
+					SELECT m FROM Simplified.Ring6.ChatMessage m WHERE m.""Group"" = ? AND m.IsDraft = ?
+					ORDER BY m.""Date"" ASC FETCH ? OFFSET ?", Data, false, 10, offset);
 
             ChatMessagePages.Clear();
 
