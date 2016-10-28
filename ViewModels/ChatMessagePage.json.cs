@@ -15,6 +15,8 @@ namespace Chatter {
             Data = message;
         }
 
+        public string FormattedDateTime => $"{Data.Date:F}";
+
         [ChatMessagePage_json.User]
         public partial class ChatMessageUserPage : Json
         {
