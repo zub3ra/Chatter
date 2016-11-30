@@ -33,7 +33,7 @@ namespace Chatter {
                     session = new Session(SessionOptions.PatchVersioning);
                     session.AddDestroyDelegate(s => {
                         Db.Transact(() => {
-                            var ss = s.ToAsciiString();
+                            var ss = s.SessionId;
                             var saved = Db.SQL<SavedSession>("SELECT s FROM SavedSession s WHERE s.SessionId = ?", ss).First;
                             saved.Delete();
                         });
@@ -41,7 +41,7 @@ namespace Chatter {
 
                     Db.Transact(() => {
                         new SavedSession {
-                            SessionId = session.ToAsciiString()
+                            SessionId = session.SessionId
                         };
                     });
                 }

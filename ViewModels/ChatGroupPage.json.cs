@@ -95,7 +95,7 @@ namespace Chatter {
         }
 
         protected SystemUserSession GetCurrentSystemUserSession() {
-            return Db.SQL<SystemUserSession>("SELECT o FROM Simplified.Ring5.SystemUserSession o WHERE o.SessionIdString = ?", Session.Current.SessionIdString).First;
+            return Db.SQL<SystemUserSession>("SELECT o FROM Simplified.Ring5.SystemUserSession o WHERE o.SessionIdString = ?", Session.Current.SessionId).First;
         }
     }
 }
