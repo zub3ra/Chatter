@@ -4,14 +4,15 @@ using Simplified.Ring1;
 using Starcounter;
 using Simplified.Ring6;
 
-namespace Chatter {
+namespace Chatter
+{
     partial class ChatMessagePage : Json, IBound<ChatMessage>
     {
         private Relation Relation { get; set; }
 
         public void RefreshData(string chatMessageId)
         {
-            var message = (ChatMessage) DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
+            var message = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
             Data = message;
         }
 
