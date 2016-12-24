@@ -31,16 +31,25 @@ namespace Chatter {
 
                 if (session == null) {
                     session = new Session(SessionOptions.PatchVersioning);
-                    session.AddDestroyDelegate(s => {
-                        Db.Transact(() => {
+                }
+
+                var savedSession = Db.SQL<SavedSession>("SELECT s FROM SavedSession s WHERE s.SessionId = ?", session.SessionId).First;
+                if (savedSession == null)
+                {
+                    session.AddDestroyDelegate(s =>
+                    {
+                        Db.Transact(() =>
+                        {
                             var ss = s.SessionId;
                             var saved = Db.SQL<SavedSession>("SELECT s FROM SavedSession s WHERE s.SessionId = ?", ss).First;
                             saved.Delete();
                         });
                     });
 
-                    Db.Transact(() => {
-                        new SavedSession {
+                    Db.Transact(() =>
+                    {
+                        new SavedSession
+                        {
                             SessionId = session.SessionId
                         };
                     });

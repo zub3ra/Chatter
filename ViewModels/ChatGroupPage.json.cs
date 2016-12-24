@@ -38,7 +38,8 @@ namespace Chatter
 
         protected void PushChanges(string chatMessageKey)
         {
-            Session.ScheduleTask(Db.SQL<SavedSession>("SELECT s FROM SavedSession s").Select(x => x.SessionId).ToList(), (Session s, string sessionId) =>
+            var sessions = Db.SQL<SavedSession>("SELECT s FROM SavedSession s").Select(x => x.SessionId).ToList();
+            Session.ScheduleTask(sessions, (Session s, string sessionId) =>
             {
                 StandalonePage master = s.Data as StandalonePage;
 
