@@ -2,16 +2,16 @@
     "Html": "/Chatter/ViewModels/ChatMessagePage.html",
     "UserName": "",
     "User": {
-      "Key": "",
-      "Username": "",
-      "Url": "",
-      "WhoIs": {
-        "Name": "",
-        "FirstName": "",
-        "LastName": ""
-      }
+        "Key": "",
+        "Username": "",
+        "Url": "",
+        "WhoIs": {
+            "Name": "",
+            "FirstName": "",
+            "LastName": ""
+        }
     },
-    "FormattedDateTime": "", 
+    "FormattedDateTime": "",
     "Send$": 0,
     "Draft": { },
     "PreviewText": { },

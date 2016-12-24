@@ -1,11 +1,11 @@
 {
     "Html": "",
     "Name": "",
-    
-	  "UserName$": "",
+
+    "UserName$": "",
     "UserKey": "",
     "ChatMessagePages": [ { } ],
     "ChatMessageDraft": { },
 
-	  "Send$": 0
+    "Send$": 0
 }

@@ -4,12 +4,14 @@ using Simplified.Ring5;
 using Simplified.Ring6;
 using System.Linq;
 
-namespace Chatter {
-
-    partial class ChatGroupPage : Json, IBound<ChatGroup> {
+namespace Chatter
+{
+    partial class ChatGroupPage : Json, IBound<ChatGroup>
+    {
         private readonly long _maxMsgs = 10;
 
-        public void RefreshData(string chatGroupId) {
+        public void RefreshData(string chatGroupId)
+        {
             var group = DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatGroupId)) as ChatGroup;
             RefreshUser();
             Data = group;
@@ -17,15 +19,18 @@ namespace Chatter {
             SetNewChatMessage();
         }
 
-        public void RefreshUser() {
+        public void RefreshUser()
+        {
             var session = GetCurrentSystemUserSession();
 
-            if (session != null) {
+            if (session != null)
+            {
                 var user = session.Token.User;
 
                 UserKey = user.Key;
                 UserName = user.Username;
-            } else {
+            }
+            else {
                 UserKey = null;
                 UserName = "Anonymous";
             }
@@ -33,7 +38,8 @@ namespace Chatter {
 
         protected void PushChanges(string chatMessageKey)
         {
-            Session.ScheduleTask(Db.SQL<SavedSession>("SELECT s FROM SavedSession s").Select(x => x.SessionId).ToList(), (Session s, string sessionId) => {
+            Session.ScheduleTask(Db.SQL<SavedSession>("SELECT s FROM SavedSession s").Select(x => x.SessionId).ToList(), (Session s, string sessionId) =>
+            {
                 StandalonePage master = s.Data as StandalonePage;
 
                 if (master?.CurrentPage is ChatGroupPage)
@@ -54,7 +60,8 @@ namespace Chatter {
             });
         }
 
-        public void RefreshChatMessages() {
+        public void RefreshChatMessages()
+        {
             var count = Db.SlowSQL<long>(@"
 					SELECT COUNT(*) FROM Simplified.Ring6.ChatMessage m 
                     WHERE m.""Group"" = ?", Data).First;
@@ -66,13 +73,15 @@ namespace Chatter {
 
             ChatMessagePages.Clear();
 
-            foreach (ChatMessage item in messages) {
+            foreach (ChatMessage item in messages)
+            {
                 var page = Self.GET<Json>("/chatter/partials/chatmessages/" + item.Key);
                 ChatMessagePages.Add(page);
             }
         }
 
-        public void SetNewChatMessage() {
+        public void SetNewChatMessage()
+        {
             SystemUser user = null;
             if (!string.IsNullOrEmpty(UserKey))
             {
@@ -94,7 +103,8 @@ namespace Chatter {
             SetNewChatMessage();
         }
 
-        protected SystemUserSession GetCurrentSystemUserSession() {
+        protected SystemUserSession GetCurrentSystemUserSession()
+        {
             return Db.SQL<SystemUserSession>("SELECT o FROM Simplified.Ring5.SystemUserSession o WHERE o.SessionIdString = ?", Session.Current.SessionId).First;
         }
     }
