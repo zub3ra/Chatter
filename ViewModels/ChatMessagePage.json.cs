@@ -8,7 +8,7 @@ namespace Chatter
 {
     partial class ChatMessagePage : Json, IBound<ChatMessage>
     {
-        private Relation Relation { get; set; }
+        public Relation Relation { get; set; }
 
         public void RefreshData(string chatMessageId)
         {

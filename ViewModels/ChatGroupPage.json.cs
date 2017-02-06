@@ -43,20 +43,16 @@ namespace Chatter
             {
                 StandalonePage master = s.Data as StandalonePage;
 
-                if (master?.CurrentPage is ChatGroupPage)
+                var page = master?.CurrentPage as ChatGroupPage;
+                if (page?.Data != null && page.Data.Equals(Data))
                 {
-                    ChatGroupPage page = (ChatGroupPage)master.CurrentPage;
-
-                    if (page.Data.Equals(this.Data))
+                    if (page.ChatMessagePages.Count >= _maxMsgs)
                     {
-                        if (page.ChatMessagePages.Count >= _maxMsgs)
-                        {
-                            page.ChatMessagePages.RemoveAt(0);
-                        }
-
-                        page.ChatMessagePages.Add(Self.GET<Json>("/chatter/partials/chatmessages/" + chatMessageKey));
-                        s.CalculatePatchAndPushOnWebSocket();
+                        page.ChatMessagePages.RemoveAt(0);
                     }
+
+                    page.ChatMessagePages.Add(Self.GET<Json>("/chatter/partials/chatmessages/" + chatMessageKey));
+                    s.CalculatePatchAndPushOnWebSocket();
                 }
             });
         }
@@ -95,13 +91,29 @@ namespace Chatter
                 UserName = UserName,
                 User = user
             };
-            ChatMessageDraft = Self.GET<Json>("/chatter/partials/chatmessages/" + draft.Key);
+            ChatMessageDraft = Self.GET("/chatter/partials/chatmessages/" + draft.Key);
+            ChatMessageTextDraft = GetTextAttachment(draft);
         }
 
         public void Refresh(string key)
         {
             PushChanges(key);
             SetNewChatMessage();
+        }
+
+        private Json GetTextAttachment(ChatMessage chatMessage)
+        {
+            var relation = new ChatMessageTextRelation { Concept = chatMessage };
+            return new ChatAttachmentPage
+            {
+                SubPage = new ChatMessagePage
+                {
+                    Html = "/Chatter/ViewModels/ChatMessageDraft.html",
+                    Data = chatMessage,
+                    Relation = relation,
+                    Draft = Self.GET("/chatter/partials/chatattachmenttext/" + relation.GetObjectID())
+                }
+            };
         }
 
         protected SystemUserSession GetCurrentSystemUserSession()

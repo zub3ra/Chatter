@@ -1,8 +1,6 @@
-﻿using Chatter.Helpers;
-using Starcounter;
+﻿using Starcounter;
 using Simplified.Ring6;
 using Simplified.Ring1;
-using Starcounter.Advanced;
 
 namespace Chatter {
 
@@ -59,36 +57,28 @@ namespace Chatter {
                 return standalone;
             });
 
-            Handle.GET("/chatter", () => {
-                return Self.GET("/chatter/chatgroups");
-            });
+            Handle.GET("/chatter", () => Self.GET("/chatter/chatgroups"));
 
             Handle.GET("/chatter/chatgroups", () => {
-                return Db.Scope<StandalonePage>(() => {
+                return Db.Scope(() => {
                     var master = (StandalonePage)Self.GET("/chatter/standalone");
-
                     master.CurrentPage = Self.GET("/chatter/partials/chatgroups");
-
                     return master;
                 });
             });
 
             Handle.GET("/chatter/chatgroup/{?}", (string name) => {
-                return Db.Scope<StandalonePage>(() => {
+                return Db.Scope(() => {
                     var master = (StandalonePage)Self.GET("/chatter/standalone");
-
                     master.CurrentPage = Self.GET("/chatter/partials/chatgroups/" + name);
-
                     return master;
                 });
             });
 
-            Handle.GET("/chatter/systemuser/{?}", (string SystemUserId) => {
-                return Db.Scope<StandalonePage>(() => {
+            Handle.GET("/chatter/systemuser/{?}", (string systemUserId) => {
+                return Db.Scope(() => {
                     var master = (StandalonePage)Self.GET("/chatter/standalone");
-
-                    master.CurrentPage = Self.GET("/chatter/partials/systemuser/" + SystemUserId);
-
+                    master.CurrentPage = Self.GET("/chatter/partials/systemuser/" + systemUserId);
                     return master;
                 });
             });
@@ -99,9 +89,7 @@ namespace Chatter {
         }
 
         protected void RegisterLauncher() {
-            Handle.GET("/chatter/app-name", () => {
-                return new AppName();
-            });
+            Handle.GET("/chatter/app-name", () => new AppName());
 
             Handle.GET("/chatter/menu", () => {
                 var master = (StandalonePage)Self.GET("/chatter/standalone");
@@ -128,7 +116,8 @@ namespace Chatter {
                 var page = new ChatMessagePage
                 {
                     Data = message,
-                    PreviewText = Self.GET("/chatter/partials/chatattachmenttextpreview/" + objectId)
+                    PreviewText = Self.GET("/chatter/partials/chatattachmenttextpreview/" + objectId),
+                    PreviewObject = Self.GET("/chatter/partials/chatattachmentobjectpreview/" + objectId),
                 };
                 page.RefreshData(objectId);
                 return page;
@@ -172,20 +161,7 @@ namespace Chatter {
             #endregion
 
             #region Custom application handlers
-            Handle.GET("/chatter/partials/chatmessages-draft/{?}", (string chatMessageId) =>
-            {
-                var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
-                var relation = new ChatMessageTextRelation
-                {
-                    Concept = chatMessage
-                };
-
-                var page = new ChatAttachmentPage
-                {
-                    SubPage = Self.GET("/chatter/partials/chatdraftannouncements/" + relation.GetObjectID())
-                };
-                return page;
-            });
+            Handle.GET("/chatter/partials/chatmessages-draft/{?}", (string chatMessageId) => new Json());
             Handle.GET("/chatter/partials/chatattachmenttextpreview/{?}", (string chatMessageId) =>
             {
                 var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(chatMessageId));
@@ -199,15 +175,15 @@ namespace Chatter {
                 page.RefreshData(chatMessageTextId);
                 return page;
             });
-            Handle.GET("/chatter/partials/chatattachments/{?}", (string textRelationId) => 
+            Handle.GET("/chatter/partials/chatattachmenttext/{?}", (string textRelationId) => 
             {
                 var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(textRelationId)) as ChatMessageTextRelation;
-                if (textRelation == null) return new Json();
-
                 var page = new ChatMessageTextPage();
                 page.AddNew(textRelation);
                 return page;
             });
+            Handle.GET("/chatter/partials/chatattachments/{?}", (string textRelationId) => new Json());
+            Handle.GET("/chatter/partials/chatattachmentobjectpreview/{?}", (string textRelationId) => new Json());
             Handle.GET("/chatter/partials/chatwarnings/{?}", (string textRelationId) =>
             {
                 var textRelation = DbHelper.FromID(DbHelper.Base64DecodeObjectID(textRelationId)) as ChatMessageTextRelation;
@@ -227,10 +203,10 @@ namespace Chatter {
             UriMapping.OntologyMap("/chatter/partials/people/{?}", "simplified.ring2.person");
 
             #region Custom application ontology mapping
-            UriMapping.OntologyMap("/chatter/partials/chatmessages/{?}", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
+            UriMapping.OntologyMap("/chatter/partials/chatattachmentobjectpreview/{?}", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
             {
                 var message = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as ChatMessage;
-                return message.IsDraft ? null : objectId;
+                return message != null && message.IsDraft ? null : objectId;
             });
             UriMapping.OntologyMap("/chatter/partials/chatmessages-draft/{?}", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
             {

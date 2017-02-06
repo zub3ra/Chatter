@@ -13,7 +13,9 @@
     },
     "FormattedDateTime": "",
     "Send$": 0,
+    "IsDraft":  false,
     "Draft": { },
     "PreviewText": { },
+    "PreviewObject":{ },
     "Warning": { }
 }
