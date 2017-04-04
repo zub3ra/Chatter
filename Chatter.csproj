@@ -62,7 +62,6 @@
     <Compile Include="Api\CommitHooks.cs" />
     <Compile Include="Api\MainHandlers.cs" />
     <Compile Include="Helpers\ChatMessageTextValidator.cs" />
-    <Compile Include="Helpers\DefaultStyles.cs" />
     <Compile Include="Helpers\PageManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,7 +100,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content\default-layout.sql" />
     <Content Include="wwwroot\Chatter\css\chatter.css" />
     <Content Include="wwwroot\Chatter\css\standalone.css" />
     <Content Include="wwwroot\Chatter\images\chatter.png" />

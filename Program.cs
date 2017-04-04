@@ -7,11 +7,9 @@ namespace Chatter {
         static void Main() {
             MainHandlers handlers = new MainHandlers();
             CommitHooks hooks = new CommitHooks();
-            DefaultStyles styles = new DefaultStyles();
 
             handlers.Register();
             hooks.Register();
-            styles.ApplyIfEmpty();
         }
     }
 }
