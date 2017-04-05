@@ -53,42 +53,6 @@
     padding: 10px 15px;
 }
 
-.chatter-lobby__input {
-    width: 550px;
-    float: left;
-    margin-bottom: 15px;
-}
-
-.chatter-lobby__button {
-    margin-bottom: 15px;
-    box-sizing: border-box;
-    margin-left: 565px;
-}
-
-.chatter-lobby__table {
-    width: 735px;
-    clear: both;
-}
-
-.chatter-lobby__table--td {
-    width: 560px;
-}
-
-.chatter-group__group-back-button {
-    padding-bottom: 11.5px;
-}
-
-.chatter-group__user {
-    clear: both;
-    padding: 5px 0px 30px 0px;
-    color: #A0A0A0;
-}
-
-.chatter-group__messages {
-    padding-bottom: 30px;
-    overflow: auto;
-}
-
 .chatter-warning {
     color: crimson;
     margin-top: 5px;

@@ -2,11 +2,9 @@
 
 <template>
     <template is="dom-bind" class="chatter-group">
-        <h2 class="chatter-group__heading-two">{{model.Name}}</h2>
-        <div class="chatter-group__group-back-button">
-            <a href="/chatter" class="btn btn-default btn-sm">Go back</a>
-        </div>
-        <div class="chatter-group__user">
+        <h2 class="chatter-group__heading-two" slot="Chatter/header">{{model.Name}}</h2>
+        <a href="/chatter" class="btn btn-default btn-sm" slot="Chatter/back">Go back</a>
+        <div class="chatter-group__user" slot="Chatter/user">
             <template is="dom-if" if="{{model.UserKey}}">
                 Signed in as
                 <b>{{model.UserName$}}</b>
@@ -15,18 +13,34 @@
                 You are not signed in, you messages will be send anonymously
             </template>
         </div>
-        <div class="chatter-group__messages">
+        <div class="chatter-group__messages" slot="Chatter/messages">
             <template is="dom-repeat" items="{{model.ChatMessagePages}}">
                 <starcounter-include partial="{{item}}"></starcounter-include>
             </template>
         </div>
-        <div>
-            <button class="btn btn-default chatter-group__attachment-button" onclick="growDiv()">Add attachment <span class="caret" /></button>
-            <div id='expandablePanel' class="chatter-group__expandable-panel panel panel-default">
-                <div class='panel-body'>
-                    <starcounter-include partial="{{model.ChatMessageDraft}}"></starcounter-include>
-                </div>
+        <button class="btn btn-default chatter-group__attachment-button" onclick="growDiv()" slot="Chatter/attachment-button">Add attachment <span class="caret" /></button>
+        <div id='expandablePanel' class="chatter-group__expandable-panel panel panel-default" slot="Chatter/draft-message">
+            <div class='panel-body'>
+                <starcounter-include partial="{{model.ChatMessageDraft}}"></starcounter-include>
             </div>
+        </div>
+    </template>
+
+    <template is="starcounter-composition">
+        <style>
+            @import url("/Chatter/css/chatter.css");
+        </style>
+
+        <content select="[slot='Chatter/header']"></content>
+        <div class="chatter-group__group-back-button">
+            <content select="[slot='Chatter/back']"></content>
+        </div>
+        <content select="[slot='Chatter/user']"></content>
+        <content select="[slot='Chatter/messages']"></content>
+        <div>
+            <content select="[slot='Chatter/attachment-button']"></content>
+
+            <content select="[slot='Chatter/draft-message']"></content>
         </div>
     </template>
     <script src="/Chatter/js/ChatterHandlers.js"></script>

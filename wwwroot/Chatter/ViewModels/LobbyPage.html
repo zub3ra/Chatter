@@ -3,14 +3,11 @@
 
 <template>
     <template is="dom-bind" class="chatter-lobby">
-        <h1 class="chatter-lobby__heading-one">Select or create chat room</h1>
-        <div class="chatter-lobby__input">
-            <input class="form-control" value="{{model.NewGroupName$::input}}" on-keyup="onInputKeyup" placeholder="Chat room name" />
-        </div>
-        <div class="chatter-lobby__button">
-            <button class="btn btn-primary" onmousedown="++this.value;" value="{{model.GoToNewGroup$::click}}">Create</button>
-        </div>
-        <table class="chatter-lobby__table table table-bordered">
+        <h1 class="chatter-lobby__heading-one" slot="Chatter/header">Select or create chat room</h1>
+        <input class="form-control" slot="Chatter/new-group-name" value="{{model.NewGroupName$::input}}" on-keyup="onInputKeyup" placeholder="Chat room name" />
+        <button class="btn btn-primary" slot="Chatter/create-group" onmousedown="++this.value;" value="{{model.GoToNewGroup$::click}}">Create</button>
+
+        <table class="chatter-lobby__table table table-bordered" slot="Chatter/groups">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -31,7 +28,24 @@
                 </template>
             </tbody>
         </table>
-        <link is="puppet-redirect" history url$="{{model.RedirectUrl$}}" />
+
+        <link is="puppet-redirect" slot="Chatter/redirect" history url$="{{model.RedirectUrl$}}" />
+    </template>
+
+    <template is="starcounter-composition">
+        <style>
+            @import url("/Chatter/css/chatter.css");
+        </style>
+
+        <content select="[slot='Chatter/header']"></content>
+        <div class="chatter-lobby__input">
+            <content select="[slot='Chatter/new-group-name']"></content>
+        </div>
+        <div class="chatter-lobby__button">
+            <content select="[slot='Chatter/create-group']"></content>
+        </div>
+        <content select="[slot='Chatter/groups']"></content>
+        <content select="[slot='Chatter/redirect']"></content>
     </template>
     <script src="/Chatter/js/LobbyPageScript.js/"></script>
 </template>
