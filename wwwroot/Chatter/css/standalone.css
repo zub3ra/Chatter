@@ -7,19 +7,6 @@
     margin: 0;
 }
 
-.chatter-lobby__heading-one {
-    font-size: 36px;
-    margin-top: 0;
-}
-
-.chatter-group__heading-two {
-    font-size: 30px;
-    float: left;
-    margin-right: 15px;
-    margin-top: 0;
-    margin-bottom: 5px;
-}
-
 .chatter-body__nav-menu {
     background-color: #F0F0F0;
     border-bottom: 1px solid #C0C0C0;

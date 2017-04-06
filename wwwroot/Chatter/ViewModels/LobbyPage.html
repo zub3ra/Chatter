@@ -2,12 +2,12 @@
 <link href="/Chatter/css/chatter.css" rel="stylesheet" />
 
 <template>
-    <template is="dom-bind" class="chatter-lobby">
-        <h1 class="chatter-lobby__heading-one" slot="Chatter/header">Select or create chat room</h1>
+    <template is="dom-bind">
+        <h1 class="chatter-lobby-heading" slot="Chatter/header">Select or create chat room</h1>
         <input class="form-control" slot="Chatter/new-group-name" value="{{model.NewGroupName$::input}}" on-keyup="onInputKeyup" placeholder="Chat room name" />
         <button class="btn btn-primary" slot="Chatter/create-group" onmousedown="++this.value;" value="{{model.GoToNewGroup$::click}}">Create</button>
 
-        <table class="chatter-lobby__table table table-bordered" slot="Chatter/groups">
+        <table class="chatter-lobby-table table table-bordered" slot="Chatter/groups">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -17,7 +17,7 @@
             <tbody>
                 <template is="dom-repeat" items="{{model.ChatGroups}}">
                     <tr>
-                        <td class="chatter-lobby__table--td">
+                        <td class="chatter-lobby-table__cell">
                             <span>{{item.Name}}</span>
                         </td>
                         <td>
@@ -38,10 +38,10 @@
         </style>
 
         <content select="[slot='Chatter/header']"></content>
-        <div class="chatter-lobby__input">
+        <div class="chatter-lobby-input">
             <content select="[slot='Chatter/new-group-name']"></content>
         </div>
-        <div class="chatter-lobby__button">
+        <div class="chatter-lobby-button">
             <content select="[slot='Chatter/create-group']"></content>
         </div>
         <content select="[slot='Chatter/groups']"></content>
