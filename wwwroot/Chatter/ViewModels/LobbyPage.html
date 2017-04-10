@@ -32,20 +32,20 @@
         <link is="puppet-redirect" slot="Chatter/redirect" history url$="{{model.RedirectUrl$}}" />
     </template>
 
-    <template is="starcounter-composition">
+    <template is="declarative-shadow-dom">
         <style>
             @import url("/Chatter/css/chatter.css");
         </style>
 
-        <content select="[slot='Chatter/header']"></content>
+        <slot name="Chatter/header" />
         <div class="chatter-lobby-input">
-            <content select="[slot='Chatter/new-group-name']"></content>
+            <slot name="Chatter/new-group-name" />
         </div>
         <div class="chatter-lobby-button">
-            <content select="[slot='Chatter/create-group']"></content>
+            <slot name="Chatter/create-group" />
         </div>
-        <content select="[slot='Chatter/groups']"></content>
-        <content select="[slot='Chatter/redirect']"></content>
+        <slot name="Chatter/groups" />
+        <slot name="Chatter/redirect" />
     </template>
     <script src="/Chatter/js/LobbyPageScript.js/"></script>
 </template>
