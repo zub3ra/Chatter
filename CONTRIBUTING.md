@@ -7,14 +7,14 @@
 1. Clone this repo to your local machine
 2. Build the solution by executing `build.bat` in Windows or `./build.bat` in Git Bash
 3. Run it by executing `run.bat` in Windows or `./run.bat` in Git Bash
-4. Go to [http://localhost:8080/people](http://localhost:8080/people)
+4. Go to [http://localhost:8080/Chatter](http://localhost:8080/Chatter)
 
 ### Build and run using Visual Studio
 
 1. Clone this repo to your local machine
 2. Open the `.sln` file in Visual Studio
 3. Build and run it using Debug in Visual Studio (**Debug** > **Start debugging** or <kbd>F5</kbd>)
-4. Go to [http://localhost:8080/people](http://localhost:8080/people)
+4. Go to [http://localhost:8080/Chatter](http://localhost:8080/Chatter)
 
 ## Contributing code
 
