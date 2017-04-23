@@ -2,9 +2,9 @@
 
 <template>
     <template is="dom-bind">
-        <h2 class="chatter-group-subheading" slot="Chatter/header">{{model.Name}}</h2>
-        <a href="/chatter" class="btn btn-default btn-sm" slot="Chatter/back">Go back</a>
-        <div class="chatter-group-user" slot="Chatter/user">
+        <h2 class="chatter-group-subheading" slot="chatter/header">{{model.Name}}</h2>
+        <a href="/chatter" class="btn btn-default btn-sm" slot="chatter/back">Go back</a>
+        <div class="chatter-group-user" slot="chatter/user">
             <template is="dom-if" if="{{model.UserKey}}">
                 Signed in as
                 <b>{{model.UserName$}}</b>
@@ -13,13 +13,13 @@
                 You are not signed in, you messages will be send anonymously
             </template>
         </div>
-        <div class="chatter-group-messages" slot="Chatter/messages">
+        <div class="chatter-group-messages" slot="chatter/messages">
             <template is="dom-repeat" items="{{model.ChatMessagePages}}">
                 <starcounter-include partial="{{item}}"></starcounter-include>
             </template>
         </div>
-        <button class="btn btn-default chatter-group-attachment-button" onclick="growDiv()" slot="Chatter/attachment-button">Add attachment <span class="caret" /></button>
-        <div id='expandablePanel' class="chatter-group-expandable-panel panel panel-default" slot="Chatter/draft-message">
+        <button class="btn btn-default chatter-group-attachment-button" onclick="growDiv()" slot="chatter/attachment-button">Add attachment <span class="caret" /></button>
+        <div id='expandablePanel' class="chatter-group-expandable-panel panel panel-default" slot="chatter/draft-message">
             <div class='panel-body'>
                 <starcounter-include partial="{{model.ChatMessageDraft}}"></starcounter-include>
             </div>
@@ -31,13 +31,13 @@
             @import url("/Chatter/css/chatter.css");
         </style>
 
-        <slot name="Chatter/header"></slot>
-        <slot name="Chatter/back"></slot>
-        <slot name="Chatter/user"></slot>
-        <slot name="Chatter/messages"></slot>
+        <slot name="chatter/header"></slot>
+        <slot name="chatter/back"></slot>
+        <slot name="chatter/user"></slot>
+        <slot name="chatter/messages"></slot>
         <div>
-            <slot name="Chatter/attachment-button"></slot>
-            <slot name="Chatter/draft-message"></slot>
+            <slot name="chatter/attachment-button"></slot>
+            <slot name="chatter/draft-message"></slot>
         </div>
     </template>
     <script src="/Chatter/js/ChatterHandlers.js"></script>
