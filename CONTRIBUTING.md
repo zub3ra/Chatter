@@ -4,6 +4,8 @@
 
 ### Build and run using CLI
 
+**Note**: Chatter cannot be run with batch scripts before #24 is resolved, instead, use Visual Studio to build and run
+
 1. Clone this repo to your local machine
 2. Build the solution by executing `build.bat` in Windows or `./build.bat` in Git Bash
 3. Run it by executing `run.bat` in Windows or `./run.bat` in Git Bash
