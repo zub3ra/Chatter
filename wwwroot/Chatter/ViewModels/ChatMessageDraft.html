@@ -8,8 +8,18 @@
                 </div>
             </div>
             <div class="chatter-message-draft__add-button">
-                <button type="button" class="btn btn-small btn-success aplication-add-button" onclick="++this.value;" value="{{model.Send$::click}}">Send</button>
+                <button type="button" class="btn btn-small btn-success aplication-add-button" on-click="onSendClick" value="{{model.Send$::click}}">Send</button>
             </div>
         </div>
     </template>
+    <script>
+        (function () {
+            var script = document._currentScript || document.currentScript;
+            var template = script.previousElementSibling;
+
+            template.onSendClick = function (e) {
+                template.set("model.Send$", template.model.Send$ + 1);
+            };
+        })();
+    </script>
 </template>
