@@ -1,9 +1,12 @@
 using Starcounter;
 using Simplified.Ring3;
 
-namespace Chatter {
-    partial class SystemUserPage : Json, IBound<SystemUser> {
-        public void RefreshData(string SystemUserId) {
+namespace Chatter
+{
+    partial class SystemUserPage : Json, IBound<SystemUser>
+    {
+        public void RefreshData(string SystemUserId)
+        {
             SystemUser user = DbHelper.FromID(DbHelper.Base64DecodeObjectID(SystemUserId)) as SystemUser;
 
             this.Data = user;

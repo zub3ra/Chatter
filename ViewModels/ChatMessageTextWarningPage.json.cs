@@ -2,7 +2,8 @@ using Chatter.Helpers;
 using Simplified.Ring6;
 using Starcounter;
 
-namespace Chatter {
+namespace Chatter
+{
     partial class ChatMessageTextWarningPage : Json
     {
         public void RefreshData(ChatMessageTextRelation textRelation)

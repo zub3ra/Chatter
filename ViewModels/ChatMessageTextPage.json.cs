@@ -1,7 +1,8 @@
 using Simplified.Ring6;
 using Starcounter;
 
-namespace Chatter {
+namespace Chatter
+{
     partial class ChatMessageTextPage : Json, IBound<ChatMessageText>
     {
         public void AddNew(ChatMessageTextRelation textRelation)
