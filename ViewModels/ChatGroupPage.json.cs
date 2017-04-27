@@ -96,7 +96,7 @@ namespace Chatter
                 UserName = UserName,
                 User = user
             };
-            ChatMessageDraft = Self.GET<Json>("/chatter/partials/chatmessages/" + draft.Key);
+            ChatMessageDraft = Self.GET<Json>("/chatter/partials/chatmessages-draft/" + draft.Key);
         }
 
         public void Refresh(string key)
