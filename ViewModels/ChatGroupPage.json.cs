@@ -30,7 +30,8 @@ namespace Chatter
                 UserKey = user.Key;
                 UserName = user.Username;
             }
-            else {
+            else
+            {
                 UserKey = null;
                 UserName = "Anonymous";
             }
