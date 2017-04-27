@@ -1,6 +1,7 @@
 using Starcounter;
 
-namespace Chatter {
+namespace Chatter
+{
     partial class ChatAttachmentPage : Json
     {
     }
