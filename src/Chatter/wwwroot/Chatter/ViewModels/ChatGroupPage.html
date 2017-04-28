@@ -1,4 +1,5 @@
-﻿<link href="/Chatter/css/chatter.css" rel="stylesheet" />
+﻿<link rel="import" href="/Chatter/elements/chatter-expander.html" />
+<link href="/Chatter/css/chatter.css" rel="stylesheet" />
 
 <template>
     <template is="dom-bind">
@@ -18,12 +19,15 @@
                 <starcounter-include partial="{{item}}"></starcounter-include>
             </template>
         </div>
-        <button class="btn btn-default chatter-group-attachment-button" onclick="growDiv()" slot="chatter/attachment-button">Write message<span class="caret" /></button>
-        <div id='expandablePanel' class="chatter-group-expandable-panel panel panel-default" slot="chatter/draft-message">
-            <div class='panel-body'>
-                <starcounter-include partial="{{model.ChatMessageDraft}}"></starcounter-include>
-            </div>
+        <div slot="chatter/draft-message">
+            <starcounter-include partial="{{model.ChatMessageDraft}}"></starcounter-include>
         </div>
+        <!--<button class="btn btn-default chatter-group-attachment-button" onclick="growDiv()" slot="chatter/attachment-button">Write message<span class="caret" /></button>-->
+        <!--<div id='expandablePanel' class="chatter-group-expandable-panel panel panel-default" slot="chatter/draft-message">
+            <div class='panel-body'>
+                <starcounter-include slot="chatter/draft-message" partial="{{model.ChatMessageDraft}}"></starcounter-include>
+            </div>
+        </div>-->
     </template>
 
     <template is="declarative-shadow-dom">
@@ -35,10 +39,9 @@
         <slot name="chatter/back"></slot>
         <slot name="chatter/user"></slot>
         <slot name="chatter/messages"></slot>
-        <div>
-            <slot name="chatter/attachment-button"></slot>
+        <chatter-expander label="Write message">
             <slot name="chatter/draft-message"></slot>
-        </div>
+        </chatter-expander>
     </template>
     <script src="/Chatter/js/ChatterHandlers.js"></script>
 </template>

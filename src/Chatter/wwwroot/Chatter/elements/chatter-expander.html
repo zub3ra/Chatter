@@ -1,0 +1,28 @@
+﻿<dom-module id="chatter-expander">
+    <template>
+        <style>
+        </style>
+        <button class="btn btn-default chatter-expander-button" onclick="growDiv()">
+            <span>
+                {{label}}
+            </span>
+            <span class="caret" />
+        </button>
+        <div class="panel panel-default  chatter-expander-content">
+            <content></content>
+        </div>
+    </template>
+    <script>
+        'use strict';
+        Polymer({
+            is: "chatter-expander",
+            properties: {
+                label: {
+                    type: String,
+                    value: 'Expand',
+                    notify: true
+                }
+            },
+        });
+    </script>
+</dom-module>

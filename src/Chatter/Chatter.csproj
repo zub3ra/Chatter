@@ -105,6 +105,7 @@
   <ItemGroup>
     <Content Include="wwwroot\Chatter\css\chatter.css" />
     <Content Include="wwwroot\Chatter\css\standalone.css" />
+    <None Include="wwwroot\Chatter\elements\chatter-expander.html" />
     <Content Include="wwwroot\Chatter\images\chatter.png" />
     <Content Include="wwwroot\Chatter\js\ChatterHandlers.js" />
     <Content Include="wwwroot\Chatter\js\LobbyPageScript.js" />
