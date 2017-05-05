@@ -1,14 +1,51 @@
 ﻿<dom-module id="chatter-expander">
     <template>
         <style>
+            .chatter-expander-button {
+                display: block;
+                margin-bottom: 0;
+                font-weight: normal;
+                text-align: center;
+                vertical-align: middle;
+                -ms-touch-action: manipulation;
+                touch-action: manipulation;
+                cursor: pointer;
+                border: 1px solid transparent;
+                white-space: nowrap;
+                padding: 6px 16px;
+                font-size: 13px;
+                font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+                line-height: 1.846;
+                border-radius: 3px;
+                color: #444444;
+                background-color: #ffffff;
+                box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.4);
+                text-transform: uppercase;
+            }
+
+            .chatter-expander-button__caret {
+                display: inline-block;
+                width: 0;
+                height: 0;
+                margin-left: 2px;
+                vertical-align: middle;
+                border-top: 4px dashed;
+                border-top: 4px solid \9;
+                border-right: 4px solid transparent;
+                border-left: 4px solid transparent;
+            }
+
+            .chatter-expander-panel {
+                margin-top: -14px;
+            }
         </style>
         <button class="btn btn-default chatter-expander-button" on-tap="expand">
             <span>
                 {{label}}
             </span>
-            <span class="caret"></span>
+            <span class="chatter-expander-button__caret"></span>
         </button>
-        <div id="panel" class="panel panel-default chatter-expander-content">
+        <div id="panel" class="panel panel-default chatter-expander-panel">
             <slot></slot>
         </div>
     </template>
@@ -26,9 +63,9 @@
             expand: function () {
                 var element = this.$.panel;
                 if (element.clientHeight) {
-                    element.style.height = 0;
+                    element.style.display = "none";
                 } else {
-                    element.style.height = "auto";
+                    element.style.display = "block";
                 }
                 document.activeElement.blur();
             }
