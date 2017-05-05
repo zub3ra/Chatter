@@ -13,14 +13,3 @@
         }, 100);
     };
 })();
-
-function growDiv() {
-    var growDiv = document.getElementById('expandablePanel');
-    if (growDiv.clientHeight) {
-        growDiv.style.height = 0;
-    } else {
-        var wrapper = growDiv.querySelector('.panel-body');
-        growDiv.style.height = "auto";
-    }
-    document.activeElement.blur()
-}

@@ -2,14 +2,14 @@
     <template>
         <style>
         </style>
-        <button class="btn btn-default chatter-expander-button" onclick="growDiv()">
+        <button class="btn btn-default chatter-expander-button" on-tap="expand">
             <span>
                 {{label}}
             </span>
-            <span class="caret" />
+            <span class="caret"></span>
         </button>
-        <div class="panel panel-default  chatter-expander-content">
-            <content></content>
+        <div id="panel" class="panel panel-default chatter-expander-content">
+            <slot></slot>
         </div>
     </template>
     <script>
@@ -23,6 +23,15 @@
                     notify: true
                 }
             },
+            expand: function () {
+                var element = this.$.panel;
+                if (element.clientHeight) {
+                    element.style.height = 0;
+                } else {
+                    element.style.height = "auto";
+                }
+                document.activeElement.blur();
+            }
         });
     </script>
 </dom-module>
