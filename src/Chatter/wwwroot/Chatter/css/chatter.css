@@ -6,16 +6,14 @@
 }
 
 .chatter-message-draft__container {
-    float: left;
-    width: 90%;
+    flex: 100 0 30px;
     margin-bottom: 0px;
 }
 
 .chatter-message-draft__add-button {
-    float: left;
-    width: 5%;
+    flex: 1 0 30px;
     text-align: center;
-    margin: auto;
+    margin-left: 15px;
 }
 
 .chatter-lobby-input {
