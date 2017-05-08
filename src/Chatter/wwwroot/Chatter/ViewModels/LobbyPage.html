@@ -31,7 +31,18 @@
 
         <link is="puppet-redirect" slot="chatter/redirect" history url$="{{model.RedirectUrl$}}" />
     </template>
+    <script>
+        (function () {
+            var script = document._currentScript || document.currentScript;
+            var template = script.previousElementSibling;
 
+            template.onInputKeyup = function (e) {
+                if (e.keyCode == 13) {
+                    template.set("model.GoToNewGroup$", template.model.GoToNewGroup$ + 1);
+                }
+            };
+        })();
+    </script>
     <template is="declarative-shadow-dom">
         <style>
             @import url("/Chatter/css/chatter.css");
@@ -47,5 +58,4 @@
         <slot name="chatter/groups"></slot>
         <slot name="chatter/redirect"></slot>
     </template>
-    <script src="/Chatter/js/LobbyPageScript.js/"></script>
 </template>

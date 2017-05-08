@@ -107,8 +107,6 @@
     <Content Include="wwwroot\Chatter\css\standalone.css" />
     <None Include="wwwroot\Chatter\elements\chatter-expander.html" />
     <Content Include="wwwroot\Chatter\images\chatter.png" />
-    <Content Include="wwwroot\Chatter\js\ChatterHandlers.js" />
-    <Content Include="wwwroot\Chatter\js\LobbyPageScript.js" />
     <Content Include="wwwroot\Chatter\ViewModels\AppIconPage.html" />
     <Content Include="wwwroot\Chatter\ViewModels\ChatMessageDraft.html" />
     <Content Include="wwwroot\Chatter\ViewModels\ChatAttachmentPage.html" />
