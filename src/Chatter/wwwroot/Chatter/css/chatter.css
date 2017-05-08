@@ -1,20 +1,4 @@
-﻿.chatter-group__expandable-panel {
-    -moz-transition: height .5s;
-    -ms-transition: height .5s;
-    -o-transition: height .5s;
-    -webkit-transition: height .5s;
-    transition: height .5s;
-    height: auto;
-    overflow: hidden;
-    margin-top: 1px;
-    width: 1000px;
-}
-
-.chatter-group__attachment-button {
-    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.4);
-}
-.chatter-message-draft {
-    margin-top: 15px;
+﻿.chatter-message-draft {
     margin-bottom: 15px;
     display: flex;
     align-items: center;
@@ -22,14 +6,61 @@
 }
 
 .chatter-message-draft__container {
-    float: left;
-    width: 90%;
+    flex: 100 0 30px;
     margin-bottom: 0px;
 }
 
 .chatter-message-draft__add-button {
-    float: left;
-    width: 5%;
+    flex: 1 0 30px;
     text-align: center;
-    margin: auto;
+    margin-left: 15px;
+}
+
+.chatter-lobby-input {
+    width: 550px;
+    float: left;
+    margin-bottom: 15px;
+}
+
+.chatter-lobby-button {
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    margin-left: 565px;
+}
+
+.chatter-lobby-table {
+    width: 735px;
+    clear: both;
+}
+
+.chatter-lobby-table__cell {
+    width: 560px;
+}
+
+.chatter-lobby-heading {
+    font-size: 36px;
+    margin-top: 0;
+}
+
+.chatter-group-subheading {
+    font-size: 30px;
+    float: left;
+    margin-right: 15px;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.chatter-group-attachment-button {
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.4);
+}
+
+.chatter-group-user {
+    clear: both;
+    padding: 5px 0px 30px 0px;
+    color: #A0A0A0;
+}
+
+.chatter-group-messages {
+    padding-bottom: 30px;
+    overflow: auto;
 }

@@ -7,19 +7,6 @@
     margin: 0;
 }
 
-.chatter-lobby__heading-one {
-    font-size: 36px;
-    margin-top: 0;
-}
-
-.chatter-group__heading-two {
-    font-size: 30px;
-    float: left;
-    margin-right: 15px;
-    margin-top: 0;
-    margin-bottom: 5px;
-}
-
 .chatter-body__nav-menu {
     background-color: #F0F0F0;
     border-bottom: 1px solid #C0C0C0;
@@ -51,42 +38,6 @@
 
 .chatter-body__starcounter-include {
     padding: 10px 15px;
-}
-
-.chatter-lobby__input {
-    width: 550px;
-    float: left;
-    margin-bottom: 15px;
-}
-
-.chatter-lobby__button {
-    margin-bottom: 15px;
-    box-sizing: border-box;
-    margin-left: 565px;
-}
-
-.chatter-lobby__table {
-    width: 735px;
-    clear: both;
-}
-
-.chatter-lobby__table--td {
-    width: 560px;
-}
-
-.chatter-group__group-back-button {
-    padding-bottom: 11.5px;
-}
-
-.chatter-group__user {
-    clear: both;
-    padding: 5px 0px 30px 0px;
-    color: #A0A0A0;
-}
-
-.chatter-group__messages {
-    padding-bottom: 30px;
-    overflow: auto;
 }
 
 .chatter-warning {
