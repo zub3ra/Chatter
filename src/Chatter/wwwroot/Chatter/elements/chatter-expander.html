@@ -7,7 +7,6 @@
                 font-weight: normal;
                 text-align: center;
                 vertical-align: middle;
-                -ms-touch-action: manipulation;
                 touch-action: manipulation;
                 cursor: pointer;
                 border: 1px solid transparent;
@@ -24,25 +23,47 @@
             }
 
             .chatter-expander-button__caret {
+                /*copied from Bootstrap*/
                 display: inline-block;
                 width: 0;
                 height: 0;
                 margin-left: 2px;
                 vertical-align: middle;
                 border-top: 4px dashed;
-                border-top: 4px solid \9;
                 border-right: 4px solid transparent;
                 border-left: 4px solid transparent;
             }
+
+            .chatter-expander-panel {
+                display: none;
+                margin-top: 1px;
+
+                /*copied from Bootstrap*/
+                border: none;
+                border-radius: 2px;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+                margin-bottom: 23px;
+                background-color: #ffffff;
+            }
+
+            .chatter-expander-panel--expanded {
+                display: block;
+            }
+
+            .chatter-expander-panel__body {
+                padding: 15px;
+            }
         </style>
-        <button class="btn btn-default chatter-expander-button" on-tap="expand">
+        <button class="chatter-expander-button" on-tap="expand">
             <span>
                 {{label}}
             </span>
             <span class="chatter-expander-button__caret"></span>
         </button>
-        <div id="panel" class="panel panel-default chatter-expander-panel">
-            <slot></slot>
+        <div id="panel" class="chatter-expander-panel chatter-expander-panel--expanded">
+            <div class="chatter-expander-panel__body">
+               <slot></slot>
+            </div>
         </div>
     </template>
     <script>
@@ -57,13 +78,7 @@
                 }
             },
             expand: function () {
-                var element = this.$.panel;
-                if (element.clientHeight) {
-                    element.style.display = "none";
-                } else {
-                    element.style.display = "block";
-                }
-                document.activeElement.blur();
+                this.$.panel.classList.toggle('chatter-expander-panel--expanded');
             }
         });
     </script>

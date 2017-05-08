@@ -50,18 +50,6 @@
     margin-bottom: 5px;
 }
 
-.chatter-group-expandable-panel {
-    -moz-transition: height .5s;
-    -ms-transition: height .5s;
-    -o-transition: height .5s;
-    -webkit-transition: height .5s;
-    transition: height .5s;
-    height: auto;
-    overflow: hidden;
-    margin-top: 1px;
-    width: 1000px;
-}
-
 .chatter-group-attachment-button {
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.4);
 }
