@@ -249,26 +249,32 @@ namespace Chatter
 
         protected void RegisterMap()
         {
-            UriMapping.Map("/chatter/app-name", "/sc/mapping/app-name");
-            UriMapping.Map("/chatter/menu", "/sc/mapping/menu");
+            Blender.MapUri("/chatter/app-name", "app-name");
+            Blender.MapUri("/chatter/menu", "menu");
 
-            UriMapping.OntologyMap("/chatter/partials/people/{?}", "simplified.ring2.person");
+            Blender.MapUri<PersonPage>("/chatter/partials/people/{?}");
 
             #region Custom application ontology mapping
-            UriMapping.OntologyMap("/chatter/partials/chatmessages/{?}", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
-            {
-                var message = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as ChatMessage;
-                return message.IsDraft ? null : objectId;
-            });
-            UriMapping.OntologyMap("/chatter/partials/chatmessages-draft/{?}", "simplified.ring6.chatmessage", (string objectId) => objectId, (string objectId) =>
-            {
-                var chatMessage = (ChatMessage)DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId));
-                return chatMessage.IsDraft ? objectId : null;
-            });
+            Blender.MapUri<ChatMessage>("/chatter/partials/chatmessages/{?}",
+                paramsFrom => paramsFrom,
+                paramsTo =>
+                {
+                    var objectId = paramsTo[0];
+                    var message = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as ChatMessage;
+                    return message.IsDraft ? null : paramsTo;
+                });
+            Blender.MapUri<ChatMessage>("/chatter/partials/chatmessages-draft/{?}",
+                paramsFrom => paramsFrom,
+                paramsTo =>
+                {
+                    var objectId = paramsTo[0];
+                    var message = DbHelper.FromID(DbHelper.Base64DecodeObjectID(objectId)) as ChatMessage;
+                    return message.IsDraft ? paramsTo : null;
+                });
 
-            UriMapping.OntologyMap("/chatter/partials/chatattachments/{?}", "simplified.ring6.chatattachment");
-            UriMapping.OntologyMap("/chatter/partials/chatdraftannouncements/{?}", "simplified.ring6.chatdraftannouncement");
-            UriMapping.OntologyMap("/chatter/partials/chatwarnings/{?}", "simplified.ring6.chatwarning");
+            Blender.MapUri<ChatAttachment>("/chatter/partials/chatattachments/{?}");
+            Blender.MapUri<ChatDraftAnnouncement>("/chatter/partials/chatdraftannouncements/{?}");
+            Blender.MapUri<ChatWarning>("/chatter/partials/chatwarnings/{?}");
             #endregion
         }
     }
