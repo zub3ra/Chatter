@@ -1,8 +1,7 @@
-﻿using Chatter.Helpers;
-using Starcounter;
-using Simplified.Ring6;
+﻿using Starcounter;
 using Simplified.Ring1;
-using Starcounter.Advanced;
+using Simplified.Ring2;
+using Simplified.Ring6;
 
 namespace Chatter
 {
