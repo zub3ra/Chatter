@@ -252,7 +252,7 @@ namespace Chatter
             Blender.MapUri("/chatter/app-name", "app-name");
             Blender.MapUri("/chatter/menu", "menu");
 
-            Blender.MapUri<PersonPage>("/chatter/partials/people/{?}");
+            Blender.MapUri<Person>("/chatter/partials/people/{?}");
 
             #region Custom application ontology mapping
             Blender.MapUri<ChatMessage>("/chatter/partials/chatmessages/{?}",
